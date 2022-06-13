@@ -1,0 +1,65 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_video/video
+
+    Template for displaying a video.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * video - Video module instance
+    * videojson - JSON encoded video module instance
+    * supportsprovider - Video supports a third party provider (e.g. youtube, vimeo)
+    * supportshtml5 - Video supports html5 embed (e.g. url/local file)
+    * url - If html5 supported, video url
+
+    Example context (json):
+    {
+        video: {
+            id: 123,
+            name: "Hello world",
+            ...
+        },
+        videojson: "...",
+        supportsprovider: false,
+        supportshtml5: true,
+        url: "https://..."
+    }
+}}
+
+{{#supportsprovider}}
+    <div id="player-{{video.id}}" data-plyr-provider="{{video.type}}" data-plyr-embed-id="{{video.videoid}}"></div>
+{{/supportsprovider}}
+{{^supportsprovider}}
+    {{#supportshtml5}}
+        <video id="player-{{video.id}}" playsinline controls>
+            <source src="{{{url}}}" />
+        </video>
+    {{/supportshtml5}}
+{{/supportsprovider}}
+
+{{#js}}
+    require(["mod_video/video"], function(Video) {
+        var instance = {{{videojson}}};
+        var video = new Video(instance);
+    });
+{{/js}}
