@@ -66,11 +66,14 @@ function video_reset_userdata($data) {
 function video_add_instance($data, $mform = null) {
     global $DB;
 
+    $data->controls = json_encode($data->controls);
     $data->id = $DB->insert_record('video', $data);
 
     $context = context_module::instance($data->coursemodule);
-    file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
-        $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+    if ($data->videofile) {
+        file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
+            $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+    }
 
     return $data->id;
 }
@@ -84,6 +87,7 @@ function video_add_instance($data, $mform = null) {
 function video_update_instance($data, $mform) {
     global $DB;
 
+    $data->controls = json_encode($data->controls);
     $data->timemodified = time();
     $data->id = $data->instance;
 

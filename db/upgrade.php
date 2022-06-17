@@ -107,5 +107,87 @@ function xmldb_video_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022061201, 'video');
     }
 
+    if ($oldversion < 2022061600) {
+
+        // Define field debug to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('debug', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'videoid');
+
+        // Conditionally launch add field debug.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field controls to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('controls', XMLDB_TYPE_TEXT, null, null, null, null, null, 'debug');
+
+        // Conditionally launch add field controls.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field autoplay to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('autoplay', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'controls');
+
+        // Conditionally launch add field autoplay.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field disablecontextmenu to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('disablecontextmenu', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'autoplay');
+
+        // Conditionally launch add field disablecontextmenu.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field hidecontrols to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('hidecontrols', XMLDB_TYPE_INTEGER, '1', null, null, null, '1', 'disablecontextmenu');
+
+        // Conditionally launch add field hidecontrols.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field fullscreenenabled to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('fullscreenenabled', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'hidecontrols');
+
+        // Conditionally launch add field fullscreenenabled.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field loop to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('loop', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'fullscreenenabled');
+
+        // Conditionally launch add field loop.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022061600, 'video');
+    }
+
+    if ($oldversion < 2022061601) {
+
+        // Rename field loopvideo on table video to NEWNAMEGOESHERE.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('loop', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'fullscreenenabled');
+
+        // Launch rename field loopvideo.
+        $dbman->rename_field($table, $field, 'loopvideo');
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022061601, 'video');
+    }
+
     return true;
 }

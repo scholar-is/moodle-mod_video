@@ -70,10 +70,29 @@ class video implements templatable, renderable {
         return null;
     }
 
+    public function get_controls(): array {
+        $controls = [];
+        foreach (json_decode($this->instance->controls, true) as $name => $value) {
+            if (!$value) {
+                continue;
+            }
+            $controls[] = $name;
+        }
+        return $controls;
+    }
+
     public function export_for_template(renderer_base $output) {
         return [
             'video' => $this->instance,
             'videojson' => json_encode($this->instance),
+            'options' => json_encode([
+                'debug' => !!$this->instance->debug,
+                'autoplay' => !!$this->instance->autoplay,
+                'fullscreen' => ['enabled' => !!$this->instance->fullscreenenabled],
+                'disableContextMenu' => !!$this->instance->disablecontextmenu,
+                'hideControls' => !!$this->instance->hidecontrols,
+                'controls' => $this->get_controls()
+            ]),
             'supportsprovider' => in_array($this->instance->type, ['youtube', 'vimeo']),
             'supportshtml5' => in_array($this->instance->type, ['internal', 'external']),
             'url' => $this->get_url()
