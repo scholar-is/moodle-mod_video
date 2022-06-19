@@ -15,17 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Webservice functions.
  *
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics)
-$plugin->version   = 2022061800;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2021051100;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs)
-$plugin->release   = '0.1';
+$functions = [
+    'mod_video_create_session' => [
+        'classname'    => 'mod_video\external\external',
+        'methodname'   => 'create_session',
+        'classpath'    => '',
+        'description'  => 'Create video session.',
+        'type'         => 'write',
+        'capabilities' => 'mod/video:view',
+        'ajax'         => true,
+    ],
+    'mod_video_record_session_updates' => [
+        'classname'    => 'mod_video\external\external',
+        'methodname'   => 'record_session_updates',
+        'classpath'    => '',
+        'description'  => 'Record session updates.',
+        'type'         => 'write',
+        'capabilities' => 'mod/video:view',
+        'ajax'         => true,
+    ]
+];
+

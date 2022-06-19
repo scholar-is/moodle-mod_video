@@ -1,0 +1,81 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Web service tests.
+ *
+ * @package    mod_video
+ * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+namespace tests\mod_video;
+
+use mod_video\external\external;
+use mod_video\persistent\video_session;
+use stdClass;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+
+require_once($CFG->dirroot . '/webservice/tests/helpers.php');
+
+/**
+ * @group mod_video
+ */
+class external_test extends \externallib_advanced_testcase {
+
+    /**
+     * @var stdClass
+     */
+    private $user;
+
+    /**
+     * @var stdClass
+     */
+    private $dummyroleid;
+
+    protected function setUp(): void {
+        global $CFG;
+        $this->resetAfterTest();
+        $this->user = $this->getDataGenerator()->create_user();
+        $this->dummyroleid = $this->getDataGenerator()->create_role();
+        $this->setUser($this->user);
+    }
+
+    public function test_session() {
+        $course = $this->getDataGenerator()->create_course();
+        $this->getDataGenerator()->enrol_user($this->user->id, $course->id);
+        $video = $this->getDataGenerator()->create_module('video', ['course' => $course->id]);
+
+        $response = external::create_session($video->cmid);
+
+        $this->assertEquals($this->user->id, $response['session']->userid);
+
+        external::record_session_updates($response['session']->id, 10, 10, 0.25);
+        external::record_session_updates($response['session']->id, 10, 20, 0.5);
+        external::record_session_updates($response['session']->id, 10, 30, 0.75);
+        external::record_session_updates($response['session']->id, 10, 10, 0.25);
+
+        $session = video_session::get_record(['id' => $response['session']->id]);
+
+        $this->assertEquals(40, $session->get('watchtime'));
+        $this->assertEquals(10, $session->get('lasttime'));
+        $this->assertEquals(30, $session->get('maxtime'));
+        $this->assertEquals(0.75, $session->get('watchpercent'));
+    }
+}

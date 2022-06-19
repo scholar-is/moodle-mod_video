@@ -189,5 +189,29 @@ function xmldb_video_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022061601, 'video');
     }
 
+    if ($oldversion < 2022061800) {
+
+        // Define field usermodified to be added to video_session.
+        $table = new xmldb_table('video_session');
+        $field = new xmldb_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timecreated');
+
+        // Conditionally launch add field usermodified.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field timemodified to be added to video_session.
+        $table = new xmldb_table('video_session');
+        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'usermodified');
+
+        // Conditionally launch add field timemodified.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022061800, 'video');
+    }
+
     return true;
 }

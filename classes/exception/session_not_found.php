@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Thrown when a video session is not found.
  *
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics)
-$plugin->version   = 2022061800;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2021051100;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs)
-$plugin->release   = '0.1';
+class session_not_found extends moodle_exception {
+    public function __construct() {
+        parent::__construct('sessionnotfound', 'video');
+    }
+}

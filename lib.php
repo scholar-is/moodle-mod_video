@@ -70,7 +70,7 @@ function video_add_instance($data, $mform = null) {
     $data->id = $DB->insert_record('video', $data);
 
     $context = context_module::instance($data->coursemodule);
-    if ($data->videofile) {
+    if (!empty($data->videofile)) {
         file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
             $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
     }
@@ -92,8 +92,10 @@ function video_update_instance($data, $mform) {
     $data->id = $data->instance;
 
     $context = context_module::instance($data->coursemodule);
-    file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
-        $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+    if (!empty($data->videofile)) {
+        file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
+            $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+    }
 
     return $DB->update_record('video', $data);
 }
