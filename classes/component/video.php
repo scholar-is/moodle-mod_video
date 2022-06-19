@@ -26,6 +26,7 @@ namespace mod_video\component;
 
 use coding_exception;
 use context;
+use mod_video\persistent\video_session;
 use renderable;
 use renderer_base;
 use stdClass;
@@ -81,18 +82,33 @@ class video implements templatable, renderable {
         return $controls;
     }
 
+    public function get_cm(): object {
+        return get_coursemodule_from_instance('video', $this->instance->id, 0, false, MUST_EXIST);
+    }
+
+    public function get_extra_options(): array {
+        global $USER;
+        $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
+        return [
+            'resumeTime' => $aggregatevalues->lasttime ?? 0
+        ];
+    }
+
     public function export_for_template(renderer_base $output) {
+        $cm = $this->get_cm();
         return [
             'video' => $this->instance,
+            'cm' => $cm,
+            'cmjson' => json_encode($cm),
             'videojson' => json_encode($this->instance),
-            'options' => json_encode([
+            'options' => json_encode(array_merge([
                 'debug' => !!$this->instance->debug,
                 'autoplay' => !!$this->instance->autoplay,
                 'fullscreen' => ['enabled' => !!$this->instance->fullscreenenabled],
                 'disableContextMenu' => !!$this->instance->disablecontextmenu,
                 'hideControls' => !!$this->instance->hidecontrols,
                 'controls' => $this->get_controls()
-            ]),
+            ], $this->get_extra_options())),
             'supportsprovider' => in_array($this->instance->type, ['youtube', 'vimeo']),
             'supportshtml5' => in_array($this->instance->type, ['internal', 'external']),
             'url' => $this->get_url()

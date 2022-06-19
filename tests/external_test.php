@@ -77,5 +77,16 @@ class external_test extends \externallib_advanced_testcase {
         $this->assertEquals(10, $session->get('lasttime'));
         $this->assertEquals(30, $session->get('maxtime'));
         $this->assertEquals(0.75, $session->get('watchpercent'));
+
+        $response = external::create_session($video->cmid);
+        external::record_session_updates($response['session']->id, 20, 35, 0.875);
+        external::record_session_updates($response['session']->id, 10, 15, 0.375);
+
+        $aggregates = video_session::get_aggregate_values($video->cmid, $this->user->id);
+
+        $this->assertEquals(70, $aggregates->totalwatchtime);
+        $this->assertEquals(15, $aggregates->lasttime);
+        $this->assertEquals(35, $aggregates->maxtime);
+        $this->assertEquals(0.88, $aggregates->maxwatchpercent);
     }
 }

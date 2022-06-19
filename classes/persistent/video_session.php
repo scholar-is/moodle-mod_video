@@ -66,6 +66,25 @@ class video_session extends persistent {
         );
     }
 
+    public static function get_aggregate_values(int $cmid, int $userid) {
+        global $DB;
+
+        $aggregates = $DB->get_record_sql('
+            SELECT
+                SUM(vs.watchtime) as totalwatchtime,
+                MAX(vs.maxtime) as maxtime,
+                MAX(vs.watchpercent) as maxwatchpercent 
+            FROM {video_session} vs
+            WHERE vs.userid = ? AND vs.cmid = ?
+        ', [$userid, $cmid]);
+
+        $aggregates->lasttime = $DB->get_record_sql('
+            SELECT lasttime FROM {video_session} WHERE userid = ? AND cmid = ? ORDER BY id DESC LIMIT 1
+        ', [$userid, $cmid])->lasttime;
+
+        return $aggregates;
+    }
+
     public static function get_external_description() {
         return new \external_single_structure([
             'id' => new \external_value(PARAM_INT),
@@ -74,7 +93,7 @@ class video_session extends persistent {
             'watchtime' => new \external_value(PARAM_INT),
             'lasttime' => new \external_value(PARAM_INT),
             'maxtime' => new \external_value(PARAM_INT),
-            'watchpercent' => new \external_value(PARAM_INT),
+            'watchpercent' => new \external_value(PARAM_FLOAT),
             'timecreated' => new \external_value(PARAM_INT),
         ]);
     }

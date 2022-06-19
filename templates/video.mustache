@@ -26,6 +26,8 @@
     * none
 
     Context variables required for this template:
+    * cm
+    * cmjson
     * video - Video module instance
     * videojson - JSON encoded video module instance
     * options - JSON encoded player options
@@ -61,8 +63,9 @@
 
 {{#js}}
     require(["mod_video/video"], function(Video) {
+        var cm = {{{cmjson}}};
         var instance = {{{videojson}}};
         var plyrOptions = {{{options}}};
-        var video = new Video(instance, plyrOptions);
+        var video = new Video(cm, instance, plyrOptions);
     });
 {{/js}}
