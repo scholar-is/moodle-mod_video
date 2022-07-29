@@ -22,6 +22,7 @@
  */
 
 $string['autoplay'] = 'Autoplay';
+$string['cannotforwardseek'] = 'You cannot skip forward for this video.';
 $string['control_airplay'] = 'Airplay (Safari only)';
 $string['control_captions'] = 'Captions toggle';
 $string['control_current-time'] = 'Current time of playback';
@@ -54,6 +55,8 @@ $string['modulenameplural'] = 'Videos';
 $string['modulenotfound'] = 'Video cm could not be found with ID {$a->cmid}';
 $string['pluginadministration'] = 'Video administration';
 $string['pluginname'] = 'Video';
+$string['preventforwardseeking'] = 'Prevent fast forward';
+$string['preventforwardseeking_help'] = 'Forces user to watch the video without skipping forward. Users can still rewind but cannot seek beyond what they have already watched.';
 $string['privacy:metadata'] = 'Privacy API not implmented yet.';
 $string['search:activity'] = 'Video';
 $string['sessionnotfound'] = 'Video session not found';

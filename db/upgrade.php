@@ -213,5 +213,33 @@ function xmldb_video_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022061800, 'video');
     }
 
+    if ($oldversion < 2022061900) {
+
+        // Define field preventfowardseeking to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('preventfowardseeking', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'loopvideo');
+
+        // Conditionally launch add field preventfowardseeking.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022061900, 'video');
+    }
+
+    if ($oldversion < 2022062000) {
+
+        // Rename field preventfowardseeking on table video to NEWNAMEGOESHERE.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('preventfowardseeking', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'loopvideo');
+
+        // Launch rename field preventfowardseeking.
+        $dbman->rename_field($table, $field, 'preventforwardseeking');
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022062000, 'video');
+    }
+
     return true;
 }

@@ -24,12 +24,9 @@
 
 namespace mod_video\component;
 
-use coding_exception;
-use context;
 use mod_video\persistent\video_session;
 use renderable;
 use renderer_base;
-use stdClass;
 use templatable;
 
 defined('MOODLE_INTERNAL') || die();
@@ -90,7 +87,8 @@ class video implements templatable, renderable {
         global $USER;
         $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
         return [
-            'resumeTime' => $aggregatevalues->lasttime ?? 0
+            'preventForwardSeeking' => $this->instance->preventforwardseeking,
+            'sessionAggregates' => $aggregatevalues
         ];
     }
 

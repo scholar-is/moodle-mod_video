@@ -78,9 +78,11 @@ class video_session extends persistent {
             WHERE vs.userid = ? AND vs.cmid = ?
         ', [$userid, $cmid]);
 
-        $aggregates->lasttime = $DB->get_record_sql('
+        $lasttimerecord = $DB->get_record_sql('
             SELECT lasttime FROM {video_session} WHERE userid = ? AND cmid = ? ORDER BY id DESC LIMIT 1
-        ', [$userid, $cmid])->lasttime;
+        ', [$userid, $cmid]);
+
+        $aggregates->lasttime = $lasttimerecord ? $lasttimerecord->lasttime : 0;
 
         return $aggregates;
     }

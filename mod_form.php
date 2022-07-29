@@ -96,6 +96,10 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'autoplay', get_string('autoplay', 'video'));
         $mform->setType('autoplay', PARAM_BOOL);
 
+        $mform->addElement('advcheckbox', 'preventforwardseeking', get_string('preventforwardseeking', 'video'));
+        $mform->setType('preventforwardseeking', PARAM_BOOL);
+        $mform->addHelpButton('preventforwardseeking', 'preventforwardseeking', 'video');
+
         $mform->addElement('advcheckbox', 'hidecontrols', get_string('hidecontrols', 'video'));
         $mform->setType('hidecontrols', PARAM_BOOL);
 
@@ -152,8 +156,10 @@ class mod_video_mod_form extends moodleform_mod {
             file_prepare_draft_area($draftitemid, $this->context->id, 'mod_video', 'videofiles', $this->current->id, ['subdirs'=>0, 'maxbytes' => -1, 'maxfiles' => 1]);
             $defaultvalues['videofile'] = $draftitemid;
 
-            foreach (json_decode($this->current->controls, true) as $name => $value) {
-                $defaultvalues["controls[$name]"] = $value;
+            if ($this->current->controls) {
+                foreach (json_decode($this->current->controls, true) as $name => $value) {
+                    $defaultvalues["controls[$name]"] = $value;
+                }
             }
         }
     }
