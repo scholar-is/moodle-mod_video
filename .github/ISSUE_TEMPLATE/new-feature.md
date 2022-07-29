@@ -7,5 +7,8 @@ assignees: joeconradt
 
 ---
 
-[] Automated tests
-[] Compatible with backup/restore API
+New feature checklist: 
+
+- [ ] User documentation
+- [ ] Automated tests
+- [ ] Compatible with backup/restore API
