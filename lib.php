@@ -106,6 +106,20 @@ function video_update_instance($data, $mform) {
  * @return bool true
  */
 function video_delete_instance($id) {
+    global $DB;
+
+    if (!$video = $DB->get_record('video', ['id' => $id])) {
+        return false;
+    }
+
+    $cm = get_coursemodule_from_instance('video', $video->id);
+
+    $DB->delete_records('video_session', ['cmid' => $cm->id]);
+
+    if (!$DB->delete_records('video', ['id' => $video->id])) {
+        return false;
+    }
+
     return true;
 }
 

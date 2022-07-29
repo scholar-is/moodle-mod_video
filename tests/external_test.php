@@ -44,16 +44,9 @@ class external_test extends \externallib_advanced_testcase {
      */
     private $user;
 
-    /**
-     * @var stdClass
-     */
-    private $dummyroleid;
-
     protected function setUp(): void {
-        global $CFG;
         $this->resetAfterTest();
         $this->user = $this->getDataGenerator()->create_user();
-        $this->dummyroleid = $this->getDataGenerator()->create_role();
         $this->setUser($this->user);
     }
 
