@@ -77,6 +77,10 @@ class external extends external_api {
             throw new \module_not_found($params['cmid']);
         }
 
+        $cm = get_coursemodule_from_id('video', $params['cmid'], 0, false, MUST_EXIST);
+        $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
+        $course = get_course($cm->course);
+
         $now = new \DateTime('now', \core_date::get_user_timezone_object(99));
 
         $newsession = (object)[
@@ -90,6 +94,12 @@ class external extends external_api {
         ];
 
         $newsession->id = $DB->insert_record('video_session', $newsession);
+
+        // Update completion status.
+        $completion = new \completion_info($course);
+        if ($completion->is_enabled($cm) && ($video->completiononplay)) {
+            $completion->update_state($cm, COMPLETION_COMPLETE);
+        }
 
         return [
             'session' => $newsession
@@ -138,6 +148,10 @@ class external extends external_api {
         $context = \context_module::instance($session->cmid);
         self::validate_context($context);
 
+        $cm = get_coursemodule_from_id('video', $session->cmid, 0, false, MUST_EXIST);
+        $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
+        $course = get_course($cm->course);
+
         if (!is_null($params['timeelapsed'])) {
             $session->watchtime += intval($params['timeelapsed']);
         }
@@ -154,6 +168,12 @@ class external extends external_api {
         }
 
         $DB->update_record('video_session', $session);
+
+        // Update completion status.
+        $completion = new \completion_info($course);
+        if ($completion->is_enabled($cm) && ($video->completiononplay)) {
+            $completion->update_state($cm, COMPLETION_COMPLETE);
+        }
 
         return [
             'session' => $session

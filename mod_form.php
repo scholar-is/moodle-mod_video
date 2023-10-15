@@ -25,12 +25,14 @@ use mod_video\video_source;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
-require_once($CFG->libdir.'/filelib.php');
+global $CFG;
+
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
+require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
-class mod_video_mod_form extends moodleform_mod {
-    private $controloptions = [
+class Mod_video_mod_form extends moodleform_mod {
+    private array $controloptions = [
         'play-large' => 1,
         'restart' => 0,
         'rewind' => 0,
@@ -49,12 +51,14 @@ class mod_video_mod_form extends moodleform_mod {
         'fullscreen' => 1,
     ];
 
-    public function definition() {
-        global $CFG, $DB, $OUTPUT;
+    /**
+     * @throws coding_exception
+     */
+    public function definition(): void {
+        global $CFG;
 
         $mform = $this->_form;
 
-        //-------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
         $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
         if (!empty($CFG->formatstringstriptags)) {
@@ -67,7 +71,6 @@ class mod_video_mod_form extends moodleform_mod {
 
         $this->standard_intro_elements();
 
-        //-------------------------------------------------------
         $mform->addElement('header', 'videodetails', get_string('videodetails', 'video'));
         $mform->setExpanded('videodetails');
 
@@ -86,11 +89,15 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->setType('externalurl', PARAM_RAW_TRIMMED);
         $mform->hideIf('externalurl', 'type', 'noeq', 'external');
 
-        $mform->addElement('filemanager', 'videofile', get_string('videofile', 'video'), null,
-            ['subdirs' => 0, 'maxfiles' => 1, 'accepted_types' => ['video']]);
+        $mform->addElement(
+            'filemanager',
+            'videofile',
+            get_string('videofile', 'video'),
+            null,
+            ['subdirs' => 0, 'maxfiles' => 1, 'accepted_types' => ['video']]
+        );
         $mform->hideIf('videofile', 'type', 'noeq', 'internal');
 
-        //-------------------------------------------------------
         $mform->addElement('header', 'embedoptions', get_string('embedoptions', 'video'));
 
         $mform->addElement('advcheckbox', 'autoplay', get_string('autoplay', 'video'));
@@ -111,8 +118,11 @@ class mod_video_mod_form extends moodleform_mod {
 
         $controloptions = [];
         foreach ($this->controloptions as $controloptionname => $defaultvalue) {
-            $controloptions[] = $mform->createElement('advcheckbox', $controloptionname,
-                get_string("control_$controloptionname", 'video'));
+            $controloptions[] = $mform->createElement(
+                'advcheckbox',
+                $controloptionname,
+                get_string("control_$controloptionname", 'video')
+            );
         }
         $mform->addGroup($controloptions, 'controls', get_string('showcontrols', 'video'), '<br>');
         $mform->addHelpButton('controls', 'showcontrols', 'video');
@@ -130,14 +140,50 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->setType('disablecontextmenu', PARAM_BOOL);
         $mform->setAdvanced('disablecontextmenu');
 
-        //-------------------------------------------------------
         $this->standard_coursemodule_elements();
 
-        //-------------------------------------------------------
         $this->add_action_buttons();
     }
 
-    public function validation($data, $files) {
+    /**
+     * Add custom completion rules.
+     *
+     * @return array Array of string IDs of added items, empty array if none
+     * @throws coding_exception
+     */
+    public function add_completion_rules(): array {
+        $mform =& $this->_form;
+
+        $mform->addElement('checkbox', 'completiononplay', get_string('completiononplay', 'video'));
+        $mform->setType('completiononplay', PARAM_BOOL);
+
+        $group = [
+            $mform->createElement('checkbox', 'completiononpercent', '', get_string('completiononpercent', 'video')),
+            $mform->createElement('text', 'completionpercent', '', ['size' => 3]),
+        ];
+        $mform->setType('completionpercent', PARAM_INT);
+        $mform->addGroup($group, 'completiononpercentgroup', '', null, false);
+        $mform->disabledIf('completionpercent', 'completiononpercent');
+
+        $group = [
+            $mform->createElement('checkbox', 'completiononviewtime', '', get_string('completiononviewtime', 'video')),
+            $mform->createElement('duration', 'completionviewtime'),
+        ];
+        $mform->setType('completionviewtime', PARAM_INT);
+        $mform->addGroup($group, 'completionviewtimegroup', '', null, false);
+        $mform->disabledIf('completionviewtime[number]', 'completiononviewtime');
+        $mform->disabledIf('completionviewtime[timeunit]', 'completiononviewtime');
+
+        return ['completiononplay', 'completiononpercentgroup', 'completionviewtimegroup'];
+    }
+
+    public function completion_rule_enabled($data): bool {
+        return (!empty($data['completiononplay'])) ||
+            (!empty($data['completionpercent'])) ||
+            (!empty($data['completionviewtime']));
+    }
+
+    public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
 
         foreach ($data['controls'] as $name => $value) {
@@ -149,11 +195,24 @@ class mod_video_mod_form extends moodleform_mod {
         return $errors;
     }
 
-    public function data_preprocessing(&$defaultvalues) {
+    /**
+     * @param $defaultvalues
+     * @return void
+     */
+    public function data_preprocessing(&$defaultvalues): void {
+        parent::data_preprocessing($defaultvalues);
+
         if ($this->current->instance) {
             // Editing existing instance - copy existing files into draft area.
             $draftitemid = file_get_submitted_draft_itemid('videofile');
-            file_prepare_draft_area($draftitemid, $this->context->id, 'mod_video', 'videofiles', $this->current->id, ['subdirs'=>0, 'maxbytes' => -1, 'maxfiles' => 1]);
+            file_prepare_draft_area(
+                $draftitemid,
+                $this->context->id,
+                'mod_video',
+                'videofiles',
+                $this->current->id,
+                ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]
+            );
             $defaultvalues['videofile'] = $draftitemid;
 
             if ($this->current->controls) {
@@ -162,6 +221,34 @@ class mod_video_mod_form extends moodleform_mod {
                 }
             }
         }
+
+        $defaultvalues['completiononplay'] = !empty($defaultvalues['completiononplay']) ? 1 : 0;
+        $defaultvalues['completiononpercent'] = !empty($defaultvalues['completionpercent']) ? 1 : 0;
+        $defaultvalues['completiononviewtime'] = !empty($defaultvalues['completionviewtime']) ? 1 : 0;
+    }
+
+    /**
+     * Allows module to modify the data returned by form get_data().
+     * This method is also called in the bulk activity completion form.
+     *
+     * Only available on moodleform_mod.
+     *
+     * @param stdClass $data the form data to be modified.
+     */
+    public function data_postprocessing($data): void {
+        parent::data_postprocessing($data);
+        // Turn off completion settings if the checkboxes aren't ticked.
+        if (!empty($data->completionunlocked)) {
+            $autocompletion = !empty($data->completion) && $data->completion == COMPLETION_TRACKING_AUTOMATIC;
+            if (empty($data->completiononplay) || !$autocompletion) {
+                $data->completiononplay = 0;
+            }
+            if (empty($data->completiononpercent) || !$autocompletion) {
+                $data->completiononpercent = 0;
+            }
+            if (empty($data->completiononviewtime) || !$autocompletion) {
+                $data->completiononviewtime = 0;
+            }
+        }
     }
 }
-

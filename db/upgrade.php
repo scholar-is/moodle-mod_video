@@ -241,5 +241,56 @@ function xmldb_video_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022062000, 'video');
     }
 
+    if ($oldversion < 2022072900) {
+
+        // Define field completiononplay to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('completiononplay', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'preventforwardseeking');
+
+        // Conditionally launch add field completiononplay.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field completiononpercent to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('completiononpercent', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'completiononplay');
+
+        // Conditionally launch add field completiononpercent.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field completionpercent to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('completionpercent', XMLDB_TYPE_INTEGER, '3', null, XMLDB_NOTNULL, null, '100', 'completiononpercent');
+
+        // Conditionally launch add field completionpercent.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field completiononviewtime to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('completiononviewtime', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'completionpercent');
+
+        // Conditionally launch add field completiononviewtime.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field completionviewtime to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('completionviewtime', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'completiononviewtime');
+
+        // Conditionally launch add field completionviewtime.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2022072900, 'video');
+    }
+
     return true;
 }

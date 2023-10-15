@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_video\persistent\video_session;
+
 defined('MOODLE_INTERNAL') || die();
 
 
@@ -65,5 +67,19 @@ class mod_video_generator extends testing_module_generator {
         }
 
         return parent::create_instance($record, (array)$options);
+    }
+
+    public function create_video_session(int $userid, int $cmid, array $params = []) {
+        $session = new video_session(0, (object)array_merge([
+            'userid' => $userid,
+            'cmid' => $cmid,
+            'lasttime' => 0,
+            'maxtime' => 0,
+            'watchpercent' => 0
+        ], $params));
+
+        $session->create();
+
+        return $session;
     }
 }

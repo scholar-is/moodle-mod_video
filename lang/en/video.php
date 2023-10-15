@@ -23,6 +23,12 @@
 
 $string['autoplay'] = 'Autoplay';
 $string['cannotforwardseek'] = 'You cannot skip forward for this video.';
+$string['completiondetail:completiononpercent'] = 'Watch video';
+$string['completiondetail:completiononplay'] = 'Play video';
+$string['completiondetail:completiononviewtime'] = 'Watch video';
+$string['completiononpercent'] = 'Completion on watch percentage';
+$string['completiononplay'] = 'Completion on video play';
+$string['completiononviewtime'] = 'Completion on view time';
 $string['control_airplay'] = 'Airplay (Safari only)';
 $string['control_captions'] = 'Captions toggle';
 $string['control_current-time'] = 'Current time of playback';

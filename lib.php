@@ -21,49 +21,59 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+global $CFG;
+
 require_once("$CFG->dirroot/lib/formslib.php");
 
 /**
  * List of features supported in Video module
  * @param string $feature FEATURE_xx constant for requested feature
- * @return mixed True if module supports feature, false if not, null if doesn't know
+ * @return string|int|bool|null True if module supports feature, false if not, null if doesn't know
  */
-function video_supports($feature) {
-    switch($feature) {
-        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_OTHER;
-        case FEATURE_GROUPS:                  return false;
-        case FEATURE_GROUPINGS:               return false;
-        case FEATURE_MOD_INTRO:               return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-        case FEATURE_GRADE_HAS_GRADE:         return false;
-        case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_BACKUP_MOODLE2:          return true;
-        case FEATURE_SHOW_DESCRIPTION:        return true;
+function video_supports(string $feature): string|int|bool|null {
+    switch ($feature) {
+        case FEATURE_MOD_ARCHETYPE:
+            return MOD_ARCHETYPE_OTHER;
+        case FEATURE_GROUPINGS:
+        case FEATURE_GRADE_HAS_GRADE:
+        case FEATURE_GRADE_OUTCOMES:
+        case FEATURE_GROUPS:
+            return false;
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+        case FEATURE_BACKUP_MOODLE2:
+        case FEATURE_SHOW_DESCRIPTION:
+        case FEATURE_COMPLETION_HAS_RULES:
+        case FEATURE_MOD_INTRO:
+            return true;
+        case FEATURE_MOD_PURPOSE:
+            return MOD_PURPOSE_CONTENT;
 
-        default: return null;
+        default:
+            return null;
     }
 }
 
 /**
  * This function is used by the reset_course_userdata function in moodlelib.
- * @param $data the data submitted from the reset course.
+ * @param $data mixed the data submitted from the reset course.
  * @return array status array
  */
-function video_reset_userdata($data) {
-
+function video_reset_userdata(mixed $data): array {
     // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
     // See MDL-9367.
 
-    return array();
+    return [];
 }
 
 /**
  * Add video instance.
  * @param stdClass $data
- * @param mod_video_mod_form $mform
+ * @param mod_video_mod_form|null $mform
  * @return int new video instance id
+ * @throws dml_exception
+ * @throws coding_exception
  */
-function video_add_instance($data, $mform = null) {
+function video_add_instance(stdClass $data, mod_video_mod_form $mform = null): int {
     global $DB;
 
     $data->controls = json_encode($data->controls);
@@ -71,8 +81,14 @@ function video_add_instance($data, $mform = null) {
 
     $context = context_module::instance($data->coursemodule);
     if (!empty($data->videofile)) {
-        file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
-            $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+        file_save_draft_area_files(
+            $data->videofile,
+            $context->id,
+            'mod_video',
+            'videofiles',
+            $data->id,
+            ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]
+        );
     }
 
     return $data->id;
@@ -80,11 +96,13 @@ function video_add_instance($data, $mform = null) {
 
 /**
  * Update video instance.
- * @param object $data
- * @param object $mform
+ * @param stdClass $data
+ * @param mod_video_mod_form $mform
  * @return bool true
+ * @throws coding_exception
+ * @throws dml_exception
  */
-function video_update_instance($data, $mform) {
+function video_update_instance(stdClass $data, mod_video_mod_form $mform): bool {
     global $DB;
 
     $data->controls = json_encode($data->controls);
@@ -93,8 +111,14 @@ function video_update_instance($data, $mform) {
 
     $context = context_module::instance($data->coursemodule);
     if (!empty($data->videofile)) {
-        file_save_draft_area_files($data->videofile, $context->id, 'mod_video', 'videofiles',
-            $data->id, ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]);
+        file_save_draft_area_files(
+            $data->videofile,
+            $context->id,
+            'mod_video',
+            'videofiles',
+            $data->id,
+            ['subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => 1]
+        );
     }
 
     return $DB->update_record('video', $data);
@@ -133,8 +157,28 @@ function video_delete_instance($id) {
  * @param stdClass $coursemodule
  * @return cached_cm_info Info to customise main video display
  */
-function video_get_coursemodule_info($coursemodule) {
+function video_get_coursemodule_info($coursemodule): cached_cm_info|bool {
+    global $DB;
+
+    if (!$video = $DB->get_record('video', ['id' => $coursemodule->instance])) {
+        return false;
+    }
+
     $info = new cached_cm_info();
+    $info->name = $video->name;
+
+    if ($coursemodule->showdescription) {
+        // Convert intro to html. Do not filter cached version, filters run at display time.
+        $info->content = format_module_intro('video', $video, $coursemodule->id, false);
+    }
+
+    // Populate the custom completion rules as key => value pairs, but only if the completion mode is 'automatic'.
+    if ($coursemodule->completion == COMPLETION_TRACKING_AUTOMATIC) {
+        $info->customdata['customcompletionrules']['completiononplay'] = $video->completiononplay;
+        $info->customdata['customcompletionrules']['completiononpercent'] = $video->completiononpercent;
+        $info->customdata['customcompletionrules']['completiononviewtime'] = $video->completiononviewtime;
+    }
+
     return $info;
 }
 
@@ -145,8 +189,8 @@ function video_get_coursemodule_info($coursemodule) {
  * @param stdClass $currentcontext Current context of block
  */
 function video_page_type_list($pagetype, $parentcontext, $currentcontext) {
-    $module_pagetype = ['mod-video-*' => get_string('video-mod-page-x', 'video')];
-    return $module_pagetype;
+    $modulepagetype = ['mod-video-*' => get_string('video-mod-page-x', 'video')];
+    return $modulepagetype;
 }
 
 /**
@@ -162,7 +206,7 @@ function video_view($video, $course, $cm, $context) {
     // Trigger course_module_viewed event.
     $params = [
         'context' => $context,
-        'objectid' => $video->id
+        'objectid' => $video->id,
     ];
 
     $event = \mod_video\event\course_module_viewed::create($params);
@@ -184,7 +228,7 @@ function video_view($video, $course, $cm, $context) {
  * @param  array $filter  if we need to check only specific updates
  * @return stdClass an object with the different type of areas indicating if they were updated or not
  */
-function video_check_updates_since(cm_info $cm, $from, $filter = array()) {
+function video_check_updates_since(cm_info $cm, $from, $filter = []) {
     $updates = course_check_module_updates_since($cm, $from, [''], $filter);
     return $updates;
 }
@@ -203,7 +247,7 @@ function video_check_updates_since(cm_info $cm, $from, $filter = array()) {
  * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - just send the file
  */
-function video_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+function video_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }
@@ -221,5 +265,40 @@ function video_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
         }
 
         send_stored_file($file, null, 0, $forcedownload, $options);
+    }
+}
+
+/**
+ * Obtains the automatic completion state for this video based on any conditions
+ * in video settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not, $type if conditions not set.
+ */
+function video_get_completion_state($course, $cm, $userid, $type) {
+    global $CFG, $DB;
+
+    // Get forum details
+    $forum = $DB->get_record('forum', ['id' => $cm->instance], '*', MUST_EXIST);
+
+    // If completion option is enabled, evaluate it and return true/false
+    if ($forum->completionposts) {
+        return $forum->completionposts <= $DB->get_field_sql(
+            "
+                         SELECT 
+                             COUNT(1) 
+                         FROM 
+                             {forum_posts} fp 
+                             INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
+                         WHERE
+                     fp.userid=:userid AND fd.forum=:forumid",
+            ['userid' => $userid, 'forumid' => $forum->id]
+        );
+    } else {
+        // Completion option is not enabled so just return $type
+        return $type;
     }
 }

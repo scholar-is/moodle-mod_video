@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+    <!-- Hollow Circle -->
+    <circle cx="24" cy="24" r="22" stroke="#201602" stroke-width="3" fill="none"/>
+
+    <!-- Triangle resembling a play button with rounded stroke edges -->
+    <polygon points="17,15 17,35 35,24" stroke="#201602" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round" />
+</svg>

@@ -24,20 +24,24 @@
 use mod_video\component\video;
 
 require('../../config.php');
-require_once($CFG->dirroot.'/mod/video/lib.php');
-require_once($CFG->libdir.'/completionlib.php');
 
-$id      = optional_param('id', 0, PARAM_INT); // Course Module ID
-$v       = optional_param('v', 0, PARAM_INT);  // Video instance ID
+global $DB, $CFG, $PAGE, $OUTPUT;
+
+require_once($CFG->dirroot . '/mod/video/lib.php');
+require_once($CFG->libdir . '/completionlib.php');
+
+
+$id = optional_param('id', 0, PARAM_INT); // Course Module ID.
+$v = optional_param('v', 0, PARAM_INT);  // Video instance ID.
 
 if ($v) {
     if (!$video = $DB->get_record('video', ['id' => $v])) {
-        print_error('invalidaccessparameter');
+        throw new moodle_exception('invalidaccessparameter');
     }
     $cm = get_coursemodule_from_instance('video', $video->id, $video->course, false, MUST_EXIST);
 } else {
     if (!$cm = get_coursemodule_from_id('video', $id)) {
-        print_error('invalidcoursemodule');
+        throw new moodle_exception('invalidcoursemodule');
     }
     $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
 }
@@ -54,7 +58,7 @@ video_view($video, $course, $cm, $context);
 $PAGE->set_url('/mod/video/view.php', ['id' => $cm->id]);
 
 $PAGE->set_pagelayout('incourse');
-$PAGE->set_title($course->shortname.': '.$video->name);
+$PAGE->set_title($course->shortname . ': ' . $video->name);
 $PAGE->set_heading($course->fullname);
 $PAGE->set_activity_record($video);
 
