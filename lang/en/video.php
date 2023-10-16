@@ -68,6 +68,7 @@ $string['search:activity'] = 'Video';
 $string['sessionnotfound'] = 'Video session not found';
 $string['showcontrols'] = 'Show controls';
 $string['showcontrols_help'] = 'Select which controls to display in video player';
+$string['video:viewreports'] = 'View reports';
 $string['video-mod-page-x'] = 'Any video module page';
 $string['videodetails'] = 'Video details';
 $string['videofile'] = 'Video file';

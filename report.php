@@ -21,30 +21,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_video\component\video;
+use mod_video\table\session_report_table;
 
 require('../../config.php');
 
-global $DB, $CFG, $PAGE, $OUTPUT;
+global $CFG, $PAGE, $OUTPUT, $DB;
 
-require_once($CFG->dirroot . '/mod/video/lib.php');
-require_once($CFG->libdir . '/completionlib.php');
+$download = optional_param('download', '', PARAM_ALPHA);
+$cmid = required_param('cmid', PARAM_INT);
 
-
-$id = optional_param('id', 0, PARAM_INT); // Course Module ID.
-$v = optional_param('v', 0, PARAM_INT);  // Video instance ID.
-
-if ($v) {
-    if (!$video = $DB->get_record('video', ['id' => $v])) {
-        throw new moodle_exception('invalidaccessparameter');
-    }
-    $cm = get_coursemodule_from_instance('video', $video->id, $video->course, false, MUST_EXIST);
-} else {
-    if (!$cm = get_coursemodule_from_id('video', $id)) {
-        throw new moodle_exception('invalidcoursemodule');
-    }
-    $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
-}
+$cm = get_coursemodule_from_id('video', $cmid, 0, false, MUST_EXIST);
+$video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
 
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
@@ -52,19 +39,26 @@ require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/video:view', $context);
 
-// Completion and trigger events.
-video_view($video, $course, $cm, $context);
-
-$PAGE->set_url('/mod/video/view.php', ['id' => $cm->id]);
+$PAGE->set_url('/mod/video/report.php');
 $PAGE->set_pagelayout('incourse');
-$PAGE->set_title($course->shortname . ': ' . $video->name);
-$PAGE->set_heading($course->fullname);
 $PAGE->set_activity_record($video);
 
-$renderer = $PAGE->get_renderer('mod_video');
+require_capability('mod/video:viewreports', $context);
 
-echo $OUTPUT->header();
+$table = new session_report_table($cmid, 'session_report');
+$table->define_baseurl($PAGE->url);
+$table->is_downloading($download, 'video_session_report', 'Video Session Report');
 
-echo $renderer->render(new video($video));
+if (!$table->is_downloading()) {
+    $PAGE->set_title('Video Session Report');
+    $PAGE->set_heading('Video Session Report');
+    $PAGE->navbar->add('Video Session Report', new moodle_url('/mod/video/report.php'));
+    echo $OUTPUT->header();
+}
 
-echo $OUTPUT->footer();
+// Display table.
+$table->out(40, true);
+
+if (!$table->is_downloading()) {
+    echo $OUTPUT->footer();
+}
