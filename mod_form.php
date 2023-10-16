@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
-class Mod_video_mod_form extends moodleform_mod {
+class mod_video_mod_form extends moodleform_mod {
     private array $controloptions = [
         'play-large' => 1,
         'restart' => 0,
@@ -53,6 +53,7 @@ class Mod_video_mod_form extends moodleform_mod {
 
     /**
      * @throws coding_exception
+     * @throws moodle_exception
      */
     public function definition(): void {
         global $CFG;
@@ -61,6 +62,7 @@ class Mod_video_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
         $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
+
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
