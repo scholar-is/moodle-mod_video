@@ -128,8 +128,10 @@ function video_update_instance(stdClass $data, mod_video_mod_form $mform): bool 
  * Delete video instance.
  * @param int $id
  * @return bool true
+ * @throws dml_exception
+ * @throws coding_exception
  */
-function video_delete_instance($id) {
+function video_delete_instance(int $id): bool {
     global $DB;
 
     if (!$video = $DB->get_record('video', ['id' => $id])) {
@@ -155,9 +157,10 @@ function video_delete_instance($id) {
  * See {@link get_array_of_activities()} in course/lib.php
  *
  * @param stdClass $coursemodule
- * @return cached_cm_info Info to customise main video display
+ * @return cached_cm_info|bool Info to customise main video display
+ * @throws dml_exception
  */
-function video_get_coursemodule_info($coursemodule): cached_cm_info|bool {
+function video_get_coursemodule_info(stdClass $coursemodule): cached_cm_info|bool {
     global $DB;
 
     if (!$video = $DB->get_record('video', ['id' => $coursemodule->instance])) {
@@ -187,8 +190,9 @@ function video_get_coursemodule_info($coursemodule): cached_cm_info|bool {
  * @param string $pagetype current page type
  * @param stdClass $parentcontext Block's parent context
  * @param stdClass $currentcontext Current context of block
+ * @throws coding_exception
  */
-function video_page_type_list($pagetype, $parentcontext, $currentcontext) {
+function video_page_type_list(string $pagetype, stdClass $parentcontext, stdClass $currentcontext): array {
     $modulepagetype = ['mod-video-*' => get_string('video-mod-page-x', 'video')];
     return $modulepagetype;
 }
@@ -196,13 +200,13 @@ function video_page_type_list($pagetype, $parentcontext, $currentcontext) {
 /**
  * Mark the activity completed (if required) and trigger the course_module_viewed event.
  *
- * @param  stdClass $video      page object
- * @param  stdClass $course     course object
- * @param  stdClass $cm         course module object
- * @param  stdClass $context    context object
+ * @param stdClass $video      page object
+ * @param stdClass $course     course object
+ * @param stdClass $cm         course module object
+ * @param stdClass $context    context object
+ * @throws coding_exception
  */
-function video_view($video, $course, $cm, $context) {
-
+function video_view(stdClass $video, stdClass $course, stdClass $cm, stdClass $context): void {
     // Trigger course_module_viewed event.
     $params = [
         'context' => $context,
@@ -224,30 +228,40 @@ function video_view($video, $course, $cm, $context) {
  * Check if the module has any update that affects the current user since a given time.
  *
  * @param  cm_info $cm course module data
- * @param  int $from the time to check updates from
- * @param  array $filter  if we need to check only specific updates
+ * @param int $from the time to check updates from
+ * @param array $filter  if we need to check only specific updates
  * @return stdClass an object with the different type of areas indicating if they were updated or not
  */
-function video_check_updates_since(cm_info $cm, $from, $filter = []) {
-    $updates = course_check_module_updates_since($cm, $from, [''], $filter);
-    return $updates;
+function video_check_updates_since(cm_info $cm, int $from, array $filter = []): stdClass {
+    return course_check_module_updates_since($cm, $from, [''], $filter);
 }
 
 /**
  * Serves the resource files.
  *
- * @package  mod_video
- * @category files
  * @param stdClass $course course object
  * @param stdClass $cm course module object
  * @param stdClass $context context object
  * @param string $filearea file area
  * @param array $args extra arguments
- * @param bool $forcedownload whether or not force download
+ * @param bool $forcedownload force download
  * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - just send the file
+ * @throws coding_exception
+ * @throws require_login_exception
+ * @throws moodle_exception
+ * @package mod_video
+ * @category files
  */
-function video_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+function video_pluginfile(
+    stdClass $course,
+    stdClass $cm,
+    stdClass $context,
+    string $filearea,
+    array $args,
+    bool $forcedownload,
+    array $options = []
+): bool {
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }
@@ -260,45 +274,13 @@ function video_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
         $fullpath = "/$context->id/mod_video/$filearea/$relativepath";
 
         $fs = get_file_storage();
-        if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        $file = $fs->get_file_by_hash(sha1($fullpath));
+        if (!$file || $file->is_directory()) {
             return false;
         }
 
         send_stored_file($file, null, 0, $forcedownload, $options);
     }
-}
 
-/**
- * Obtains the automatic completion state for this video based on any conditions
- * in video settings.
- *
- * @param object $course Course
- * @param object $cm Course-module
- * @param int $userid User ID
- * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
- * @return bool True if completed, false if not, $type if conditions not set.
- */
-function video_get_completion_state($course, $cm, $userid, $type) {
-    global $CFG, $DB;
-
-    // Get forum details
-    $forum = $DB->get_record('forum', ['id' => $cm->instance], '*', MUST_EXIST);
-
-    // If completion option is enabled, evaluate it and return true/false
-    if ($forum->completionposts) {
-        return $forum->completionposts <= $DB->get_field_sql(
-            "
-                         SELECT 
-                             COUNT(1) 
-                         FROM 
-                             {forum_posts} fp 
-                             INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
-                         WHERE
-                     fp.userid=:userid AND fd.forum=:forumid",
-            ['userid' => $userid, 'forumid' => $forum->id]
-        );
-    } else {
-        // Completion option is not enabled so just return $type
-        return $type;
-    }
+    return false;
 }

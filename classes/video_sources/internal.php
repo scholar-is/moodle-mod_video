@@ -24,22 +24,20 @@
 
 namespace mod_video\video_sources;
 
+use lang_string;
 use mod_video\video_source;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * @package    mod_video
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class internal extends video_source {
-
     public function get_type(): string {
         return 'internal';
     }
 
     public function get_name(): string {
-        return new \lang_string('videofile', 'video');
+        return new lang_string('videofile', 'video');
     }
 
     public function get_icon(): string {

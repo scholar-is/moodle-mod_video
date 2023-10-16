@@ -24,7 +24,7 @@
 
 declare(strict_types=1);
 
-namespace tests\mod_video;
+namespace mod_video;
 
 use advanced_testcase;
 use cm_info;
@@ -47,7 +47,6 @@ require_once($CFG->dirroot . '/mod/forum/tests/generator_trait.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion_test extends advanced_testcase {
-
     use \mod_forum_tests_generator_trait;
 
     /**
@@ -55,32 +54,32 @@ class custom_completion_test extends advanced_testcase {
      *
      * @return array[]
      */
-    public function get_state_provider(): array {
+    public static function get_state_provider(): array {
         return [
             'Undefined rule' => [
-                'somenonexistentrule', COMPLETION_TRACKING_NONE, null, coding_exception::class
+                'somenonexistentrule', COMPLETION_TRACKING_NONE, null, coding_exception::class,
             ],
             'Completion on play rule not available'  => [
                 'completiononplay', COMPLETION_TRACKING_NONE, null, moodle_exception::class,
                 [
-                    'completiononplay' => 1
-                ]
+                    'completiononplay' => 1,
+                ],
             ],
             'Completion on play rule available, user has not played video' => [
                 'completiononplay', COMPLETION_TRACKING_AUTOMATIC, COMPLETION_INCOMPLETE, null,
                 [
-                    'completiononplay' => 1
-                ]
+                    'completiononplay' => 1,
+                ],
             ],
             'Rule available, user has played video' => [
                 'completiononplay', COMPLETION_TRACKING_AUTOMATIC, COMPLETION_INCOMPLETE, null,
                 [
-                    'completiononplay' => 1
+                    'completiononplay' => 1,
                 ],
                 [[
-                    'watchtime' => 0
-                ]]
-            ]
+                    'watchtime' => 0,
+                ], ],
+            ],
         ];
     }
 
@@ -111,7 +110,7 @@ class custom_completion_test extends advanced_testcase {
 
         $params = array_merge([
             'course' => $course->id,
-            'completion' => $available
+            'completion' => $available,
         ], $extraparams);
         $video = $this->getDataGenerator()->create_module('video', $params);
 
@@ -187,25 +186,25 @@ class custom_completion_test extends advanced_testcase {
      *
      * @return array[]
      */
-    public function get_available_custom_rules_provider(): array {
+    public static function get_available_custom_rules_provider(): array {
         return [
             'Completion on play available' => [
-                COMPLETION_ENABLED, ['completiononplay']
+                COMPLETION_ENABLED, ['completiononplay'],
             ],
             'Completion on play not available' => [
-                COMPLETION_DISABLED, []
+                COMPLETION_DISABLED, [],
             ],
             'Completion on percent available' => [
-                COMPLETION_ENABLED, ['completiononpercent']
+                COMPLETION_ENABLED, ['completiononpercent'],
             ],
             'Completion on percent not available' => [
-                COMPLETION_DISABLED, []
+                COMPLETION_DISABLED, [],
             ],
             'Completion on viewtime available' => [
-                COMPLETION_ENABLED, ['completiononviewtime']
+                COMPLETION_ENABLED, ['completiononviewtime'],
             ],
             'Completion on viewtime not available' => [
-                COMPLETION_DISABLED, []
+                COMPLETION_DISABLED, [],
             ],
         ];
     }
@@ -219,12 +218,12 @@ class custom_completion_test extends advanced_testcase {
      */
     public function test_get_available_custom_rules(int $status, array $expected) {
         $customdataval = [
-            'customcompletionrules' => []
+            'customcompletionrules' => [],
         ];
         if ($status == COMPLETION_ENABLED) {
             $rule = $expected[0];
             $customdataval = [
-                'customcompletionrules' => [$rule => $status]
+                'customcompletionrules' => [$rule => $status],
             ];
         }
 

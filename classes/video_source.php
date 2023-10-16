@@ -24,7 +24,7 @@
 
 namespace mod_video;
 
-defined('MOODLE_INTERNAL') || die();
+use moodle_exception;
 
 /**
  * The mod_video instance list viewed event class.
@@ -33,21 +33,23 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class video_source {
-
     /**
      * @return string
      */
-    public abstract function get_type(): string;
+    abstract public function get_type(): string;
 
-    public abstract function get_name(): string;
+    abstract public function get_name(): string;
 
-    public abstract function get_icon(): string;
+    abstract public function get_icon(): string;
 
+    /**
+     * @throws moodle_exception
+     */
     public function get_radio_label(): string {
         global $OUTPUT;
         return $OUTPUT->render_from_template('mod_video/video_type_label', [
             'label' => $this->get_name(),
-            'icon' => $this->get_icon()
+            'icon' => $this->get_icon(),
         ]);
     }
 
@@ -62,4 +64,3 @@ abstract class video_source {
         return $sources;
     }
 }
-

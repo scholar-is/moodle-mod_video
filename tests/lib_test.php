@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\mod_video;
+namespace mod_video;
 
 use mod_video\external\external;
 
@@ -36,7 +36,6 @@ require_once($CFG->dirroot . '/mod/video/lib.php');
  * @group mod_video
  */
 class lib_test extends \advanced_testcase {
-
     /**
      * Test deleting a video instance.
      */

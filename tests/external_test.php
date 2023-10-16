@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\mod_video;
+namespace mod_video;
 
 use mod_video\external\external;
 use mod_video\persistent\video_session;
@@ -38,7 +38,6 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
  * @group mod_video
  */
 class external_test extends \externallib_advanced_testcase {
-
     /**
      * @var stdClass
      */

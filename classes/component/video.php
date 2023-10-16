@@ -24,26 +24,28 @@
 
 namespace mod_video\component;
 
+use coding_exception;
 use mod_video\persistent\video_session;
 use renderable;
 use renderer_base;
+use stdClass;
 use templatable;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class video implements templatable, renderable {
+class video implements renderable, templatable {
+    private stdClass $instance;
 
-    private $instance;
-
-    public function __construct($instance) {
+    public function __construct(stdClass $instance) {
         $this->instance = $instance;
     }
 
+    /**
+     * @throws coding_exception
+     */
     public function get_url(): ?string {
         switch ($this->instance->type) {
             case 'external':
@@ -79,20 +81,29 @@ class video implements templatable, renderable {
         return $controls;
     }
 
+    /**
+     * @throws coding_exception
+     */
     public function get_cm(): object {
         return get_coursemodule_from_instance('video', $this->instance->id, 0, false, MUST_EXIST);
     }
 
+    /**
+     * @throws coding_exception
+     */
     public function get_extra_options(): array {
         global $USER;
         $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
         return [
             'preventForwardSeeking' => $this->instance->preventforwardseeking,
-            'sessionAggregates' => $aggregatevalues
+            'sessionAggregates' => $aggregatevalues,
         ];
     }
 
-    public function export_for_template(renderer_base $output) {
+    /**
+     * @throws coding_exception
+     */
+    public function export_for_template(renderer_base $output): array {
         $cm = $this->get_cm();
         return [
             'video' => $this->instance,
@@ -105,11 +116,11 @@ class video implements templatable, renderable {
                 'fullscreen' => ['enabled' => !!$this->instance->fullscreenenabled],
                 'disableContextMenu' => !!$this->instance->disablecontextmenu,
                 'hideControls' => !!$this->instance->hidecontrols,
-                'controls' => $this->get_controls()
+                'controls' => $this->get_controls(),
             ], $this->get_extra_options())),
             'supportsprovider' => in_array($this->instance->type, ['youtube', 'vimeo']),
             'supportshtml5' => in_array($this->instance->type, ['internal', 'external']),
-            'url' => $this->get_url()
+            'url' => $this->get_url(),
         ];
     }
 }

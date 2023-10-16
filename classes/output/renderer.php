@@ -24,8 +24,6 @@
 
 namespace mod_video\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 use plugin_renderer_base;
 
 /**
@@ -35,4 +33,5 @@ use plugin_renderer_base;
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class renderer extends plugin_renderer_base {}
+class renderer extends plugin_renderer_base {
+}

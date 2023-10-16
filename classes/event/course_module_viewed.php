@@ -23,8 +23,6 @@
 
 namespace mod_video\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The mod_video course module viewed event class.
  *
@@ -32,18 +30,16 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_viewed extends \core\event\course_module_viewed {
-
     /**
      * Init method.
      */
-    protected function init() {
+    protected function init(): void {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'video';
     }
 
-    public static function get_objectid_mapping() {
+    public static function get_objectid_mapping(): array {
         return ['db' => 'video', 'restore' => 'video'];
     }
 }
-

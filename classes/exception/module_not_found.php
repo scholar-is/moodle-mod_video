@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+namespace mod_video\exception;
+
+use moodle_exception;
 
 class module_not_found extends moodle_exception {
     public function __construct(int $cmid) {

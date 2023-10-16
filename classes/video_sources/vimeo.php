@@ -24,26 +24,23 @@
 
 namespace mod_video\video_sources;
 
+use lang_string;
 use mod_video\video_source;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * @package    mod_video
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class vimeo extends video_source {
-
     public function get_type(): string {
         return 'vimeo';
     }
 
     public function get_name(): string {
-        return new \lang_string('pluginname', 'media_vimeo'); // Already translated.
+        return new lang_string('pluginname', 'media_vimeo'); // Already translated.
     }
 
     public function get_icon(): string {
         return 'vimeo';
     }
 }
-

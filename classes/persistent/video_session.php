@@ -25,6 +25,7 @@
 namespace mod_video\persistent;
 
 use core_competency\persistent;
+use dml_exception;
 
 /**
  * Video session.
@@ -34,7 +35,6 @@ use core_competency\persistent;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class video_session extends persistent {
-
     /** Table name */
     const TABLE = 'video_session';
 
@@ -43,29 +43,32 @@ class video_session extends persistent {
      *
      * @return array
      */
-    protected static function define_properties() {
-        return array(
+    protected static function define_properties(): array {
+        return [
             'cmid' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
             'userid' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
             'watchtime' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
             'lasttime' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
             'maxtime' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
             'watchpercent' => [
-                'type' => PARAM_INT
+                'type' => PARAM_INT,
             ],
-        );
+        ];
     }
 
+    /**
+     * @throws dml_exception
+     */
     public static function get_aggregate_values(int $cmid, int $userid) {
         global $DB;
 
@@ -87,7 +90,7 @@ class video_session extends persistent {
         return $aggregates;
     }
 
-    public static function get_external_description() {
+    public static function get_external_description(): \external_single_structure {
         return new \external_single_structure([
             'id' => new \external_value(PARAM_INT),
             'cmid' => new \external_value(PARAM_INT),

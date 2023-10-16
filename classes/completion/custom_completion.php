@@ -16,7 +16,10 @@
 
 namespace mod_video\completion;
 
+use coding_exception;
 use core_completion\activity_custom_completion;
+use dml_exception;
+use moodle_exception;
 
 /**
  * Activity custom completion subclass for the video activity.
@@ -29,12 +32,14 @@ use core_completion\activity_custom_completion;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion extends activity_custom_completion {
-
     /**
      * Fetches the completion state for a given completion rule.
      *
      * @param string $rule The completion rule.
      * @return int The completion state.
+     * @throws dml_exception
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function get_state(string $rule): int {
         global $DB;
@@ -44,8 +49,8 @@ class custom_completion extends activity_custom_completion {
         $userid = $this->userid;
         $cm = $this->cm;
 
-        if (!$video = $DB->get_record('video', ['id' =>  $this->cm->instance])) {
-            throw new \moodle_exception('Unable to find video with ID: ' . $this->cm->instance);
+        if (!$video = $DB->get_record('video', ['id' => $this->cm->instance])) {
+            throw new moodle_exception('Unable to find video with ID: ' . $this->cm->instance);
         }
 
         $rulecompleted = false;
@@ -55,11 +60,17 @@ class custom_completion extends activity_custom_completion {
                 $rulecompleted = $DB->record_exists('video_session', ['userid' => $userid, 'cmid' => $cm->id]);
                 break;
             case 'completiononpercent':
-                $maxwatchpercent = $DB->get_field_sql('SELECT MAX(watchpercent) FROM {video_session} WHERE userid = ? AND cmid = ?', [$userid, $cm->id]);
+                $maxwatchpercent = $DB->get_field_sql(
+                    'SELECT MAX(watchpercent) FROM {video_session} WHERE userid = ? AND cmid = ?',
+                    [$userid, $cm->id]
+                );
                 $rulecompleted = $maxwatchpercent >= ($video->completionpercent / 100);
                 break;
             case 'completiononviewtime':
-                $watchtime = $DB->get_field_sql('SELECT SUM(watchtime) FROM {video_session} WHERE userid = ? AND cmid = ?', [$userid, $cm->id]);
+                $watchtime = $DB->get_field_sql(
+                    'SELECT SUM(watchtime) FROM {video_session} WHERE userid = ? AND cmid = ?',
+                    [$userid, $cm->id]
+                );
                 $rulecompleted = $watchtime >= $video->completionviewtime;
                 break;
         }
@@ -84,6 +95,7 @@ class custom_completion extends activity_custom_completion {
      * Returns an associative array of the descriptions of custom completion rules.
      *
      * @return array
+     * @throws coding_exception
      */
     public function get_custom_rule_descriptions(): array {
         $completiononplay = $this->cm->customdata['customcompletionrules']['completiononplay'] ?? 0;
@@ -107,7 +119,7 @@ class custom_completion extends activity_custom_completion {
             'completionview',
             'completiononplay',
             'completiononpercent',
-            'completiononviewtime'
+            'completiononviewtime',
         ];
     }
 }
