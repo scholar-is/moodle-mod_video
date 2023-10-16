@@ -22,10 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\invalid_persistent_exception;
 use mod_video\persistent\video_session;
-
-defined('MOODLE_INTERNAL') || die();
-
 
 /**
  * Video module data generator class.
@@ -35,11 +33,13 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_video_generator extends testing_module_generator {
-
-    public function create_instance($record = null, array $options = null) {
+    /**
+     * @throws coding_exception
+     */
+    public function create_instance($record = null, array $options = null): stdClass {
         $record = (object)(array)$record;
 
-        $defaultsettings = array(
+        $defaultsettings = [
             'name' => 'Testing video',
             'type' => 'external',
             'youtubeurl' => '',
@@ -58,7 +58,7 @@ class mod_video_generator extends testing_module_generator {
             'hidecontrols' => 0,
             'fullscreenenabled' => 0,
             'loopvideo' => 0,
-        );
+        ];
 
         foreach ($defaultsettings as $name => $value) {
             if (!isset($record->{$name})) {
@@ -69,13 +69,17 @@ class mod_video_generator extends testing_module_generator {
         return parent::create_instance($record, (array)$options);
     }
 
-    public function create_video_session(int $userid, int $cmid, array $params = []) {
+    /**
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
+     */
+    public function create_video_session(int $userid, int $cmid, array $params = []): video_session {
         $session = new video_session(0, (object)array_merge([
             'userid' => $userid,
             'cmid' => $cmid,
             'lasttime' => 0,
             'maxtime' => 0,
-            'watchpercent' => 0
+            'watchpercent' => 0,
         ], $params));
 
         $session->create();

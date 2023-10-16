@@ -29,3 +29,4 @@ $plugin->version   = 2022072900;  // The current module version (Date: YYYYMMDDX
 $plugin->requires  = 2021051100;  // Requires this Moodle version.
 $plugin->cron      = 0;           // Period for cron to check this module (secs)
 $plugin->release   = '0.1';
+$plugin->maturity  = MATURITY_BETA;
