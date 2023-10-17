@@ -284,3 +284,23 @@ function video_pluginfile(
 
     return false;
 }
+
+/**
+ * Adds module specific settings to the settings block
+ *
+ * @param settings_navigation $settingsnav The settings navigation object
+ * @param navigation_node $videonode The node to add module settings to
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
+function video_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $videonode): void {
+    if (has_capability('mod/video:viewreports', $settingsnav->get_page()->context)) {
+        $videonode->add(
+            get_string('report', 'video'),
+            new moodle_url('/mod/video/report/videosessions/index.php', ['cmid' => $settingsnav->get_page()->cm->id]),
+            navigation_node::TYPE_SETTING,
+            null,
+            'videoreport'
+        );
+    }
+}

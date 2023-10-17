@@ -15,18 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Subplugin info class.
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace mod_video\plugininfo;
 
-defined('MOODLE_INTERNAL') || die;
+use core\plugininfo\base;
 
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics)
-$plugin->version   = 2023101700;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2021051100;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs)
-$plugin->release   = '0.1';
-$plugin->maturity  = MATURITY_BETA;
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Video report subplugin info class.
+ *
+ * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class videoreport extends base {
+    /**
+     * Allow the video report subplugin be uninstalled.
+     *
+     * @return boolean
+     */
+    public function is_uninstall_allowed() {
+        return true;
+    }
+}

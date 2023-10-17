@@ -21,9 +21,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_video\table\session_report_table;
+use videoreport_videosessions\session_report_table;
 
-require('../../config.php');
+require('../../../../config.php');
 
 global $CFG, $PAGE, $OUTPUT, $DB;
 
@@ -39,20 +39,21 @@ require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/video:view', $context);
 
-$PAGE->set_url('/mod/video/report.php');
-$PAGE->set_pagelayout('incourse');
-$PAGE->set_activity_record($video);
+$PAGE->set_url('/mod/video/report/videosessions/index.php');
+$PAGE->set_pagelayout('report');
+$PAGE->set_context($context);
+$PAGE->activityheader->disable();
 
 require_capability('mod/video:viewreports', $context);
 
-$table = new session_report_table($cmid, 'session_report');
+$table = new session_report_table(cm_info::create($cm), 'session_report');
 $table->define_baseurl($PAGE->url);
 $table->is_downloading($download, 'video_session_report', 'Video Session Report');
 
 if (!$table->is_downloading()) {
     $PAGE->set_title('Video Session Report');
     $PAGE->set_heading('Video Session Report');
-    $PAGE->navbar->add('Video Session Report', new moodle_url('/mod/video/report.php'));
+    $PAGE->navbar->add('Video Session Report', new moodle_url('/mod/video/report/videosessions/index.php'));
     echo $OUTPUT->header();
 }
 
