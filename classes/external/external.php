@@ -25,6 +25,7 @@
 namespace mod_video\external;
 
 use coding_exception;
+use completion_info;
 use DateTime;
 use dml_exception;
 use external_api;
@@ -94,7 +95,7 @@ class external extends external_api {
 
         $now = new DateTime('now', \core_date::get_user_timezone_object(99));
 
-        $newsession = (object)[
+        $newsession = (new video_session(0, (object)[
             'cmid' => $params['cmid'],
             'userid' => $USER->id,
             'watchtime' => 0,
@@ -102,18 +103,16 @@ class external extends external_api {
             'maxtime' => 0,
             'watchpercent' => 0,
             'timecreated' => $now->getTimestamp(),
-        ];
-
-        $newsession->id = $DB->insert_record('video_session', $newsession);
+        ]))->create();
 
         // Update completion status.
-        $completion = new \completion_info($course);
+        $completion = new completion_info($course);
         if ($completion->is_enabled($cm) && ($video->completiononplay)) {
             $completion->update_state($cm, COMPLETION_COMPLETE);
         }
 
         return [
-            'session' => $newsession,
+            'session' => $newsession->to_record(),
         ];
     }
 
@@ -159,42 +158,42 @@ class external extends external_api {
             'currentpercent' => $currentpercent,
         ]);
 
-        if (!$session = $DB->get_record('video_session', ['id' => $params['sessionid']])) {
+        if (!$session = video_session::get_record(['id' => $params['sessionid']])) {
             throw new session_not_found();
         }
 
-        $context = \context_module::instance($session->cmid);
+        $context = \context_module::instance($session->get('cmid'));
         self::validate_context($context);
 
-        $cm = get_coursemodule_from_id('video', $session->cmid, 0, false, MUST_EXIST);
+        $cm = get_coursemodule_from_id('video', $session->get('cmid'), 0, false, MUST_EXIST);
         $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
         $course = get_course($cm->course);
 
         if (!is_null($params['timeelapsed'])) {
-            $session->watchtime += intval($params['timeelapsed']);
+            $session->set('watchtime', intval($session->get('watchtime')) + intval($params['timeelapsed']));
         }
 
         if (!is_null($params['currenttime'])) {
-            $session->lasttime = $params['currenttime'];
-            if ($params['currenttime'] > $session->maxtime) {
-                $session->maxtime = $params['currenttime'];
+            $session->set('lasttime', $params['currenttime']);
+            if ($params['currenttime'] > $session->get('maxtime')) {
+                $session->set('maxtime', $params['currenttime']);
             }
         }
 
-        if (!is_null($params['currentpercent']) && $params['currentpercent'] > $session->watchpercent) {
-            $session->watchpercent = $params['currentpercent'];
+        if (!is_null($params['currentpercent']) && $params['currentpercent'] > $session->get('watchpercent')) {
+            $session->set('watchpercent', round($params['currentpercent'], 2));
         }
 
-        $DB->update_record('video_session', $session);
+        $session->update();
 
         // Update completion status.
-        $completion = new \completion_info($course);
+        $completion = new completion_info($course);
         if ($completion->is_enabled($cm) && ($video->completiononplay)) {
             $completion->update_state($cm, COMPLETION_COMPLETE);
         }
 
         return [
-            'session' => $session,
+            'session' => $session->to_record(),
         ];
     }
 

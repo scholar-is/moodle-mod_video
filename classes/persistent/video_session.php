@@ -61,7 +61,7 @@ class video_session extends persistent {
                 'type' => PARAM_INT,
             ],
             'watchpercent' => [
-                'type' => PARAM_INT,
+                'type' => PARAM_FLOAT,
             ],
         ];
     }
