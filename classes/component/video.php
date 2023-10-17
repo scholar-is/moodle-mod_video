@@ -95,7 +95,7 @@ class video implements renderable, templatable {
         global $USER;
         $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
         return [
-            'preventForwardSeeking' => $this->instance->preventforwardseeking,
+            'preventForwardSeeking' => !!$this->instance->preventforwardseeking,
             'sessionAggregates' => $aggregatevalues,
         ];
     }
