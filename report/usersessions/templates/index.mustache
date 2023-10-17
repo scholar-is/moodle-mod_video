@@ -1,0 +1,58 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template videoreport/usersessions
+
+    Template for displaying user sessino report.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * cm
+    * cmjson
+    * video - Video module instance
+    * videojson - JSON encoded video module instance
+    * options - JSON encoded player options
+    * supportsprovider - Video supports a third party provider (e.g. youtube, vimeo)
+    * supportshtml5 - Video supports html5 embed (e.g. url/local file)
+    * url - If html5 supported, video url
+
+    Example context (json):
+    {
+        "backtoreporturl": "http://...",
+        "reporthtml": "<...>",
+        "userpichtml: "<...>"
+    }
+}}
+
+<div>
+    <div class="mb-2">
+        <a href="{{{backtoreporturl}}}">
+            <i class="fa fa-arrow-left"></i> Back to list of users
+        </a>
+    </div>
+    <div class="mb-2">
+        {{{userpichtml}}}
+    </div>
+    <div>
+        {{{reporthtml}}}
+    </div>
+</div>

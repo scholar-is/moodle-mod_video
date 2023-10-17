@@ -21,6 +21,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['actions'] = 'Actions';
 $string['autoplay'] = 'Autoplay';
 $string['cannotforwardseek'] = 'You cannot skip forward for this video.';
 $string['completiondetail:completiononpercent'] = 'Watch video';

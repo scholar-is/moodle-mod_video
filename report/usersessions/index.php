@@ -52,15 +52,26 @@ $table = new session_report_table(cm_info::create($cm), $user, 'session_report')
 $table->define_baseurl($PAGE->url);
 $table->is_downloading($download, 'video_session_report', 'Video Session Report');
 
+ob_start();
+$table->out(40, true);
+$reporthtml = ob_get_clean();
+
 if (!$table->is_downloading()) {
+
     $PAGE->set_title('Video Session Report');
     $PAGE->set_heading('Video Session Report');
     $PAGE->navbar->add('Video Session Report', new moodle_url('/mod/video/report/usersessions/index.php'));
     echo $OUTPUT->header();
+    echo $OUTPUT->render_from_template('videoreport_usersessions/index', [
+        'backtoreporturl' => (new moodle_url('/mod/video/report/videosessions/index.php', [
+            'cmid' => $cm->id
+        ]))->out(false),
+        'userpichtml' => $OUTPUT->user_picture($user, ['courseid' => $course->id, 'includefullname' => true, 'size' => 100]),
+        'reporthtml' => $reporthtml
+    ]);
+} else {
+    echo $reporthtml;
 }
-
-// Display table.
-$table->out(40, true);
 
 if (!$table->is_downloading()) {
     echo $OUTPUT->footer();
