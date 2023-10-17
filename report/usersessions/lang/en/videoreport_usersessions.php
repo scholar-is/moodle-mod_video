@@ -22,4 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'User sessions';
+$string['backtoreport'] = 'Back to all users';
+$string['pluginname'] = 'User sessions report';
+$string['reportname'] = 'User sessions';

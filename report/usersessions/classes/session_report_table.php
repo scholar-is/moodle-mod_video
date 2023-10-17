@@ -50,7 +50,7 @@ class session_report_table extends table_sql {
         $this->cm = $cm;
         $this->user = $user;
 
-        $columns = ['watch_time', 'watch_percentage', 'first_access', 'last_access'];
+        $columns = ['watchtime', 'watchpercent', 'firstaccess', 'lastaccess'];
         $headers = [
             get_string('totalwatchtime', 'video'),
             get_string('watchpercentage', 'video'),
@@ -62,16 +62,10 @@ class session_report_table extends table_sql {
         $this->define_headers($headers);
 
         $sqlfields = "vs.id,
-                      CONCAT(
-                        FLOOR(vs.watchtime / 3600),
-                        ':',
-                        FLOOR((vs.watchtime % 3600) / 60),
-                        ':',
-                        vs.watchtime % 60
-                      ) AS watch_time,
-                      CONCAT(ROUND(vs.watchpercent * 100, 2), '%') AS watch_percentage,
-                      vs.timecreated AS first_access,
-                      vs.timemodified AS last_access";
+                      vs.watchtime,
+                      CONCAT(ROUND(vs.watchpercent * 100, 2), '%') AS watchpercent,
+                      vs.timecreated AS firstaccess,
+                      vs.timemodified AS lastaccess";
 
         $sqlfrom = "{video_session} vs";
 
@@ -94,13 +88,21 @@ class session_report_table extends table_sql {
         );
     }
 
-    public function col_first_access($values) {
-        return userdate($values->first_access, "", \core_date::get_user_timezone($this->user));
+    public function col_watchtime($values) {
+        $hours = floor($values->watchtime / 3600);
+        $minutes = floor(($values->watchtime % 3600) / 60);
+        $seconds = $values->watchtime % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
-    public function col_last_access($values) {
-        if ($values->last_access) {
-            return userdate($values->last_access, "", \core_date::get_user_timezone($this->user));
+    public function col_firstaccess($values) {
+        return userdate($values->firstaccess, "", \core_date::get_user_timezone($this->user));
+    }
+
+    public function col_lastaccess($values) {
+        if ($values->lastaccess) {
+            return userdate($values->lastaccess, "", \core_date::get_user_timezone($this->user));
         }
         return '';
     }

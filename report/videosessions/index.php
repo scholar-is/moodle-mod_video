@@ -39,7 +39,9 @@ require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/video:view', $context);
 
-$PAGE->set_url('/mod/video/report/videosessions/index.php');
+$PAGE->set_url('/mod/video/report/videosessions/index.php', [
+    'cmid' => $cmid
+]);
 $PAGE->set_pagelayout('report');
 $PAGE->set_context($context);
 $PAGE->activityheader->disable();
@@ -51,9 +53,12 @@ $table->define_baseurl($PAGE->url);
 $table->is_downloading($download, 'video_session_report', 'Video Session Report');
 
 if (!$table->is_downloading()) {
-    $PAGE->set_title('Video Session Report');
-    $PAGE->set_heading('Video Session Report');
-    $PAGE->navbar->add('Video Session Report', new moodle_url('/mod/video/report/videosessions/index.php'));
+    $PAGE->set_title(get_string('reportname', 'videoreport_videosessions'));
+    $PAGE->set_heading(get_string('reportname', 'videoreport_videosessions'));
+    $PAGE->navbar->add(
+        get_string('reportname', 'videoreport_videosessions'),
+        $PAGE->url,
+    );
     echo $OUTPUT->header();
 }
 
