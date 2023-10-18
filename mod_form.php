@@ -104,6 +104,12 @@ class mod_video_mod_form extends moodleform_mod {
 
         $mform->addElement('advcheckbox', 'autoplay', get_string('autoplay', 'video'));
         $mform->setType('autoplay', PARAM_BOOL);
+        $mform->addHelpButton('autoplay', 'autoplay', 'video');
+
+        $mform->addElement('advcheckbox', 'resume', get_string('resume', 'video'));
+        $mform->setType('resume', PARAM_BOOL);
+        $mform->setDefault('resume', true);
+        $mform->addHelpButton('resume', 'resume', 'video');
 
         $mform->addElement('advcheckbox', 'preventforwardseeking', get_string('preventforwardseeking', 'video'));
         $mform->setType('preventforwardseeking', PARAM_BOOL);

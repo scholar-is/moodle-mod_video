@@ -23,6 +23,7 @@
 
 $string['actions'] = 'Actions';
 $string['autoplay'] = 'Autoplay';
+$string['autoplay_help'] = 'Autoplay may be blocked by the user\'s browser.';
 $string['cannotforwardseek'] = 'You cannot skip forward for this video.';
 $string['completiondetail:completiononpercent'] = 'Watch video';
 $string['completiondetail:completiononplay'] = 'Play video';
@@ -68,6 +69,8 @@ $string['preventforwardseeking'] = 'Prevent fast forward';
 $string['preventforwardseeking_help'] = 'Forces user to watch the video without skipping forward. Users can still rewind but cannot seek beyond what they have already watched.';
 $string['privacy:metadata'] = 'Privacy API not implmented yet.';
 $string['report'] = 'Report';
+$string['resume'] = 'Resume playback';
+$string['resume_help'] = 'Playback will resume where user previously left off.';
 $string['search:activity'] = 'Video';
 $string['sessionnotfound'] = 'Video session not found';
 $string['showcontrols'] = 'Show controls';

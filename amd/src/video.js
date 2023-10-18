@@ -10,13 +10,16 @@ export default class Video {
     constructor(cm, instance, options) {
         this.cm = cm;
         this.instance = instance;
-        this.options = options;
+        this.options = {
+            forceDuration: true,
+            ...options,
+        };
         this.session = null;
 
         this.elapsedseconds = 0;
         this.maxTime = options.sessionAggregates.maxtime ?? 0;
 
-        this.init();
+        void this.init();
     }
 
     async init() {
@@ -44,30 +47,56 @@ export default class Video {
                         }
                         return false;
                     }
-                }
+                },
             };
         }
 
         this.player = new Plyr(`#player-${this.instance.id}`, this.options);
 
-        this.log("video:player", this.player);
+        window.player = this.player;
 
-        if (this.options.sessionAggregates.lasttime) {
-            this.log("video:resume", this.options.sessionAggregates.lasttime);
-            this.player.currentTime = parseInt(this.options.sessionAggregates.lasttime);
-        }
-
-        setInterval(() => this.tick(), 1000);
-
-        setInterval(() => this.recordUpdates(), UPDATE_INTERVAL_SECONDS * 1000);
-
-        this.player.on('playing', async () => {
+        this.player.on('playing', async (event) => {
+            this.log("player:playing", event);
             if (!this.sessionInitialized) {
                 this.sessionInitialized = true;
                 const response = await this.createSession(this.cm.id);
                 this.session = response.session;
             }
         });
+
+        this.player.on('ready', (event) => {
+            this.log("player:ready", event);
+
+            if (this.instance.resume === "1" && this.options.sessionAggregates.lasttime) {
+                const resumeTime = parseInt(this.options.sessionAggregates.lasttime);
+                this.log("video:resume", resumeTime);
+                // Note: There's a bug when setting the current time for videos:
+                // the progress bar will not update until the video is played.
+                if (event.detail.plyr.embed.setCurrentTime) {
+                    event.detail.plyr.embed.setCurrentTime(resumeTime);
+                } else {
+                    // Vimeo.
+                    event.detail.plyr.currentTime = resumeTime;
+                }
+            }
+        });
+
+        this.player.on('pause', () => {
+            this.recordUpdates();
+        });
+        this.player.on('ended', () => {
+            this.recordUpdates();
+        });
+
+        this.player.on('error', (event) => {
+            console.error(event);
+        });
+
+        this.log("video:player", this.player);
+
+        setInterval(() => this.tick(), 1000);
+
+        setInterval(() => this.recordUpdates(), UPDATE_INTERVAL_SECONDS * 1000);
     }
 
     tick() {
@@ -81,7 +110,7 @@ export default class Video {
     }
 
     recordUpdates() {
-        if (this.player && this.elapsedseconds > 0) {
+        if (this.player && this.elapsedseconds > 0 && this.sessionInitialized) {
             Ajax.call([{
                 methodname: 'mod_video_record_session_updates',
                 args: {

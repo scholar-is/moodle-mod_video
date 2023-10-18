@@ -4,14 +4,14 @@
         <location>amd/build/plyr.min.js</location>
         <name>Plyr</name>
         <license>MIT</license>
-        <version>3.7.2</version>
+        <version>3.7.8</version>
         <licenseversion></licenseversion>
     </library>
     <library>
         <location>amd/build/player.min.js</location>
         <name>Vimeo Player API</name>
         <license>MIT</license>
-        <version>2.17.0</version>
+        <version>2.20.1</version>
         <licenseversion></licenseversion>
     </library>
 </libraries>
