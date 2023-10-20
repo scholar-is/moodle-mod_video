@@ -56,7 +56,7 @@ $table->define_baseurl($PAGE->url);
 $table->is_downloading($download, 'video_session_report', 'Video Session Report');
 
 ob_start();
-$table->out(40, true);
+$table->out(15, false);
 $reporthtml = ob_get_clean();
 
 if (!$table->is_downloading()) {
@@ -75,10 +75,10 @@ if (!$table->is_downloading()) {
     echo $OUTPUT->header();
     echo $OUTPUT->render_from_template('videoreport_usersessions/index', [
         'backtoreporturl' => (new moodle_url('/mod/video/report/videosessions/index.php', [
-            'cmid' => $cm->id
+            'cmid' => $cm->id,
         ]))->out(false),
-        'userpichtml' => $OUTPUT->user_picture($user, ['courseid' => $course->id, 'includefullname' => true, 'size' => 100]),
-        'reporthtml' => $reporthtml
+        'userpichtml' => $OUTPUT->user_picture($user, ['courseid' => $course->id, 'includefullname' => true, 'size' => 50]),
+        'reporthtml' => $reporthtml,
     ]);
 } else {
     echo $reporthtml;

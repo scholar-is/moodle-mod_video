@@ -23,6 +23,8 @@
 
 namespace videoreport_videosessions;
 
+defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 
 require_once($CFG->libdir . '/tablelib.php');
@@ -30,6 +32,9 @@ require_once($CFG->libdir . '/tablelib.php');
 use cm_info;
 use coding_exception;
 use core_user\fields;
+use dml_exception;
+use moodle_exception;
+use moodle_url;
 use stdClass;
 use table_sql;
 
@@ -37,19 +42,22 @@ class session_report_table extends table_sql {
     /**
      * @var cm_info
      */
-    private $cm;
+    private cm_info $cm;
 
     /**
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function __construct(cm_info $cm, $uniqueid) {
+        global $DB;
         parent::__construct($uniqueid);
 
         $this->cm = $cm;
 
-        $columns = ['userid', 'watchtime', 'watchpercent', 'firstaccess', 'lastaccess', 'count'];
+        $columns = ['userid', 'views', 'watchtime', 'watchpercent', 'firstaccess', 'lastaccess', 'actions'];
         $headers = [
             get_string('user'),
+            get_string('views'),
             get_string('totalwatchtime', 'video'),
             get_string('watchpercentage', 'video'),
             get_string('firstaccess', 'video'),
@@ -63,6 +71,7 @@ class session_report_table extends table_sql {
         $userfields = ltrim(fields::for_name()->get_sql('u')->selects . fields::for_userpic()->get_sql('u')->selects, ', ');
 
         $sqlfields = "u.id AS userid, $userfields,
+                      COUNT(u.id) as views,
                       COUNT(u.id) as count,
                       SUM(vs.watchtime) as watchtime,
                       CONCAT(ROUND(MAX(vs.watchpercent) * 100, 2), '%') AS watchpercent,
@@ -73,13 +82,13 @@ class session_report_table extends table_sql {
                     JOIN {user} u ON u.id = vs.userid";
 
         $this->set_sql($sqlfields, $sqlfrom, 'vs.cmid = :cmid GROUP BY u.id', ['cmid' => $this->cm->id]);
-        $this->set_count_sql("SELECT COUNT(1) FROM {video_session} vs
-                                  JOIN {user} u ON u.id = vs.userid
-                                  WHERE vs.cmid = :cmid
-                                  GROUP BY u.id", ['cmid' => $this->cm->id]);
+        $this->set_count_sql("SELECT COUNT(DISTINCT vs.userid) FROM {video_session} vs
+                                  WHERE vs.cmid = :cmid", ['cmid' => $this->cm->id]);
+
+        $this->pagesize(15, $DB->count_records_sql($this->countsql, $this->countparams));
     }
 
-    private function get_user($values) {
+    private function get_user($values): stdClass {
         $user = new stdClass();
         $user->id = $values->userid;
 
@@ -99,12 +108,26 @@ class session_report_table extends table_sql {
         return $user;
     }
 
-    public function col_userid($values) {
+    /**
+     * @throws moodle_exception
+     * @throws coding_exception
+     */
+    public function col_views($values): string {
+        if ($this->is_downloading()) {
+            return $values->views;
+        }
+        return \html_writer::link(new moodle_url('/mod/video/report/usersessions/index.php', [
+            'cmid' => $this->cm->id,
+            'userid' => $values->userid,
+        ]), get_string($values->views == 1 ? 'numviews' : 'numviews_plural', 'video', ['views' => $values->views]));
+    }
+
+    public function col_userid($values): string {
         global $OUTPUT;
         return $OUTPUT->user_picture($this->get_user($values), ['courseid' => $this->cm->course, 'includefullname' => true]);
     }
 
-    public function col_watchtime($values) {
+    public function col_watchtime($values): string {
         $hours = floor($values->watchtime / 3600);
         $minutes = floor(($values->watchtime % 3600) / 60);
         $seconds = $values->watchtime % 60;
@@ -112,24 +135,18 @@ class session_report_table extends table_sql {
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
-    public function col_firstaccess($values) {
+    public function col_firstaccess($values): string {
         return userdate($values->firstaccess, "", \core_date::get_user_timezone($this->get_user($values)));
     }
 
-    public function col_lastaccess($values) {
+    public function col_lastaccess($values): string {
         if ($values->lastaccess) {
             return userdate($values->lastaccess, "", \core_date::get_user_timezone($this->get_user($values)));
         }
         return '';
     }
 
-    public function col_count($values) {
-        if ($this->is_downloading()) {
-            return $values->count;
-        }
-        return \html_writer::link(new \moodle_url('/mod/video/report/usersessions/index.php', [
-            'cmid' => $this->cm->id,
-            'userid' => $values->userid
-        ]), 'View details');
+    public function col_actions($values) {
+
     }
 }

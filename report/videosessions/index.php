@@ -63,7 +63,7 @@ if (!$table->is_downloading()) {
 }
 
 // Display table.
-$table->out(40, true);
+$table->out(15, false);
 
 if (!$table->is_downloading()) {
     echo $OUTPUT->footer();

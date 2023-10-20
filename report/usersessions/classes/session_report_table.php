@@ -23,13 +23,15 @@
 
 namespace videoreport_usersessions;
 
+defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 
 require_once($CFG->libdir . '/tablelib.php');
 
 use cm_info;
 use coding_exception;
-use core_user\fields;
+use dml_exception;
 use stdClass;
 use table_sql;
 
@@ -37,14 +39,16 @@ class session_report_table extends table_sql {
     /**
      * @var cm_info
      */
-    private $cm;
+    private cm_info $cm;
 
-    private $user;
+    private stdClass $user;
 
     /**
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function __construct(cm_info $cm, stdClass $user, $uniqueid) {
+        global $DB;
         parent::__construct($uniqueid);
 
         $this->cm = $cm;
@@ -86,9 +90,11 @@ class session_report_table extends table_sql {
                 'userid' => $this->user->id,
             ]
         );
+
+        $this->pagesize(15, $DB->count_records_sql($this->countsql, $this->countparams));
     }
 
-    public function col_watchtime($values) {
+    public function col_watchtime($values): string {
         $hours = floor($values->watchtime / 3600);
         $minutes = floor(($values->watchtime % 3600) / 60);
         $seconds = $values->watchtime % 60;
@@ -96,11 +102,11 @@ class session_report_table extends table_sql {
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
-    public function col_firstaccess($values) {
+    public function col_firstaccess($values): string {
         return userdate($values->firstaccess, "", \core_date::get_user_timezone($this->user));
     }
 
-    public function col_lastaccess($values) {
+    public function col_lastaccess($values): string {
         if ($values->lastaccess) {
             return userdate($values->lastaccess, "", \core_date::get_user_timezone($this->user));
         }
