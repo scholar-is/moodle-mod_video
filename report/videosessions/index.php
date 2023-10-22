@@ -18,6 +18,7 @@
  * Video module view.
  *
  * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -44,13 +45,20 @@ $PAGE->set_url('/mod/video/report/videosessions/index.php', [
 ]);
 $PAGE->set_pagelayout('report');
 $PAGE->set_context($context);
+$PAGE->set_title(get_string('reporttitle', 'videoreport_videosessions', [
+    'name' => $cm->name,
+]));
 $PAGE->activityheader->disable();
 
 require_capability('mod/video:viewreports', $context);
 
 $table = new session_report_table(cm_info::create($cm), 'session_report');
 $table->define_baseurl($PAGE->url);
-$table->is_downloading($download, 'video_session_report', 'Video Session Report');
+$table->is_downloading(
+    $download,
+    $PAGE->title,
+    $PAGE->title,
+);
 
 if (!$table->is_downloading()) {
     $PAGE->set_title(get_string('reportname', 'videoreport_videosessions'));

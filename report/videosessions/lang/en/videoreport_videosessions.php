@@ -24,3 +24,4 @@
 
 $string['pluginname'] = 'Video sessions report';
 $string['reportname'] = 'Sessions report';
+$string['reporttitle'] = 'Sessions report - {$a->name}';

@@ -191,6 +191,9 @@ class mod_video_mod_form extends moodleform_mod {
             (!empty($data['completionviewtime']));
     }
 
+    /**
+     * @throws coding_exception
+     */
     public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
 

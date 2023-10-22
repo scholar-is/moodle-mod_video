@@ -25,3 +25,4 @@
 $string['backtoreport'] = 'Back to all users';
 $string['pluginname'] = 'User sessions report';
 $string['reportname'] = 'User sessions';
+$string['reporttitle'] = 'User sessions report - {$a->name}: {$a->fullname}';

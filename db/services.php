@@ -42,6 +42,6 @@ $functions = [
         'type'         => 'write',
         'capabilities' => 'mod/video:view',
         'ajax'         => true,
-    ]
+    ],
 ];
 

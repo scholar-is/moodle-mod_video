@@ -64,6 +64,11 @@ class backup_video_activity_structure_step extends backup_activity_structure_ste
             'fullscreenenabled',
             'loopvideo',
             'preventforwardseeking',
+            'completiononplay',
+            'completiononpercent',
+            'completionpercent',
+            'completiononviewtime',
+            'completionviewtime',
             'resume',
         ]);
 

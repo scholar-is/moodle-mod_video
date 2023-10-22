@@ -26,6 +26,7 @@ namespace mod_video\external;
 
 use coding_exception;
 use completion_info;
+use context_module;
 use DateTime;
 use dml_exception;
 use external_api;
@@ -74,7 +75,6 @@ class external extends external_api {
      * @throws module_not_found
      * @throws restricted_context_exception
      * @throws moodle_exception
-     * @throws \Exception
      */
     public static function create_session($cmid): array {
         global $DB, $USER;
@@ -82,7 +82,7 @@ class external extends external_api {
         $params = self::validate_parameters(self::create_session_parameters(), [
             'cmid' => $cmid,
         ]);
-        $context = \context_module::instance($params['cmid']);
+        $context = context_module::instance($params['cmid']);
         self::validate_context($context);
 
         if (!get_coursemodule_from_id('video', $params['cmid'])) {
@@ -162,82 +162,7 @@ class external extends external_api {
             throw new session_not_found();
         }
 
-        $context = \context_module::instance($session->get('cmid'));
-        self::validate_context($context);
-
-        $cm = get_coursemodule_from_id('video', $session->get('cmid'), 0, false, MUST_EXIST);
-        $video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
-        $course = get_course($cm->course);
-
-        if (!is_null($params['timeelapsed'])) {
-            $session->set('watchtime', intval($session->get('watchtime')) + intval($params['timeelapsed']));
-        }
-
-        if (!is_null($params['currenttime'])) {
-            $session->set('lasttime', $params['currenttime']);
-            if ($params['currenttime'] > $session->get('maxtime')) {
-                $session->set('maxtime', $params['currenttime']);
-            }
-        }
-
-        if (!is_null($params['currentpercent']) && $params['currentpercent'] > $session->get('watchpercent')) {
-            $session->set('watchpercent', round($params['currentpercent'], 2));
-        }
-
-        $session->update();
-
-        // Update completion status.
-        $completion = new completion_info($course);
-        if ($completion->is_enabled($cm) && ($video->completiononplay)) {
-            $completion->update_state($cm, COMPLETION_COMPLETE);
-        }
-
-        return [
-            'session' => $session->to_record(),
-        ];
-    }
-
-    /**
-     * Returns description of record_session_updates() result value.
-     *
-     * @return external_single_structure
-     */
-    public static function record_session_updates_returns(): external_single_structure {
-        return new external_single_structure([
-            'session' => video_session::get_external_description(),
-        ]);
-    }
-
-    /**
-     * Returns description of get_video_stats() parameters.
-     *
-     * @return external_function_parameters
-     */
-    public static function get_video_stats_parameters(): external_function_parameters {
-        return new external_function_parameters([
-            'videoid' => new \external_value(PARAM_INT, 'Video record ID', VALUE_REQUIRED),
-        ]);
-    }
-
-    /**
-     * @throws \core_external\restricted_context_exception
-     * @throws coding_exception
-     * @throws dml_exception
-     * @throws moodle_exception
-     * @throws invalid_parameter_exception
-     */
-    public static function get_video_stats($videoid): array {
-        global $DB;
-
-        $params = self::validate_parameters(self::record_session_updates_parameters(), [
-            'videoid' => $videoid,
-        ]);
-
-        if (!$session = video_session::get_record(['id' => $params['sessionid']])) {
-            throw new session_not_found();
-        }
-
-        $context = \context_module::instance($session->get('cmid'));
+        $context = context_module::instance($session->get('cmid'));
         self::validate_context($context);
 
         $cm = get_coursemodule_from_id('video', $session->get('cmid'), 0, false, MUST_EXIST);

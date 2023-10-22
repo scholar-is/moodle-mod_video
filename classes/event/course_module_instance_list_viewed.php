@@ -18,6 +18,7 @@
  * The mod_video instance list viewed event.
  *
  * @package    mod_video
+ * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,6 +28,7 @@ namespace mod_video\event;
  * The mod_video instance list viewed event class.
  *
  * @package    mod_video
+ * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed {

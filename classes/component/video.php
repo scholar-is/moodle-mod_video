@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Base component.
+ * Video component.
  *
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
@@ -25,6 +25,7 @@
 namespace mod_video\component;
 
 use coding_exception;
+use dml_exception;
 use mod_video\persistent\video_session;
 use renderable;
 use renderer_base;
@@ -32,6 +33,8 @@ use stdClass;
 use templatable;
 
 /**
+ * Video component.
+ *
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -90,6 +93,7 @@ class video implements renderable, templatable {
 
     /**
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function get_extra_options(): array {
         global $USER;
@@ -102,6 +106,7 @@ class video implements renderable, templatable {
 
     /**
      * @throws coding_exception
+     * @throws dml_exception
      */
     public function export_for_template(renderer_base $output): array {
         $cm = $this->get_cm();

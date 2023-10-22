@@ -15,9 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video module view.
+ * User sessions report view.
  *
  * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -48,22 +49,30 @@ $PAGE->set_url('/mod/video/report/usersessions/index.php', [
 $PAGE->set_pagelayout('report');
 $PAGE->set_context($context);
 $PAGE->activityheader->disable();
+$PAGE->set_title(get_string('reporttitle', 'videoreport_usersessions', [
+    'name' => $cm->name,
+    'fullname' => fullname($user),
+]));
 
 require_capability('mod/video:viewreports', $context);
 
 $table = new session_report_table(cm_info::create($cm), $user, 'session_report');
 $table->define_baseurl($PAGE->url);
-$table->is_downloading($download, 'video_session_report', 'Video Session Report');
+$table->is_downloading(
+    $download,
+    $PAGE->title,
+    $PAGE->title,
+);
 
 ob_start();
 $table->out(15, false);
 $reporthtml = ob_get_clean();
 
 if (!$table->is_downloading()) {
-    $PAGE->set_title(get_string('reportname', 'videoreport_videosessions'));
-    $PAGE->set_heading(get_string('reportname', 'videoreport_videosessions'));
+    $PAGE->set_title(get_string('reportname', 'videoreport_usersessions'));
+    $PAGE->set_heading(get_string('reportname', 'videoreport_usersessions'));
     $PAGE->navbar->add(
-        get_string('reportname', 'videoreport_videosessions'),
+        get_string('reportname', 'videoreport_usersessions'),
         new moodle_url('/mod/video/report/videosessions/index.php', [
             'cmid' => $cmid,
         ]),

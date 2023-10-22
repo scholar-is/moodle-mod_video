@@ -44,9 +44,10 @@ class restore_video_activity_task extends restore_activity_task {
 
     /**
      * Define (add) particular steps this activity can have.
+     * @throws base_task_exception
      */
-    protected function define_my_steps() {
-        // video only has one structure step.
+    protected function define_my_steps(): void {
+        // Video only has one structure step.
         $this->add_step(new restore_video_activity_structure_step('video_structure', 'mod_video.xml'));
     }
 
@@ -56,8 +57,8 @@ class restore_video_activity_task extends restore_activity_task {
      *
      * @return array
      */
-    static public function define_decode_contents() {
-        $contents = array();
+    public static function define_decode_contents(): array {
+        $contents = [];
 
         $contents[] = new restore_decode_content('video', ['intro'], 'video');
 
@@ -70,8 +71,8 @@ class restore_video_activity_task extends restore_activity_task {
      *
      * @return array of restore_decode_rule
      */
-    static public function define_decode_rules() {
-        $rules = array();
+    public static function define_decode_rules(): array {
+        $rules = [];
 
         $rules[] = new restore_decode_rule('VIDEOVIEWBYID',
                                            '/mod/video/view.php?id=$1',
@@ -92,8 +93,8 @@ class restore_video_activity_task extends restore_activity_task {
      *
      * @return array of restore_log_rule
      */
-    static public function define_restore_log_rules() {
-        $rules = array();
+    public static function define_restore_log_rules(): array {
+        $rules = [];
 
         $rules[] = new restore_log_rule('video', 'add', 'view.php?id={course_module}', '{video}');
         $rules[] = new restore_log_rule('video', 'update', 'view.php?id={course_module}', '{video}');
@@ -114,9 +115,7 @@ class restore_video_activity_task extends restore_activity_task {
      *
      * @return array
      */
-    static public function define_restore_log_rules_for_course() {
-        $rules = array();
-
-        return $rules;
+    public static function define_restore_log_rules_for_course(): array {
+        return [];
     }
 }

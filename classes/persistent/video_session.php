@@ -76,7 +76,7 @@ class video_session extends persistent {
             SELECT
                 SUM(vs.watchtime) as totalwatchtime,
                 MAX(vs.maxtime) as maxtime,
-                MAX(vs.watchpercent) as maxwatchpercent 
+                MAX(vs.watchpercent) as maxwatchpercent
             FROM {video_session} vs
             WHERE vs.userid = ? AND vs.cmid = ?
         ', [$userid, $cmid]);

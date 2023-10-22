@@ -37,10 +37,10 @@ class restore_video_activity_structure_step extends restore_activity_structure_s
      * Define the structure of the restore workflow.
      *
      * @return restore_path_element $structure
+     * @throws base_step_exception
      */
-    protected function define_structure() {
-
-        $paths = array();
+    protected function define_structure(): restore_path_element {
+        $paths = [];
         // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
 
@@ -55,12 +55,14 @@ class restore_video_activity_structure_step extends restore_activity_structure_s
     }
 
     /**
-     * Process an video restore.
+     * Process a video restore.
      *
      * @param object $data The data in object form
      * @return void
+     * @throws dml_exception
+     * @throws base_step_exception
      */
-    protected function process_video($data) {
+    protected function process_video(object $data): void {
         global $DB;
 
         $data = (object)$data;
@@ -76,8 +78,9 @@ class restore_video_activity_structure_step extends restore_activity_structure_s
      * Process a user_flags restore
      * @param object $data The data in object form
      * @return void
+     * @throws dml_exception
      */
-    protected function process_video_videosession($data) {
+    protected function process_video_videosession(object $data): void {
         global $DB;
 
         $data = (object)$data;
@@ -94,7 +97,7 @@ class restore_video_activity_structure_step extends restore_activity_structure_s
      * Once the database tables have been fully restored, restore the files
      * @return void
      */
-    protected function after_execute() {
+    protected function after_execute(): void {
         $this->add_related_files('mod_video', 'intro', null);
     }
 }

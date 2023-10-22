@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template videoreport/usersessions
+    @template videoreport_usersessions/index
 
     Template for displaying user sessino report.
 
@@ -26,14 +26,9 @@
     * none
 
     Context variables required for this template:
-    * cm
-    * cmjson
-    * video - Video module instance
-    * videojson - JSON encoded video module instance
-    * options - JSON encoded player options
-    * supportsprovider - Video supports a third party provider (e.g. youtube, vimeo)
-    * supportshtml5 - Video supports html5 embed (e.g. url/local file)
-    * url - If html5 supported, video url
+    * backtoreporturl
+    * reporthtml
+    * userpichtml
 
     Example context (json):
     {

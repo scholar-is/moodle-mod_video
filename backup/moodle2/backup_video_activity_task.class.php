@@ -55,18 +55,16 @@ class backup_video_activity_task extends backup_activity_task {
      * @param string $content
      * @return string
      */
-    static public function encode_content_links($content) {
+    public static function encode_content_links($content): string {
         global $CFG;
 
         $base = preg_quote($CFG->wwwroot, "/");
 
-        $search="/(".$base."\/mod\/video\/index.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@VIDEOINDEX*$2@$', $content);
+        $search = "/(".$base."\/mod\/video\/index.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@VIDEOINDEX*$2@$', $content);
 
-        $search="/(".$base."\/mod\/video\/view.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@VIDEOVIEWBYID*$2@$', $content);
-
-        return $content;
+        $search = "/(".$base."\/mod\/video\/view.php\?id\=)([0-9]+)/";
+        return preg_replace($search, '$@VIDEOVIEWBYID*$2@$', $content);
     }
 
 }
