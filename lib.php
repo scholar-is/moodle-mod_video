@@ -29,17 +29,15 @@ require_once("$CFG->dirroot/lib/formslib.php");
 /**
  * List of features supported in Video module
  * @param string $feature FEATURE_xx constant for requested feature
- * @return string|int|bool|null True if module supports feature, false if not, null if doesn't know
+ * @return bool True if module supports feature, false if not
  */
-function video_supports(string $feature): string|int|bool|null {
+function video_supports(string $feature): bool {
     switch ($feature) {
         case FEATURE_MOD_ARCHETYPE:
             return MOD_ARCHETYPE_OTHER;
         case FEATURE_GROUPINGS:
         case FEATURE_GRADE_HAS_GRADE:
         case FEATURE_GRADE_OUTCOMES:
-        case FEATURE_GROUPS:
-            return false;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
         case FEATURE_BACKUP_MOODLE2:
         case FEATURE_SHOW_DESCRIPTION:
@@ -49,8 +47,9 @@ function video_supports(string $feature): string|int|bool|null {
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_CONTENT;
 
+        case FEATURE_GROUPS:
         default:
-            return null;
+            return false;
     }
 }
 
