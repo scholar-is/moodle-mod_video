@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <libraries>
     <library>
-        <location>amd/build/plyr.min.js</location>
+        <location>amd/src/plyr.js</location>
         <name>Plyr</name>
         <license>MIT</license>
         <version>3.7.8</version>
         <licenseversion></licenseversion>
     </library>
     <library>
-        <location>amd/build/player.min.js</location>
+        <location>amd/src/player.js</location>
         <name>Vimeo Player API</name>
         <license>MIT</license>
         <version>2.20.1</version>
