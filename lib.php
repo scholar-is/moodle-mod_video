@@ -29,9 +29,9 @@ require_once("$CFG->dirroot/lib/formslib.php");
 /**
  * List of features supported in Video module
  * @param string $feature FEATURE_xx constant for requested feature
- * @return bool True if module supports feature, false if not
+ * @return bool|null|int True if module supports feature, false if not
  */
-function video_supports(string $feature): bool {
+function video_supports(string $feature) {
     switch ($feature) {
         case FEATURE_MOD_ARCHETYPE:
             return MOD_ARCHETYPE_OTHER;
@@ -46,10 +46,10 @@ function video_supports(string $feature): bool {
             return true;
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_CONTENT;
-
         case FEATURE_GROUPS:
-        default:
             return false;
+        default:
+            return null;
     }
 }
 
@@ -160,7 +160,7 @@ function video_delete_instance(int $id): bool {
  * @return cached_cm_info|bool Info to customise main video display
  * @throws dml_exception
  */
-function video_get_coursemodule_info(stdClass $coursemodule): cached_cm_info|bool {
+function video_get_coursemodule_info(stdClass $coursemodule) {
     global $DB;
 
     if (!$video = $DB->get_record('video', ['id' => $coursemodule->instance])) {
