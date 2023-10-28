@@ -25,8 +25,6 @@ namespace mod_video\plugininfo;
 
 use core\plugininfo\base;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Video report subplugin info class.
  *

@@ -86,6 +86,7 @@ class custom_completion_test extends advanced_testcase {
     /**
      * Test for get_state().
      *
+     * @covers \mod_video\completion\custom_completion
      * @dataProvider get_state_provider
      * @param string $rule The custom completion rule.
      * @param int $rulecount Quantity of discussions, replies or posts to be created.
@@ -93,7 +94,14 @@ class custom_completion_test extends advanced_testcase {
      * @param int|null $status Expected status.
      * @param string|null $exception Expected exception.
      */
-    public function test_get_state(string $rule, int $available, ?int $status, ?string $exception, array $extraparams = [], array $sessions = []) {
+    public function test_get_state(
+        string $rule,
+        int $available,
+        ?int $status,
+        ?string $exception,
+        array $extraparams = [],
+        array $sessions = []
+    ) {
         if (!is_null($exception)) {
             $this->expectException($exception);
         }
@@ -103,9 +111,6 @@ class custom_completion_test extends advanced_testcase {
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => COMPLETION_ENABLED]);
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
 
-        /**
-         * @var $videogenerator \mod_video_generator
-         */
         $videogenerator = $this->getDataGenerator()->get_plugin_generator('mod_video');
 
         $params = array_merge([
@@ -131,6 +136,7 @@ class custom_completion_test extends advanced_testcase {
 
     /**
      * Test for get_defined_custom_rules().
+     * @covers \mod_video\completion\custom_completion::get_defined_custom_rules
      */
     public function test_get_defined_custom_rules() {
         $rules = custom_completion::get_defined_custom_rules();
@@ -140,6 +146,7 @@ class custom_completion_test extends advanced_testcase {
 
     /**
      * Test for get_defined_custom_rule_descriptions().
+     * @covers \mod_video\completion\custom_completion::get_custom_rule_descriptions
      */
     public function test_get_custom_rule_descriptions() {
         // Get defined custom rules.
@@ -165,6 +172,7 @@ class custom_completion_test extends advanced_testcase {
 
     /**
      * Test for is_defined().
+     * @covers \mod_video\completion\custom_completion::is_defined
      */
     public function test_is_defined() {
         // Build a mock cm_info instance.
@@ -212,6 +220,7 @@ class custom_completion_test extends advanced_testcase {
     /**
      * Test for get_available_custom_rules().
      *
+     * @covers \mod_video\completion\custom_completion::get_available_custom_rules
      * @dataProvider get_available_custom_rules_provider
      * @param int $status
      * @param array $expected

@@ -38,6 +38,7 @@ require_once($CFG->dirroot . '/mod/video/lib.php');
 class lib_test extends \advanced_testcase {
     /**
      * Test deleting a video instance.
+     * @covers \video_delete_instance
      */
     public function test_video_delete_instance() {
         global $SITE, $DB;

@@ -49,6 +49,19 @@ class external_test extends \externallib_advanced_testcase {
         $this->setUser($this->user);
     }
 
+    /**
+     * @covers \mod_video\external\external::create_session
+     * @covers \mod_video\external\external::record_session_updates
+     * @covers \mod_video\persistent\video_session::get_aggregate_values
+     * @return void
+     * @throws \coding_exception
+     * @throws \core_external\restricted_context_exception
+     * @throws \dml_exception
+     * @throws \invalid_parameter_exception
+     * @throws \moodle_exception
+     * @throws \restricted_context_exception
+     * @throws exception\module_not_found
+     */
     public function test_session() {
         $course = $this->getDataGenerator()->create_course();
         $this->getDataGenerator()->enrol_user($this->user->id, $course->id);

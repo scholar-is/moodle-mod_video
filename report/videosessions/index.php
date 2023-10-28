@@ -41,7 +41,7 @@ $context = context_module::instance($cm->id);
 require_capability('mod/video:view', $context);
 
 $PAGE->set_url('/mod/video/report/videosessions/index.php', [
-    'cmid' => $cmid
+    'cmid' => $cmid,
 ]);
 $PAGE->set_pagelayout('report');
 $PAGE->set_context($context);
