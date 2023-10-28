@@ -18,6 +18,7 @@ export default class Video {
 
         this.elapsedseconds = 0;
         this.maxTime = options.sessionAggregates.maxtime ?? 0;
+        this.root = document.getElementById(`video-${this.instance.id}`);
 
         void this.init();
     }
@@ -79,6 +80,8 @@ export default class Video {
                     event.detail.plyr.currentTime = resumeTime;
                 }
             }
+
+            this.root.classList.add('ready');
         });
 
         this.player.on('pause', () => {

@@ -74,14 +74,17 @@ class video implements renderable, templatable {
     }
 
     public function get_controls(): array {
-        $controls = [];
-        foreach (json_decode($this->instance->controls, true) as $name => $value) {
-            if (!$value) {
-                continue;
-            }
-            $controls[] = $name;
+        $instancecontrols = json_decode($this->instance->controls, true);
+
+        if (!is_array($instancecontrols)) {
+            return array_keys(array_filter(video_get_controls_default_values()));
         }
-        return $controls;
+
+        // Filter the array to only include controls that are enabled (truthy values).
+        $filteredcontrols = array_filter($instancecontrols);
+
+        // Get the keys (control names) of the filtered array.
+        return array_keys($filteredcontrols);
     }
 
     /**

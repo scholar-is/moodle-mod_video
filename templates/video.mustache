@@ -50,16 +50,18 @@
     }
 }}
 
-{{#supportsprovider}}
-    <div id="player-{{video.id}}" data-plyr-provider="{{video.type}}" data-plyr-embed-id="{{video.videoid}}"></div>
-{{/supportsprovider}}
-{{^supportsprovider}}
-    {{#supportshtml5}}
-        <video id="player-{{video.id}}" playsinline controls>
-            <source src="{{{url}}}" />
-        </video>
-    {{/supportshtml5}}
-{{/supportsprovider}}
+<div id="video-{{video.id}}">
+    {{#supportsprovider}}
+        <div id="player-{{video.id}}" data-plyr-provider="{{video.type}}" data-plyr-embed-id="{{video.videoid}}"></div>
+    {{/supportsprovider}}
+    {{^supportsprovider}}
+        {{#supportshtml5}}
+            <video id="player-{{video.id}}" playsinline controls>
+                <source src="{{{url}}}" />
+            </video>
+        {{/supportshtml5}}
+    {{/supportsprovider}}
+</div>
 
 {{#js}}
     require(["mod_video/video"], function(Video) {

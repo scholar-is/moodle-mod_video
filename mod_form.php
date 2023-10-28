@@ -32,24 +32,6 @@ require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
 class mod_video_mod_form extends moodleform_mod {
-    private array $controloptions = [
-        'play-large' => 1,
-        'restart' => 0,
-        'rewind' => 0,
-        'play' => 1,
-        'fast-forward' => 0,
-        'progress' => 1,
-        'current-time' => 1,
-        'duration' => 0,
-        'mute' => 1,
-        'volume' => 1,
-        'captions' => 1,
-        'settings' => 1,
-        'pip' => 1,
-        'airplay' => 1,
-        'download' => 0,
-        'fullscreen' => 1,
-    ];
 
     /**
      * @throws coding_exception
@@ -125,7 +107,7 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->setType('loop', PARAM_BOOL);
 
         $controloptions = [];
-        foreach ($this->controloptions as $controloptionname => $defaultvalue) {
+        foreach (video_get_controls_default_values() as $controloptionname => $defaultvalue) {
             $controloptions[] = $mform->createElement(
                 'advcheckbox',
                 $controloptionname,
@@ -134,7 +116,7 @@ class mod_video_mod_form extends moodleform_mod {
         }
         $mform->addGroup($controloptions, 'controls', get_string('showcontrols', 'video'), '<br>');
         $mform->addHelpButton('controls', 'showcontrols', 'video');
-        foreach ($this->controloptions as $controloptionname => $defaultvalue) {
+        foreach (video_get_controls_default_values() as $controloptionname => $defaultvalue) {
             $mform->setDefault("controls[$controloptionname]", $defaultvalue);
         }
 

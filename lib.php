@@ -305,3 +305,24 @@ function video_extend_settings_navigation(settings_navigation $settingsnav, navi
         );
     }
 }
+
+function video_get_controls_default_values(): array {
+    return [
+        'play-large' => 1,
+        'restart' => 0,
+        'rewind' => 0,
+        'play' => 1,
+        'fast-forward' => 0,
+        'progress' => 1,
+        'current-time' => 1,
+        'duration' => 0,
+        'mute' => 1,
+        'volume' => 1,
+        'captions' => 1,
+        'settings' => 1,
+        'pip' => 1,
+        'airplay' => 1,
+        'download' => 0,
+        'fullscreen' => 1,
+    ];
+}
