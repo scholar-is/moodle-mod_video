@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version  = 2023101700;
-$plugin->requires = 2021051100;
+$plugin->requires = 2019111809;
 $plugin->component = 'videoreport_usersessions';

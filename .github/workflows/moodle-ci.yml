@@ -33,12 +33,6 @@ jobs:
         include:
           # Moodle 3.8
           - moodle-branch: 'MOODLE_38_STABLE'
-            php: '7.1'
-            database: 'pgsql'
-          - moodle-branch: 'MOODLE_38_STABLE'
-            php: '7.1'
-            database: 'mariadb'
-          - moodle-branch: 'MOODLE_38_STABLE'
             php: '7.4'
             database: 'pgsql'
           - moodle-branch: 'MOODLE_38_STABLE'
@@ -46,12 +40,6 @@ jobs:
             database: 'mariadb'
 
           # Moodle 3.9
-          - moodle-branch: 'MOODLE_39_STABLE'
-            php: '7.2'
-            database: 'pgsql'
-          - moodle-branch: 'MOODLE_39_STABLE'
-            php: '7.2'
-            database: 'mariadb'
           - moodle-branch: 'MOODLE_39_STABLE'
             php: '7.4'
             database: 'pgsql'
@@ -61,10 +49,10 @@ jobs:
 
           # Moodle 4.0
           - moodle-branch: 'MOODLE_40_STABLE'
-            php: '7.3'
+            php: '7.4'
             database: 'pgsql'
           - moodle-branch: 'MOODLE_40_STABLE'
-            php: '7.3'
+            php: '7.4'
             database: 'mariadb'
           - moodle-branch: 'MOODLE_40_STABLE'
             php: '8.0'
