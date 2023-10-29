@@ -73,7 +73,7 @@ class custom_completion_test extends advanced_testcase {
                 ],
             ],
             'Rule available, user has played video' => [
-                'completiononplay', COMPLETION_TRACKING_AUTOMATIC, COMPLETION_INCOMPLETE, null,
+                'completiononplay', COMPLETION_TRACKING_AUTOMATIC, COMPLETION_COMPLETE, null,
                 [
                     'completiononplay' => 1,
                 ],

@@ -99,6 +99,11 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci mustache
 
+      - name: Create .eslintignore
+        run: |
+          echo "**/amd/src/plyr.js" >> .eslintignore
+          echo "**/other-third-party-folder/*" >> .eslintignore
+
       - name: Grunt
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci grunt --max-lint-warnings 0
