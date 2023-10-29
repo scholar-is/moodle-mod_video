@@ -125,6 +125,8 @@ class video implements renderable, templatable {
 
     /**
      * Export data for mustache.
+     * @param renderer_base $output
+     * @return array
      * @throws coding_exception
      * @throws dml_exception
      */

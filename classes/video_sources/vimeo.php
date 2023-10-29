@@ -34,7 +34,7 @@ use mod_video\video_source;
  */
 class vimeo extends video_source {
     /**
-     * @inheritdoc
+     * Get source type.
      * @return string
      */
     public function get_type(): string {
@@ -42,7 +42,7 @@ class vimeo extends video_source {
     }
 
     /**
-     * @inheritdoc
+     * Get source name.
      * @return string
      */
     public function get_name(): string {
@@ -50,7 +50,7 @@ class vimeo extends video_source {
     }
 
     /**
-     * @inheritdoc
+     * Get source icon.
      * @return string
      */
     public function get_icon(): string {

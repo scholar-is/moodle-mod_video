@@ -66,7 +66,7 @@ class external extends external_api {
 
     /**
      * Create new video session for user.
-     * @param $cmid
+     * @param int $cmid
      * @return array
      * @throws \core\invalid_persistent_exception
      * @throws \core_external\restricted_context_exception
@@ -143,10 +143,10 @@ class external extends external_api {
 
     /**
      * Record session updates.
-     * @param $sessionid
-     * @param $timeelapsed
-     * @param $currenttime
-     * @param $currentpercent
+     * @param int $sessionid
+     * @param int $timeelapsed
+     * @param int $currenttime
+     * @param float $currentpercent
      * @return array
      * @throws \core\invalid_persistent_exception
      * @throws \core_external\restricted_context_exception

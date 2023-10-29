@@ -35,7 +35,7 @@ use mod_video\persistent\video_session;
 class mod_video_generator extends testing_module_generator {
     /**
      * Create video instance.
-     * @param $record
+     * @param object|null $record
      * @param array|null $options
      * @return stdClass
      * @throws coding_exception

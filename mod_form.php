@@ -38,6 +38,7 @@ require_once($CFG->dirroot . '/repository/lib.php');
 class mod_video_mod_form extends moodleform_mod {
 
     /**
+     * Define form fields.
      * @throws coding_exception
      * @throws moodle_exception
      */
@@ -173,7 +174,7 @@ class mod_video_mod_form extends moodleform_mod {
 
     /**
      * Check if custom rules are enabled.
-     * @param $data
+     * @param array $data
      * @return bool
      */
     public function completion_rule_enabled($data): bool {
@@ -184,8 +185,8 @@ class mod_video_mod_form extends moodleform_mod {
 
     /**
      * Form submission validation.
-     * @param $data
-     * @param $files
+     * @param array $data
+     * @param array $files
      * @return array
      * @throws coding_exception
      */
@@ -203,7 +204,7 @@ class mod_video_mod_form extends moodleform_mod {
 
     /**
      * Transform values before they are set in the form.
-     * @param $defaultvalues
+     * @param array $defaultvalues
      * @return void
      */
     public function data_preprocessing(&$defaultvalues): void {

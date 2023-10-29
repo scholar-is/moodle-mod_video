@@ -51,7 +51,7 @@ class session_report_table extends table_sql {
     /**
      * Constructor.
      * @param cm_info $cm
-     * @param $uniqueid
+     * @param string $uniqueid
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -97,7 +97,7 @@ class session_report_table extends table_sql {
 
     /**
      * Get user for this row.
-     * @param $values
+     * @param stdClass $values
      * @return stdClass
      */
     private function get_user($values): stdClass {
@@ -122,7 +122,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format views.
-     * @param $values
+     * @param stdClass $values
      * @return string
      * @throws coding_exception
      * @throws moodle_exception
@@ -139,7 +139,7 @@ class session_report_table extends table_sql {
 
     /**
      * Display user's name and picture.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_userid($values): string {
@@ -149,7 +149,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format watchtime.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_watchtime($values): string {
@@ -162,7 +162,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format firstaccess.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_firstaccess($values): string {
@@ -171,7 +171,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format lastaccess.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_lastaccess($values): string {

@@ -54,11 +54,11 @@ class session_report_table extends table_sql {
      * Constructor.
      * @param cm_info $cm
      * @param stdClass $user
-     * @param $uniqueid
+     * @param string $uniqueid
      * @throws coding_exception
      * @throws dml_exception
      */
-    public function __construct(cm_info $cm, stdClass $user, $uniqueid) {
+    public function __construct(cm_info $cm, stdClass $user, string $uniqueid) {
         global $DB;
         parent::__construct($uniqueid);
 
@@ -107,7 +107,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format watchtime.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_watchtime($values): string {
@@ -120,7 +120,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format firstaccess.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_firstaccess($values): string {
@@ -129,7 +129,7 @@ class session_report_table extends table_sql {
 
     /**
      * Format lastaccess.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     public function col_lastaccess($values): string {

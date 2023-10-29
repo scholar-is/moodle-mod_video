@@ -75,12 +75,12 @@ class behat_mod_video extends behat_base implements SnippetAcceptingContext {
 
     /**
      * Wait for a condition to be true. If the condition isn't true within the duration, throw an error.
-     * @param $time
-     * @param $condition
+     * @param int $time
+     * @param string $condition
      * @return void
      * @throws Exception
      */
-    public function wait_or_error($time, $condition): void {
+    public function wait_or_error(int $time, string $condition): void {
         // Wait up to 5000 milliseconds for the custom play button to appear.
         $result = $this->getSession()->wait(
             $time,

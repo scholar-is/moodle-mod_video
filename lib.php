@@ -56,7 +56,7 @@ function video_supports(string $feature) {
 
 /**
  * This function is used by the reset_course_userdata function in moodlelib.
- * @param $data mixed the data submitted from the reset course.
+ * @param stdClass $data the data submitted from the reset course.
  * @return array status array
  */
 function video_reset_userdata($data): array {

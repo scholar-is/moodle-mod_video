@@ -24,10 +24,10 @@
 
 /**
  * Run upgrade scripts.
- * @param $oldversion
+ * @param int $oldversion
  * @return true
  */
-function xmldb_video_upgrade($oldversion) {
+function xmldb_video_upgrade(int $oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
