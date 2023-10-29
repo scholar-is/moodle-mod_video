@@ -183,7 +183,7 @@ class session_report_table extends table_sql {
 
     /**
      * Render actions (eventually).
-     * @param $values
+     * @param stdClass $values
      * @return void
      */
     public function col_actions($values) {
