@@ -45,7 +45,7 @@ function video_supports(string $feature) {
         case FEATURE_COMPLETION_HAS_RULES:
         case FEATURE_MOD_INTRO:
             return true;
-        case FEATURE_MOD_PURPOSE:
+        case 'mod_purpose': // Don't use constant to support older versions of moodle.
             return MOD_PURPOSE_CONTENT;
         case FEATURE_GROUPS:
             return false;
