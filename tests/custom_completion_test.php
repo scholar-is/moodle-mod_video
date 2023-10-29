@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contains unit tests for core_completion/activity_custom_completion.
+ * Custom completion tests.
  *
- * @package   mod_forum
- * @copyright Simey Lameze <simey@moodle.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 declare(strict_types=1);
@@ -29,6 +29,7 @@ namespace mod_video;
 use advanced_testcase;
 use cm_info;
 use coding_exception;
+use dml_exception;
 use mod_video\completion\custom_completion;
 use moodle_exception;
 
@@ -40,11 +41,11 @@ require_once($CFG->dirroot . '/mod/forum/tests/generator/lib.php');
 require_once($CFG->dirroot . '/mod/forum/tests/generator_trait.php');
 
 /**
- * Class for unit testing mod_forum/activity_custom_completion.
+ * Custom completion tests.
  *
- * @package   mod_forum
- * @copyright Simey Lameze <simey@moodle.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion_test extends advanced_testcase {
     use \mod_forum_tests_generator_trait;
@@ -89,10 +90,14 @@ class custom_completion_test extends advanced_testcase {
      * @covers \mod_video\completion\custom_completion
      * @dataProvider get_state_provider
      * @param string $rule The custom completion rule.
-     * @param int $rulecount Quantity of discussions, replies or posts to be created.
      * @param int $available Whether this rule is available.
      * @param int|null $status Expected status.
      * @param string|null $exception Expected exception.
+     * @param array $extraparams
+     * @param array $sessions
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public function test_get_state(
         string $rule,

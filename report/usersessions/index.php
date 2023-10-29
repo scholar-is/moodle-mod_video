@@ -17,7 +17,7 @@
 /**
  * User sessions report view.
  *
- * @package    mod_video
+ * @package    videoreport_usersessions
  * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

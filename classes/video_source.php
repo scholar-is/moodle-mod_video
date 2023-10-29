@@ -34,15 +34,25 @@ use moodle_exception;
  */
 abstract class video_source {
     /**
+     * Get video source type.
      * @return string
      */
     abstract public function get_type(): string;
 
+    /**
+     * Get source name.
+     * @return string
+     */
     abstract public function get_name(): string;
 
+    /**
+     * Get source icon.
+     * @return string
+     */
     abstract public function get_icon(): string;
 
     /**
+     * Render radio label.
      * @throws moodle_exception
      */
     public function get_radio_label(): string {
@@ -54,6 +64,7 @@ abstract class video_source {
     }
 
     /**
+     * Get list of all video sources.
      * @return video_source[]
      */
     public static function get_video_sources(): array {

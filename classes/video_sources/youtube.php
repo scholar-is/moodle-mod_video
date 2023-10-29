@@ -28,18 +28,31 @@ use lang_string;
 use mod_video\video_source;
 
 /**
+ * Youtube video source.
  * @package    mod_video
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class youtube extends video_source {
+    /**
+     * @inheritdoc
+     * @return string
+     */
     public function get_type(): string {
         return 'youtube';
     }
 
+    /**
+     * @inheritdoc
+     * @return string
+     */
     public function get_name(): string {
         return new lang_string('pluginname', 'media_youtube'); // Already translated.
     }
 
+    /**
+     * @inheritdoc
+     * @return string
+     */
     public function get_icon(): string {
         return 'youtube-play';
     }

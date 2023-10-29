@@ -34,6 +34,10 @@ use mod_video\persistent\video_session;
  */
 class mod_video_generator extends testing_module_generator {
     /**
+     * Create video instance.
+     * @param $record
+     * @param array|null $options
+     * @return stdClass
      * @throws coding_exception
      */
     public function create_instance($record = null, array $options = null): stdClass {
@@ -70,6 +74,11 @@ class mod_video_generator extends testing_module_generator {
     }
 
     /**
+     * Create video session.
+     * @param int $userid
+     * @param int $cmid
+     * @param array $params
+     * @return video_session
      * @throws coding_exception
      * @throws invalid_persistent_exception
      */

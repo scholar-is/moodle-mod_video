@@ -35,6 +35,7 @@ global $CFG;
 require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 
 /**
+ * API tests.
  * @group mod_video
  */
 class external_test extends \externallib_advanced_testcase {
@@ -50,6 +51,7 @@ class external_test extends \externallib_advanced_testcase {
     }
 
     /**
+     * Test video sessions.
      * @covers \mod_video\external\external::create_session
      * @covers \mod_video\external\external::record_session_updates
      * @covers \mod_video\persistent\video_session::get_aggregate_values

@@ -67,6 +67,10 @@ class video_session extends persistent {
     }
 
     /**
+     * Aggregate session data for a user.
+     * @param int $cmid
+     * @param int $userid
+     * @return false|mixed
      * @throws dml_exception
      */
     public static function get_aggregate_values(int $cmid, int $userid) {
@@ -90,6 +94,10 @@ class video_session extends persistent {
         return $aggregates;
     }
 
+    /**
+     * Get shape of API response.
+     * @return \external_single_structure
+     */
     public static function get_external_description(): \external_single_structure {
         return new \external_single_structure([
             'id' => new \external_value(PARAM_INT),

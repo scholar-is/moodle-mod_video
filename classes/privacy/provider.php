@@ -23,10 +23,18 @@ use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\writer;
 use dml_exception;
 
+/**
+ * Privacy API implementation.
+ */
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider {
 
+    /**
+     * Get metadata.
+     * @param collection $collection
+     * @return collection
+     */
     public static function get_metadata(collection $collection) : collection {
         $collection->add_database_table('video_session', [
             'userid' => 'privacy:metadata:video_session:userid',
@@ -41,6 +49,11 @@ class provider implements
         return $collection;
     }
 
+    /**
+     * Get contexts for user.
+     * @param int $userid
+     * @return contextlist
+     */
     public static function get_contexts_for_userid(int $userid) : contextlist {
         $contextlist = new contextlist();
 
@@ -61,6 +74,9 @@ class provider implements
     }
 
     /**
+     * Export user data.
+     * @param approved_contextlist $contextlist
+     * @return void
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -97,6 +113,9 @@ class provider implements
     }
 
     /**
+     * Delete all data.
+     * @param \context $context
+     * @return void
      * @throws dml_exception
      */
     public static function delete_data_for_all_users_in_context(\context $context): void {
@@ -110,6 +129,9 @@ class provider implements
     }
 
     /**
+     * Delete data for user.
+     * @param approved_contextlist $contextlist
+     * @return void
      * @throws coding_exception
      * @throws dml_exception
      */

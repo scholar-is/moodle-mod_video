@@ -66,14 +66,14 @@ class external extends external_api {
 
     /**
      * Create new video session for user.
-     *
      * @param $cmid
      * @return array
+     * @throws \core\invalid_persistent_exception
+     * @throws \core_external\restricted_context_exception
      * @throws coding_exception
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws module_not_found
-     * @throws restricted_context_exception
      * @throws moodle_exception
      */
     public static function create_session($cmid): array {
@@ -142,11 +142,19 @@ class external extends external_api {
     }
 
     /**
+     * Record session updates.
+     * @param $sessionid
+     * @param $timeelapsed
+     * @param $currenttime
+     * @param $currentpercent
+     * @return array
+     * @throws \core\invalid_persistent_exception
      * @throws \core_external\restricted_context_exception
      * @throws coding_exception
      * @throws dml_exception
-     * @throws moodle_exception
      * @throws invalid_parameter_exception
+     * @throws moodle_exception
+     * @throws session_not_found
      */
     public static function record_session_updates($sessionid, $timeelapsed, $currenttime, $currentpercent): array {
         global $DB;

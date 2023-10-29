@@ -33,6 +33,7 @@ global $CFG;
 require_once($CFG->dirroot . '/mod/video/lib.php');
 
 /**
+ * Lib tests.
  * @group mod_video
  */
 class lib_test extends \advanced_testcase {

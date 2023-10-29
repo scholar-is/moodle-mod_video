@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Video lib functions.
  * @package    mod_video
  * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -58,7 +59,7 @@ function video_supports(string $feature) {
  * @param $data mixed the data submitted from the reset course.
  * @return array status array
  */
-function video_reset_userdata(mixed $data): array {
+function video_reset_userdata($data): array {
     // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
     // See MDL-9367.
 
@@ -154,7 +155,7 @@ function video_delete_instance(int $id): bool {
  * "extra" information that may be needed when printing
  * this activity in a course listing.
  *
- * See {@link get_array_of_activities()} in course/lib.php
+ * See {@see get_array_of_activities()} in course/lib.php
  *
  * @param stdClass $coursemodule
  * @return cached_cm_info|bool Info to customise main video display
@@ -305,6 +306,10 @@ function video_extend_settings_navigation(settings_navigation $settingsnav, navi
     }
 }
 
+/**
+ * Get default plyr control values.
+ * @return array
+ */
 function video_get_controls_default_values(): array {
     return [
         'play-large' => 1,

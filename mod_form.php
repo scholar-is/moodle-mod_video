@@ -18,6 +18,7 @@
  * Video configuration form.
  *
  * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,6 +32,9 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
+/**
+ * Video instance create/edit form.
+ */
 class mod_video_mod_form extends moodleform_mod {
 
     /**
@@ -167,6 +171,11 @@ class mod_video_mod_form extends moodleform_mod {
         return ['completiononplay', 'completiononpercentgroup', 'completionviewtimegroup'];
     }
 
+    /**
+     * Check if custom rules are enabled.
+     * @param $data
+     * @return bool
+     */
     public function completion_rule_enabled($data): bool {
         return (!empty($data['completiononplay'])) ||
             (!empty($data['completionpercent'])) ||
@@ -174,6 +183,10 @@ class mod_video_mod_form extends moodleform_mod {
     }
 
     /**
+     * Form submission validation.
+     * @param $data
+     * @param $files
+     * @return array
      * @throws coding_exception
      */
     public function validation($data, $files): array {
@@ -189,6 +202,7 @@ class mod_video_mod_form extends moodleform_mod {
     }
 
     /**
+     * Transform values before they are set in the form.
      * @param $defaultvalues
      * @return void
      */
@@ -223,10 +237,9 @@ class mod_video_mod_form extends moodleform_mod {
     /**
      * Allows module to modify the data returned by form get_data().
      * This method is also called in the bulk activity completion form.
-     *
      * Only available on moodleform_mod.
-     *
      * @param stdClass $data the form data to be modified.
+     * @return void
      */
     public function data_postprocessing($data): void {
         parent::data_postprocessing($data);

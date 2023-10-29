@@ -14,6 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Upgrade scripts.
+ *
+ * @package    mod_video
+ * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
+ * Run upgrade scripts.
+ * @param $oldversion
+ * @return true
+ */
 function xmldb_video_upgrade($oldversion) {
     global $DB;
 

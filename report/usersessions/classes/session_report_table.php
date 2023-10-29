@@ -17,7 +17,7 @@
 /**
  * Session report table.
  *
- * @package    mod_video
+ * @package    videoreport_usersessions
  * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,15 +36,25 @@ use dml_exception;
 use stdClass;
 use table_sql;
 
+/**
+ * Session report table.
+ */
 class session_report_table extends table_sql {
     /**
      * @var cm_info
      */
     private cm_info $cm;
 
+    /**
+     * @var stdClass
+     */
     private stdClass $user;
 
     /**
+     * Constructor.
+     * @param cm_info $cm
+     * @param stdClass $user
+     * @param $uniqueid
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -95,6 +105,11 @@ class session_report_table extends table_sql {
         $this->pagesize(15, $DB->count_records_sql($this->countsql, $this->countparams));
     }
 
+    /**
+     * Format watchtime.
+     * @param $values
+     * @return string
+     */
     public function col_watchtime($values): string {
         $hours = floor($values->watchtime / 3600);
         $minutes = floor(($values->watchtime % 3600) / 60);
@@ -103,10 +118,20 @@ class session_report_table extends table_sql {
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
+    /**
+     * Format firstaccess.
+     * @param $values
+     * @return string
+     */
     public function col_firstaccess($values): string {
         return userdate($values->firstaccess, "", \core_date::get_user_timezone($this->user));
     }
 
+    /**
+     * Format lastaccess.
+     * @param $values
+     * @return string
+     */
     public function col_lastaccess($values): string {
         if ($values->lastaccess) {
             return userdate($values->lastaccess, "", \core_date::get_user_timezone($this->user));

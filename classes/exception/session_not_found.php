@@ -26,7 +26,13 @@ namespace mod_video\exception;
 
 use moodle_exception;
 
+/**
+ * Thrown when a video session is not found.
+ */
 class session_not_found extends moodle_exception {
+    /**
+     * Constructor.
+     */
     public function __construct() {
         parent::__construct('sessionnotfound', 'video');
     }

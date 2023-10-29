@@ -27,7 +27,7 @@ namespace mod_video\output;
 use plugin_renderer_base;
 
 /**
- * Implement render methods as needed. For now, using as rendering shortcut @see plugin_renderer_base::render().
+ * Implement render methods as needed. For now, using as rendering shortcut {@see plugin_renderer_base::render()}.
  *
  * @package    mod_video
  * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>

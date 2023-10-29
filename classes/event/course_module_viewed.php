@@ -41,6 +41,10 @@ class course_module_viewed extends \core\event\course_module_viewed {
         $this->data['objecttable'] = 'video';
     }
 
+    /**
+     * Object mapping.
+     * @return string[]
+     */
     public static function get_objectid_mapping(): array {
         return ['db' => 'video', 'restore' => 'video'];
     }

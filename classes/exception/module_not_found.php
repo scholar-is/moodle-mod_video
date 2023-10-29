@@ -26,6 +26,9 @@ namespace mod_video\exception;
 
 use moodle_exception;
 
+/**
+ * Thrown when a video cm is not found.
+ */
 class module_not_found extends moodle_exception {
     public function __construct(int $cmid) {
         parent::__construct('modulenotfound', 'video', '', ['cmid' => $cmid]);

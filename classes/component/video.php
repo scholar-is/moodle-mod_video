@@ -40,13 +40,23 @@ use templatable;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class video implements renderable, templatable {
+    /**
+     * Video instance.
+     * @var stdClass
+     */
     private stdClass $instance;
 
+    /**
+     * Constructor.
+     * @param stdClass $instance
+     */
     public function __construct(stdClass $instance) {
         $this->instance = $instance;
     }
 
     /**
+     * Get video URL from source.
+     * Move to video_source?
      * @throws coding_exception
      */
     public function get_url(): ?string {
@@ -73,6 +83,10 @@ class video implements renderable, templatable {
         return null;
     }
 
+    /**
+     * Get plyr control values.
+     * @return array
+     */
     public function get_controls(): array {
         $instancecontrols = json_decode($this->instance->controls, true);
 
@@ -88,6 +102,7 @@ class video implements renderable, templatable {
     }
 
     /**
+     * Get video course module.
      * @throws coding_exception
      */
     public function get_cm(): object {
@@ -95,6 +110,7 @@ class video implements renderable, templatable {
     }
 
     /**
+     * Get extra options for JS.
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -108,6 +124,7 @@ class video implements renderable, templatable {
     }
 
     /**
+     * Export data for mustache.
      * @throws coding_exception
      * @throws dml_exception
      */
