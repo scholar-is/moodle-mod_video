@@ -99,14 +99,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci mustache
 
-      - name: Create .eslintignore
-        run: |
-          echo "**/amd/src/plyr.js" >> .eslintignore
-          echo "**/other-third-party-folder/*" >> .eslintignore
-
       - name: Grunt
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci grunt --max-lint-warnings 0
+        run: moodle-plugin-ci grunt --max-lint-warnings 2 # Allow 2 warnings for the third party js files.
 
       - name: PHPUnit tests
         if: ${{ !cancelled() }}
