@@ -30,9 +30,90 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1']
-        moodle-branch: ['MOODLE_401_STABLE']
-        database: [pgsql, mariadb]
+        include:
+          # Moodle 3.8
+          - moodle-branch: 'MOODLE_38_STABLE'
+            php: '7.1'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_38_STABLE'
+            php: '7.1'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_38_STABLE'
+            php: '7.4'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_38_STABLE'
+            php: '7.4'
+            database: 'mariadb'
+
+          # Moodle 3.9
+          - moodle-branch: 'MOODLE_39_STABLE'
+            php: '7.2'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_39_STABLE'
+            php: '7.2'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_39_STABLE'
+            php: '7.4'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_39_STABLE'
+            php: '7.4'
+            database: 'mariadb'
+
+          # Moodle 4.0
+          - moodle-branch: 'MOODLE_40_STABLE'
+            php: '7.3'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_40_STABLE'
+            php: '7.3'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_40_STABLE'
+            php: '8.0'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_40_STABLE'
+            php: '8.0'
+            database: 'mariadb'
+
+          # Moodle 4.1
+          - moodle-branch: 'MOODLE_41_STABLE'
+            php: '7.4'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_41_STABLE'
+            php: '7.4'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_41_STABLE'
+            php: '8.1'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_41_STABLE'
+            php: '8.1'
+            database: 'mariadb'
+
+          # Moodle 4.2
+          - moodle-branch: 'MOODLE_42_STABLE'
+            php: '8.0'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_42_STABLE'
+            php: '8.0'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_42_STABLE'
+            php: '8.2'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_42_STABLE'
+            php: '8.2'
+            database: 'mariadb'
+
+          # Moodle 4.3
+          - moodle-branch: 'MOODLE_43_STABLE'
+            php: '8.0'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_43_STABLE'
+            php: '8.0'
+            database: 'mariadb'
+          - moodle-branch: 'MOODLE_43_STABLE'
+            php: '8.2'
+            database: 'pgsql'
+          - moodle-branch: 'MOODLE_43_STABLE'
+            php: '8.2'
+            database: 'mariadb'
 
     steps:
       - name: Check out repository code
