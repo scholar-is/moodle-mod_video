@@ -48,16 +48,16 @@ jobs:
             database: 'mariadb'
 
           # Moodle 4.0
-          - moodle-branch: 'MOODLE_40_STABLE'
+          - moodle-branch: 'MOODLE_400_STABLE'
             php: '7.4'
             database: 'pgsql'
-          - moodle-branch: 'MOODLE_40_STABLE'
+          - moodle-branch: 'MOODLE_400_STABLE'
             php: '7.4'
             database: 'mariadb'
-          - moodle-branch: 'MOODLE_40_STABLE'
+          - moodle-branch: 'MOODLE_400_STABLE'
             php: '8.0'
             database: 'pgsql'
-          - moodle-branch: 'MOODLE_40_STABLE'
+          - moodle-branch: 'MOODLE_400_STABLE'
             php: '8.0'
             database: 'mariadb'
 

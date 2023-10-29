@@ -35,6 +35,7 @@ require_once($CFG->dirroot . '/mod/video/lib.php');
 /**
  * Lib tests.
  * @group mod_video
+ * @runTestsInSeparateProcesses
  */
 class lib_test extends \advanced_testcase {
     /**
@@ -42,7 +43,7 @@ class lib_test extends \advanced_testcase {
      * @covers \video_delete_instance
      */
     public function test_video_delete_instance() {
-        global $SITE, $DB;
+        global $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

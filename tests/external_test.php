@@ -37,6 +37,7 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 /**
  * API tests.
  * @group mod_video
+ * @runTestsInSeparateProcesses
  */
 class external_test extends \externallib_advanced_testcase {
     /**
