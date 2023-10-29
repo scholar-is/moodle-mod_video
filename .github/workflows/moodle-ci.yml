@@ -32,18 +32,18 @@ jobs:
       matrix:
         include:
           # Moodle 3.8
-          - moodle-branch: 'MOODLE_38_STABLE'
+          - moodle-branch: 'MOODLE_310_STABLE'
             php: '7.4'
             database: 'pgsql'
-          - moodle-branch: 'MOODLE_38_STABLE'
+          - moodle-branch: 'MOODLE_310_STABLE'
             php: '7.4'
             database: 'mariadb'
 
           # Moodle 3.9
-          - moodle-branch: 'MOODLE_39_STABLE'
+          - moodle-branch: 'MOODLE_311_STABLE'
             php: '7.4'
             database: 'pgsql'
-          - moodle-branch: 'MOODLE_39_STABLE'
+          - moodle-branch: 'MOODLE_311_STABLE'
             php: '7.4'
             database: 'mariadb'
 

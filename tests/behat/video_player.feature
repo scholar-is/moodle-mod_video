@@ -17,8 +17,8 @@ Feature: Video playback functionality
       | teacher | C1     | editingteacher |
       | student | C1     | student        |
     And the following "activities" exist:
-      | activity        | name            | course | type    | videoid     | debug |
-      | video           | Test Video Play | C1     | youtube | jNQXAC9IVRw | 1     |
+      | activity        | name            | idnumber | course | type    | videoid     | debug |
+      | video           | Test Video Play | 123      | C1     | youtube | jNQXAC9IVRw | 1     |
 
   @javascript
   Scenario: User can play the video
