@@ -1,0 +1,3 @@
+# Ignore third party libraries.
+amd/src/plyr.js
+amd/src/player.js

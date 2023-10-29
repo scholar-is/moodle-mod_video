@@ -88,6 +88,7 @@ $string['subplugintype_videoreport'] = 'Video report';
 $string['subplugintype_videoreport_plural'] = 'Video reports';
 $string['totalwatchtime'] = 'Total watch time';
 $string['video-mod-page-x'] = 'Any video module page';
+$string['video:addinstance'] = 'Add a new video';
 $string['video:viewreports'] = 'View reports';
 $string['videodetails'] = 'Video details';
 $string['videofile'] = 'Video file';
