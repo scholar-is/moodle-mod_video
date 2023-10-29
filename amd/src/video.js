@@ -48,6 +48,7 @@ export default class Video {
                         }
                         return false;
                     }
+                    return true;
                 },
             };
         }
@@ -56,7 +57,7 @@ export default class Video {
 
         window.player = this.player;
 
-        this.player.on('playing', async (event) => {
+        this.player.on('playing', async(event) => {
             this.log("player:playing", event);
             if (!this.sessionInitialized) {
                 this.sessionInitialized = true;
@@ -89,10 +90,6 @@ export default class Video {
         });
         this.player.on('ended', () => {
             this.recordUpdates();
-        });
-
-        this.player.on('error', (event) => {
-            console.error(event);
         });
 
         this.log("video:player", this.player);
@@ -130,7 +127,7 @@ export default class Video {
     createSession(cmid) {
         return Ajax.call([{
             methodname: 'mod_video_create_session',
-            args: { cmid }
+            args: {cmid}
         }])[0];
     }
 
