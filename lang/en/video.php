@@ -23,6 +23,8 @@
  */
 
 $string['actions'] = 'Actions';
+$string['allowcomments'] = 'Allow comments';
+$string['allowcomments_help'] = 'If enabled, users can comment below the video.';
 $string['autoplay'] = 'Autoplay';
 $string['autoplay_help'] = 'Autoplay may be blocked by the user\'s browser.';
 $string['cannotforwardseek'] = 'You cannot skip forward for this video.';
@@ -89,6 +91,8 @@ $string['subplugintype_videoreport_plural'] = 'Video reports';
 $string['totalwatchtime'] = 'Total watch time';
 $string['video-mod-page-x'] = 'Any video module page';
 $string['video:addinstance'] = 'Add a new video';
+$string['video:comment'] = 'Comment on videos';
+$string['video:view'] = 'View video activities';
 $string['video:viewreports'] = 'View reports';
 $string['videodetails'] = 'Video details';
 $string['videofile'] = 'Video file';

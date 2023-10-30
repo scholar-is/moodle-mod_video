@@ -70,6 +70,7 @@ class backup_video_activity_structure_step extends backup_activity_structure_ste
             'completiononviewtime',
             'completionviewtime',
             'resume',
+            'comments',
         ]);
 
         $videosessions = new backup_nested_element('videosessions');

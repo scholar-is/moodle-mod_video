@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_video\component\comments;
 use mod_video\component\video;
 
 require('../../config.php');
@@ -30,7 +31,6 @@ global $DB, $CFG, $PAGE, $OUTPUT;
 
 require_once($CFG->dirroot . '/mod/video/lib.php');
 require_once($CFG->libdir . '/completionlib.php');
-
 
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID.
 $v = optional_param('v', 0, PARAM_INT);  // Video instance ID.
@@ -67,5 +67,9 @@ $renderer = $PAGE->get_renderer('mod_video');
 echo $OUTPUT->header();
 
 echo $renderer->render(new video($video));
+
+if ($video->comments) {
+    echo $renderer->render(new comments(cm_info::create($cm)));
+}
 
 echo $OUTPUT->footer();

@@ -330,3 +330,33 @@ function video_get_controls_default_values(): array {
         'fullscreen' => 1,
     ];
 }
+
+/**
+ * Validate comment parameters before performing comments actions.
+ * @param stdClass $commentparams
+ * @return boolean
+ * @throws comment_exception
+ */
+function video_comment_validate(stdClass $commentparams): bool {
+    if ($commentparams->commentarea != 'video_comments') {
+        throw new comment_exception('invalidcommentarea');
+    }
+    return true;
+}
+
+/**
+ * Permission checks for comments.
+ * @param stdClass $commentparams
+ * @return array
+ * @throws dml_exception
+ * @throws coding_exception
+ */
+function video_comment_permissions(stdClass $commentparams): array {
+    global $DB;
+
+    $video = $DB->get_record('video', ['id' => $commentparams->cm->instance]);
+    if (!$video || !$video->comments) {
+        return ['post' => false, 'view' => false];
+    }
+    return ['post' => has_capability('mod/video:comment', $commentparams->context), 'view' => true];
+}

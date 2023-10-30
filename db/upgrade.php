@@ -26,13 +26,29 @@
  * Run upgrade scripts.
  * @param int $oldversion
  * @return true
+ * @throws ddl_table_missing_exception
+ * @throws ddl_exception
+ * @throws moodle_exception
  */
-function xmldb_video_upgrade(int $oldversion) {
+function xmldb_video_upgrade(int $oldversion): bool {
     global $DB;
 
     $dbman = $DB->get_manager();
 
-    // Future upgrade scripts will go here.
+    if ($oldversion < 2023102101) {
+
+        // Define field comments to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('comments', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'resume');
+
+        // Conditionally launch add field comments.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2023102101, 'video');
+    }
 
     return true;
 }
