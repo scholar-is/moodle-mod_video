@@ -98,6 +98,10 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->setDefault('resume', true);
         $mform->addHelpButton('resume', 'resume', 'video');
 
+        $mform->addElement('advcheckbox', 'comments', get_string('allowcomments', 'video'));
+        $mform->setType('comments', PARAM_BOOL);
+        $mform->addHelpButton('comments', 'allowcomments', 'video');
+
         $mform->addElement('advcheckbox', 'preventforwardseeking', get_string('preventforwardseeking', 'video'));
         $mform->setType('preventforwardseeking', PARAM_BOOL);
         $mform->addHelpButton('preventforwardseeking', 'preventforwardseeking', 'video');
@@ -192,9 +196,10 @@ class mod_video_mod_form extends moodleform_mod {
      */
     public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
+        $controlnames = array_keys(video_get_controls_default_values());
 
         foreach ($data['controls'] as $name => $value) {
-            if (!isset($this->controloptions[$name])) {
+            if (!in_array($name, $controlnames)) {
                 $errors['controls'] = get_string('invalidcontrol', 'video');
             }
         }
