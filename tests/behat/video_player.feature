@@ -17,12 +17,21 @@ Feature: Video playback functionality
       | teacher | C1     | editingteacher |
       | student | C1     | student        |
     And the following "activities" exist:
-      | activity        | name            | idnumber | course | type    | videoid     | debug |
-      | video           | Test Video Play | 123      | C1     | youtube | jNQXAC9IVRw | 1     |
+      | activity        | name         | idnumber | course | type    | videoid     | debug |
+      | video           | Test youtube | 1        | C1     | youtube | jNQXAC9IVRw | 1     |
+      | video           | Test vimeo   | 2        | C1     | vimeo   | 449787858   | 1     |
 
   @javascript
-  Scenario: User can play the video
-    When I am on the "Test Video Play" "video activity" page logged in as "student"
+  Scenario: User can play a youtube video
+    When I am on the "Test youtube" "video activity" page logged in as "student"
+    Then I wait until the video player is ready
+    And I wait until the Plyr play button appears
+    And I click on the play button
+    Then the video should start playing
+
+  @javascript
+  Scenario: User can play a vimeo video
+    When I am on the "Test vimeo" "video activity" page logged in as "student"
     Then I wait until the video player is ready
     And I wait until the Plyr play button appears
     And I click on the play button
