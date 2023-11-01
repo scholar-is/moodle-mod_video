@@ -45,6 +45,7 @@ require_once("$CFG->dirroot/comment/lib.php");
 class comments implements renderable, templatable {
     /**
      * Course module for comments.
+     * @var cm_info
      */
     private cm_info $cm;
 
@@ -80,8 +81,10 @@ class comments implements renderable, templatable {
 
     /**
      * Data for template.
-     * @throws moodle_exception
+     * @param renderer_base $output
+     * @return array
      * @throws comment_exception
+     * @throws moodle_exception
      */
     public function export_for_template(renderer_base $output): array {
         return [
