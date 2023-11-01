@@ -56,12 +56,12 @@ Feature: Add comments to videos
     Given I log in as "teacher1"
     And I am on the "Course 1" "permissions" page
     And I override the system permissions of "Student" role with:
-      | capability                    | permission |
-      | moodle/calendar:manageentries | Prohibit   |
+      | capability        | permission |
+      | mod/video:comment | Prohibit   |
     And I log out
     And I log in as "student1"
     And I am on the "Test youtube" "video activity" page
-    And I click on ".comments-dropdown" "css_element"
+    And I click on ".comment-link" "css_element"
     And I should see "Comment from teacher"
     And I should see "Comment from student"
     And I should not see "Save comment"
