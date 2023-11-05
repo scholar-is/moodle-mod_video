@@ -18,7 +18,7 @@
  * mod_video data generator
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +29,7 @@ use mod_video\persistent\video_session;
  * Video module data generator class.
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_video_generator extends testing_module_generator {

@@ -17,9 +17,9 @@
 /**
  * Video module capabilities.
  *
- * @package     mod_video
- * @copyright   2022 Joseph Conradt <joeconradt@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_video
+ * @copyright  2022 Scholaris <joe@scholar.is>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;

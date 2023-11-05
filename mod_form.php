@@ -18,7 +18,7 @@
  * Video configuration form.
  *
  * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -59,6 +59,12 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         $this->standard_intro_elements();
+
+        $mform->addElement('advcheckbox', 'descriptioninsummary', 'Display description in video summary');
+        $mform->setType('descriptioninsummary', PARAM_BOOL);
+        $mform->setDefault('descriptioninsummary', true);
+        $mform->addHelpButton('descriptioninsummary', 'descriptioninsummary', 'video');
+        $mform->setAdvanced('descriptioninsummary');
 
         $mform->addElement('header', 'videodetails', get_string('videodetails', 'video'));
         $mform->setExpanded('videodetails');
@@ -109,8 +115,8 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'hidecontrols', get_string('hidecontrols', 'video'));
         $mform->setType('hidecontrols', PARAM_BOOL);
 
-        $mform->addElement('advcheckbox', 'fullscreen', get_string('fullscreenenabled', 'video'));
-        $mform->setType('fullscreen', PARAM_BOOL);
+        $mform->addElement('advcheckbox', 'fullscreenenabled', get_string('fullscreenenabled', 'video'));
+        $mform->setType('fullscreenenabled', PARAM_BOOL);
 
         $mform->addElement('advcheckbox', 'loopvideo', get_string('loop', 'video'));
         $mform->setType('loop', PARAM_BOOL);

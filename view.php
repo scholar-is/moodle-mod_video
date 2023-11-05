@@ -18,12 +18,12 @@
  * Video module view.
  *
  * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_video\component\comments;
 use mod_video\component\video;
+use videotab_overview\component\comments;
 
 require('../../config.php');
 
@@ -66,10 +66,6 @@ $renderer = $PAGE->get_renderer('mod_video');
 
 echo $OUTPUT->header();
 
-echo $renderer->render(new video($video));
-
-if ($video->comments) {
-    echo $renderer->render(new comments(cm_info::create($cm)));
-}
+echo $renderer->render(new video(cm_info::create($cm)));
 
 echo $OUTPUT->footer();

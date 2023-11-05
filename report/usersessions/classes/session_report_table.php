@@ -18,7 +18,7 @@
  * Session report table.
  *
  * @package    videoreport_usersessions
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

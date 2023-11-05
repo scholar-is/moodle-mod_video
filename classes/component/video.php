@@ -18,15 +18,17 @@
  * Video component.
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_video\component;
 
+use cm_info;
 use coding_exception;
 use dml_exception;
 use mod_video\persistent\video_session;
+use mod_video\tab\tab_manager;
 use renderable;
 use renderer_base;
 use stdClass;
@@ -36,22 +38,30 @@ use templatable;
  * Video component.
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class video implements renderable, templatable {
+class video extends base_component {
     /**
      * Video instance.
-     * @var stdClass
+     * @var cm_info
      */
-    private stdClass $instance;
+    private cm_info $cm;
+
+    private stdClass $video;
 
     /**
      * Constructor.
-     * @param stdClass $instance
+     * @param cm_info $cm
+     * @throws \moodle_exception
      */
-    public function __construct(stdClass $instance) {
-        $this->instance = $instance;
+    public function __construct(cm_info $cm) {
+        global $DB;
+        $this->video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
+        $tabmanager = new tab_manager(cm_info::create($cm));
+        $tabs = $tabmanager->build_tabs_component();
+
+        $this->add_childcomponent('tabs', $tabs);
     }
 
     /**
@@ -60,14 +70,14 @@ class video implements renderable, templatable {
      * @throws coding_exception
      */
     public function get_url(): ?string {
-        switch ($this->instance->type) {
+        switch ($this->video->type) {
             case 'external':
-                return $this->instance->externalurl;
+                return $this->video->externalurl;
             case 'internal':
                 $fs = get_file_storage();
-                $cm = get_coursemodule_from_instance('video', $this->instance->id);
+                $cm = get_coursemodule_from_instance('video', $this->video->id);
                 $context = \context_module::instance($cm->id);
-                $files = $fs->get_area_files($context->id, 'mod_video', 'videofiles', $this->instance->id, 'id', false);
+                $files = $fs->get_area_files($context->id, 'mod_video', 'videofiles', $this->video->id, 'id', false);
                 $file = array_values($files)[0];
 
                 return \moodle_url::make_pluginfile_url(
@@ -88,7 +98,7 @@ class video implements renderable, templatable {
      * @return array
      */
     public function get_controls(): array {
-        $instancecontrols = json_decode($this->instance->controls, true);
+        $instancecontrols = json_decode($this->video->controls, true);
 
         if (!is_array($instancecontrols)) {
             return array_keys(array_filter(video_get_controls_default_values()));
@@ -106,7 +116,7 @@ class video implements renderable, templatable {
      * @throws coding_exception
      */
     public function get_cm(): object {
-        return get_coursemodule_from_instance('video', $this->instance->id, 0, false, MUST_EXIST);
+        return get_coursemodule_from_instance('video', $this->video->id, 0, false, MUST_EXIST);
     }
 
     /**
@@ -118,35 +128,34 @@ class video implements renderable, templatable {
         global $USER;
         $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
         return [
-            'preventForwardSeeking' => !!$this->instance->preventforwardseeking,
+            'preventForwardSeeking' => !!$this->video->preventforwardseeking,
             'sessionAggregates' => $aggregatevalues,
         ];
     }
 
     /**
      * Export data for mustache.
-     * @param renderer_base $output
      * @return array
      * @throws coding_exception
      * @throws dml_exception
      */
-    public function export_for_template(renderer_base $output): array {
+    public function get_data(): array {
         $cm = $this->get_cm();
         return [
-            'video' => $this->instance,
+            'video' => $this->video,
             'cm' => $cm,
             'cmjson' => json_encode($cm),
-            'videojson' => json_encode($this->instance),
+            'videojson' => json_encode($this->video),
             'options' => json_encode(array_merge([
-                'debug' => !!$this->instance->debug,
-                'autoplay' => !!$this->instance->autoplay,
-                'fullscreen' => ['enabled' => !!$this->instance->fullscreenenabled],
-                'disableContextMenu' => !!$this->instance->disablecontextmenu,
-                'hideControls' => !!$this->instance->hidecontrols,
+                'debug' => !!$this->video->debug,
+                'autoplay' => !!$this->video->autoplay,
+                'fullscreen' => ['enabled' => !!$this->video->fullscreenenabled],
+                'disableContextMenu' => !!$this->video->disablecontextmenu,
+                'hideControls' => !!$this->video->hidecontrols,
                 'controls' => $this->get_controls(),
             ], $this->get_extra_options())),
-            'supportsprovider' => in_array($this->instance->type, ['youtube', 'vimeo']),
-            'supportshtml5' => in_array($this->instance->type, ['internal', 'external']),
+            'supportsprovider' => in_array($this->video->type, ['youtube', 'vimeo']),
+            'supportshtml5' => in_array($this->video->type, ['internal', 'external']),
             'url' => $this->get_url(),
         ];
     }

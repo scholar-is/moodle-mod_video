@@ -15,52 +15,51 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Comments component.
+ * Base tab.
  *
- * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @package    videotab_comments
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_video\component;
+namespace videotab_comments\videotab;
 
-use cm_info;
 use comment_exception;
+use mod_video\tab\base_tab;
 use moodle_exception;
-use renderable;
-use renderer_base;
-use templatable;
-
-defined('MOODLE_INTERNAL') || die;
-
-require_once("$CFG->dirroot/comment/lib.php");
+use cm_info;
 
 /**
- * Comments component.
+ * Base tab.
  *
- * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @package    videotab_comments
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class comments implements renderable, templatable {
-    /**
-     * Course module for comments.
-     * @var cm_info
-     */
-    private cm_info $cm;
+class comments_tab extends base_tab {
 
     /**
      * Constructor.
      * @param cm_info $cm
+     * @throws moodle_exception
      */
     public function __construct(cm_info $cm) {
+        parent::__construct($cm);
         global $PAGE;
-        $this->cm = $cm;
 
         $PAGE->requires->strings_for_js([
             'commentscount',
             'addcomment',
         ], 'moodle');
+    }
+
+    /**
+     * @throws moodle_exception
+     * @throws comment_exception
+     */
+    protected function get_data(): array {
+        return [
+            'commentshtml' => $this->get_comments()->output(true),
+        ];
     }
 
     /**
@@ -75,20 +74,23 @@ class comments implements renderable, templatable {
             'course'    => $this->cm->get_course(),
             'cm'        => $this->cm,
             'area'      => 'video_comments',
-            'showcount' => true,
+            'showcount' => false,
+            'notoggle'  => true,
+            'autostart' => true,
         ]);
     }
 
-    /**
-     * Data for template.
-     * @param renderer_base $output
-     * @return array
-     * @throws comment_exception
-     * @throws moodle_exception
-     */
-    public function export_for_template(renderer_base $output): array {
-        return [
-            'commentshtml' => $this->get_comments()->output(true),
-        ];
+    public function get_name(): string {
+        return 'comments';
+    }
+
+    public function get_title(): string {
+        global $DB;
+        $count = $DB->count_records('comments', ['contextid' => $this->cm->context->id]);
+        return get_string('commentswithcount', 'videotab_comments', $count);
+    }
+
+    public function show_tab(): bool {
+        return $this->instance->comments == "1";
     }
 }

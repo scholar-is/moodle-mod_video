@@ -17,9 +17,9 @@
 /**
  * Strings for component mod_video.
  *
- * @package   mod_video
- * @copyright 2023 Joseph Conradt <joeconradt@gmail.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_video
+ * @copyright  2023 Scholaris <joe@scholar.is>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['actions'] = 'Actions';
@@ -50,6 +50,8 @@ $string['control_restart'] = 'Restart playback';
 $string['control_rewind'] = 'Rewind by a few seconds';
 $string['control_settings'] = 'Settings menu';
 $string['control_volume'] = 'Volume control';
+$string['descriptioninsummary'] = 'Display description in video summary tab';
+$string['descriptioninsummary_help'] = 'Instead of displaying the description above the video in the activity header, the description will be below the video in the summary tab. Similar to popular video sharing platforms.';
 $string['disablecontextmenu'] = 'Disable context menu (right click)';
 $string['embedoptions'] = 'Embed options';
 $string['enabledebug'] = 'Enable debug mode';
@@ -88,6 +90,8 @@ $string['showcontrols'] = 'Show controls';
 $string['showcontrols_help'] = 'Select which controls to display in video player';
 $string['subplugintype_videoreport'] = 'Video report';
 $string['subplugintype_videoreport_plural'] = 'Video reports';
+$string['subplugintype_videotab'] = 'Video tab';
+$string['subplugintype_videotab_plural'] = 'Video tabs';
 $string['totalwatchtime'] = 'Total watch time';
 $string['video-mod-page-x'] = 'Any video module page';
 $string['video:addinstance'] = 'Add a new video';

@@ -17,7 +17,7 @@
 /**
  * Video lib functions.
  * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -133,7 +133,9 @@ function video_update_instance(stdClass $data, mod_video_mod_form $mform): bool 
  * @throws coding_exception
  */
 function video_delete_instance(int $id): bool {
-    global $DB;
+    global $DB, $CFG;
+
+    require_once("$CFG->dirroot/comment/lib.php");
 
     if (!$video = $DB->get_record('video', ['id' => $id])) {
         return false;
@@ -146,6 +148,10 @@ function video_delete_instance(int $id): bool {
     if (!$DB->delete_records('video', ['id' => $video->id])) {
         return false;
     }
+
+    comment::delete_comments([
+        'contextid' => context_module::instance($cm->id)->id,
+    ]);
 
     return true;
 }

@@ -1,5 +1,6 @@
 {
     "plugintypes": {
-        "videoreport": "mod/video/report"
+        "videoreport": "mod/video/report",
+        "videotab": "mod/video/tab"
     }
 }

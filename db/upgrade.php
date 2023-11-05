@@ -18,7 +18,7 @@
  * Upgrade scripts.
  *
  * @package    mod_video
- * @copyright  2023 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -48,6 +48,21 @@ function xmldb_video_upgrade(int $oldversion): bool {
 
         // Video savepoint reached.
         upgrade_mod_savepoint(true, 2023102101, 'video');
+    }
+
+    if ($oldversion < 2023110101) {
+
+        // Define field comments to be added to video.
+        $table = new xmldb_table('video');
+        $field = new xmldb_field('descriptioninsummary', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'comments');
+
+        // Conditionally launch add field comments.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2023110101, 'video');
     }
 
     return true;

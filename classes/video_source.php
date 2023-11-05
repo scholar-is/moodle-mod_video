@@ -18,7 +18,7 @@
  * Video source.
  *
  * @package    mod_video
- * @copyright  2022 Joseph Conradt <joeconradt@gmail.com>
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,7 +27,7 @@ namespace mod_video;
 use moodle_exception;
 
 /**
- * The mod_video instance list viewed event class.
+ * Video source.
  *
  * @package    mod_video
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
