@@ -41,14 +41,14 @@
     }
 }}
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs" id="video-tabs" role="tablist">
     {{#tabs}}
         <li class="nav-item">
-            <a class="nav-link {{#active}}active{{/active}}" id="{{name}}-tab" data-toggle="tab" href="#{{name}}-tab-link" role="tab" aria-controls="{{name}}" aria-selected="{{#active}}true{{/active}}">{{title}}</a>
+            <a class="nav-link {{#active}}active{{/active}}" id="{{name}}-tab" data-toggle="tab" href="#{{name}}-tab-link" role="tab" aria-controls="{{name}}-tab" aria-selected="{{#active}}true{{/active}}">{{title}}</a>
         </li>
     {{/tabs}}
 </ul>
-<div class="tab-content" id="myTabContent">
+<div class="tab-content" id="video-tabs-content">
     {{#tabs}}
         <div class="tab-pane fade {{#active}}show active{{/active}}" id="{{name}}-tab-link" role="tabpanel" aria-labelledby="{{name}}-tab">{{{content}}}</div>
     {{/tabs}}
