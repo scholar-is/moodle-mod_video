@@ -29,6 +29,7 @@ use coding_exception;
 use dml_exception;
 use mod_video\persistent\video_session;
 use mod_video\tab\tab_manager;
+use moodle_exception;
 use renderable;
 use renderer_base;
 use stdClass;
@@ -48,12 +49,16 @@ class video extends base_component {
      */
     private cm_info $cm;
 
+    /**
+     * Video instance.
+     * @var stdClass
+     */
     private stdClass $video;
 
     /**
      * Constructor.
      * @param cm_info $cm
-     * @throws \moodle_exception
+     * @throws moodle_exception
      */
     public function __construct(cm_info $cm) {
         global $DB;
