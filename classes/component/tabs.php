@@ -25,6 +25,7 @@
 namespace mod_video\component;
 
 use cm_info;
+use coding_exception;
 use comment_exception;
 use mod_video\tab\base_tab;
 use moodle_exception;
@@ -44,11 +45,21 @@ require_once("$CFG->dirroot/comment/lib.php");
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tabs extends base_component {
-    protected function get_data() {
+    /**
+     * Get data for template specific to this component.
+     * @return array
+     */
+    protected function get_data(): array {
         return [];
     }
 
-    public function export_for_template(renderer_base $output) {
+    /**
+     * Get data for template.
+     * @param renderer_base $output
+     * @return array
+     * @throws coding_exception
+     */
+    public function export_for_template(renderer_base $output): array {
         $data = parent::export_for_template($output);
         $data['tabs'] = [];
 
@@ -63,12 +74,12 @@ class tabs extends base_component {
         });
 
         $first = true;
+        /** @var base_tab $tab */
         foreach ($tabs as $tab) {
-            /** @var base_tab $tab */
             $data['tabs'][] = [
                 'title' => $tab->get_title(),
                 'name' => $tab->get_name(),
-                'content' => $data[$tab->get_name()], // Make sure $data[$name] contains the correct content.
+                'content' => $data[$tab->get_name()],
                 'active' => $first,
             ];
 

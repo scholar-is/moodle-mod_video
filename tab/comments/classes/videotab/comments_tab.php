@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Base tab.
+ * Displays video comments in a tab.
  *
  * @package    videotab_comments
  * @copyright  2023 Scholaris <joe@scholar.is>
@@ -24,13 +24,15 @@
 
 namespace videotab_comments\videotab;
 
+use coding_exception;
 use comment_exception;
+use dml_exception;
 use mod_video\tab\base_tab;
 use moodle_exception;
 use cm_info;
 
 /**
- * Base tab.
+ * Displays video comments in a tab.
  *
  * @package    videotab_comments
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -53,6 +55,7 @@ class comments_tab extends base_tab {
     }
 
     /**
+     * Get data for template.
      * @throws moodle_exception
      * @throws comment_exception
      */
@@ -80,16 +83,30 @@ class comments_tab extends base_tab {
         ]);
     }
 
+    /**
+     * Get unique name for tab.
+     * @return string
+     */
     public function get_name(): string {
         return 'comments';
     }
 
+    /**
+     * Get human-readable title for tab.
+     * @return string
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function get_title(): string {
         global $DB;
         $count = $DB->count_records('comments', ['contextid' => $this->cm->context->id]);
         return get_string('commentswithcount', 'videotab_comments', $count);
     }
 
+    /**
+     * Check if the tab should be displayed or not.
+     * @return bool
+     */
     public function show_tab(): bool {
         return $this->instance->comments == "1";
     }

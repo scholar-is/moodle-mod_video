@@ -25,8 +25,10 @@
 namespace mod_video\tab;
 
 use cm_info;
+use dml_exception;
 use mod_video\component\base_component;
 use moodle_exception;
+use stdClass;
 
 /**
  * Base tab.
@@ -37,12 +39,23 @@ use moodle_exception;
 abstract class base_tab extends base_component {
 
     /**
+     * Video course module.
      * @var cm_info
      */
     protected cm_info $cm;
 
-    protected \stdClass $instance;
+    /**
+     * Video activity instance.
+     * @var stdClass
+     */
+    protected stdClass $instance;
 
+    /**
+     * Constructor.
+     * @param cm_info $cm
+     * @throws dml_exception
+     * @throws moodle_exception
+     */
     public function __construct(cm_info $cm) {
         global $DB;
         if ($cm->modname !== 'video') {
@@ -52,11 +65,28 @@ abstract class base_tab extends base_component {
         $this->instance = $DB->get_record('video', ['id' => $this->cm->instance], '*', MUST_EXIST);
     }
 
+    /**
+     * Get unique name for tab.
+     * @return string
+     */
     abstract public function get_name(): string;
+
+    /**
+     * Get human-readable title for tab.
+     * @return string
+     */
     abstract public function get_title(): string;
 
+    /**
+     * Check if tab should be displayed or not.
+     * @return bool
+     */
     abstract public function show_tab(): bool;
 
+    /**
+     * Get sequence for ordering tabs.
+     * @return int
+     */
     public function get_order_sequence(): int {
         return 100;
     }

@@ -17,16 +17,24 @@
 namespace mod_video\output;
 
 use core\output\activity_header as base_activity_header;
+use moodle_page;
+use stdClass;
 
+/**
+ * Override activity header component.
+ *
+ * @package    mod_video
+ * @copyright  2022 Scholaris <joe@scholar.is>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class activity_header extends base_activity_header {
 
     /**
-     * Constructor for activity_header
-     *
+     * Constructor for activity_header.
      * @param moodle_page $page
-     * @param \stdClass $user
+     * @param stdClass $user
      */
-    public function __construct(\moodle_page $page, \stdClass $user) {
+    public function __construct(\moodle_page $page, stdClass $user) {
         parent::__construct($page, $user);
 
         if ($page->activityrecord && $page->activityrecord->descriptioninsummary) {

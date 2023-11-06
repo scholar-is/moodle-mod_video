@@ -24,8 +24,7 @@
 
 namespace mod_video\component;
 
-use cm_info;
-use moodle_exception;
+use coding_exception;
 use renderable;
 use renderer_base;
 use templatable;
@@ -34,31 +33,47 @@ use templatable;
  * Base tab.
  *
  * @package    mod_video
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class base_component implements renderable, templatable {
     /**
+     * Child components which are rendered along with the parent.
      * @var base_component[]
      */
-    private $childcomponents = [];
+    private array $childcomponents = [];
 
-    public function add_childcomponent(string $name, base_component $childcomponent) {
+    /**
+     * Add child component to this component.
+     * @param string $name
+     * @param base_component $childcomponent
+     * @return void
+     */
+    public function add_childcomponent(string $name, base_component $childcomponent): void {
         $this->childcomponents[$name] = $childcomponent;
     }
 
     /**
+     * Get all child components that belong to this component.
      * @return base_component[]
      */
     public function get_childcomponents(): array {
         return $this->childcomponents;
     }
 
-    abstract protected function get_data();
+    /**
+     * Get data for template specific to this component.
+     * @return array
+     */
+    abstract protected function get_data(): array;
 
     /**
-     * @throws \coding_exception
+     * Get data for template.
+     * @param renderer_base $output
+     * @return array
+     * @throws coding_exception
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output): array {
         $data = $this->get_data();
 
         foreach ($this->childcomponents as $name => $component) {

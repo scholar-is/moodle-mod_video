@@ -1,4 +1,4 @@
-@mod @mod_video @mod_video_comments
+@mod @mod_video @videotab_comments
 Feature: Add comments to videos
   In order to increase engagement and provide feedback
   As a student
@@ -22,13 +22,13 @@ Feature: Add comments to videos
       | video           | Test youtube no comments | 2        | C1     | youtube | jNQXAC9IVRw | 1     | 0        |
     And I log in as "teacher1"
     And I am on the "Test youtube" "video activity" page
-    And I click on ".comment-link" "css_element"
+    And I click on "#comments-tab" "css_element"
     And I set the field with xpath "//div[@class='comment-area']//textarea" to "Comment from teacher"
     And I click on "//div[@class='comment-area']//a[contains(text(), 'Save comment')]" "xpath_element"
     And I log out
     And I log in as "student1"
     And I am on the "Test youtube" "video activity" page
-    And I click on ".comment-link" "css_element"
+    And I click on "#comments-tab" "css_element"
     And I set the field with xpath "//div[@class='comment-area']//textarea" to "Comment from student"
     And I click on "//div[@class='comment-area']//a[contains(text(), 'Save comment')]" "xpath_element"
 
@@ -36,7 +36,7 @@ Feature: Add comments to videos
   Scenario: Comment on a video
     Given I log in as "student1"
     And I am on the "Test youtube" "video activity" page
-    Then I click on ".comment-link" "css_element"
+    Then I click on "#comments-tab" "css_element"
     And I set the field with xpath "//div[@class='comment-area']//textarea" to "This is my comment"
     And I should see "Save comment"
     And I click on "//div[@class='comment-area']//a[contains(text(), 'Save comment')]" "xpath_element"
@@ -46,7 +46,7 @@ Feature: Add comments to videos
   Scenario: Delete comment as teacher
     And I log in as "teacher1"
     And I am on the "Test youtube" "video activity" page
-    And I click on ".comment-link" "css_element"
+    And I click on "#comments-tab" "css_element"
     # Delete 2nd (student) comment.
     And I click on "(//div[@class='comment-delete']/a)[2]" "xpath_element"
     And I should not see "Comment from student"
@@ -61,7 +61,7 @@ Feature: Add comments to videos
     And I log out
     And I log in as "student1"
     And I am on the "Test youtube" "video activity" page
-    And I click on ".comment-link" "css_element"
+    And I click on "#comments-tab" "css_element"
     And I should see "Comment from teacher"
     And I should see "Comment from student"
     And I should not see "Save comment"

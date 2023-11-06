@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Base tab.
+ * Display overview (activity description) in tab.
  *
  * @package    videotab_overview
  * @copyright  2023 Scholaris <joe@scholar.is>
@@ -24,34 +24,56 @@
 
 namespace videotab_overview\videotab;
 
+use coding_exception;
 use mod_video\tab\base_tab;
 
 /**
- * Base tab.
+ * Display overview (activity description) in tab.
  *
  * @package    videotab_overview
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class overview_tab extends base_tab {
-    protected function get_data() {
+    /**
+     * Get template data.
+     * @return array
+     */
+    protected function get_data(): array {
         $activitydescription = format_module_intro('video', $this->instance, $this->cm->id);
         return [
             'activitydescription' => $activitydescription,
         ];
     }
 
+    /**
+     * Get unique name for template.
+     * @return string
+     */
     public function get_name(): string {
         return 'overview';
     }
 
+    /**
+     * Get human-readable title for tab.
+     * @return string
+     * @throws coding_exception
+     */
     public function get_title(): string {
         return get_string('overview', 'videotab_overview');
     }
 
+    /**
+     * Check if the tab should be displayed or not.
+     * @return bool
+     */
     public function show_tab(): bool {
         return $this->instance->descriptioninsummary == '1';
     }
 
+    /**
+     * Get the sequence for ordering tabs.
+     * @return int
+     */
     public function get_order_sequence(): int {
         return 0; // Overview should always be first.
     }
