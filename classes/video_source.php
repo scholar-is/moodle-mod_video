@@ -69,9 +69,27 @@ abstract class video_source {
      */
     public static function get_video_sources(): array {
         $sources = [];
-        foreach (array_keys(\core_component::get_component_classes_in_namespace('mod_video', 'video_sources')) as $class) {
-            $sources[] = new $class();
+        foreach (array_keys(\core_component::get_component_classes_in_namespace(null, 'videosource')) as $class) {
+            if (is_subclass_of($class, self::class)) {
+                $sources[] = new $class();
+            }
         }
         return $sources;
+    }
+
+    /**
+     * Does this source have an API for querying videos?
+     * @return bool
+     */
+    public function has_api(): bool {
+        return false;
+    }
+
+    /**
+     * Check if video source is fully configured.
+     * @return bool
+     */
+    public function is_configured(): bool {
+        return true;
     }
 }

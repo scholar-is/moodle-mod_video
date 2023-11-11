@@ -15,45 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video source.
+ * Subplugin info class.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace mod_video\plugininfo;
 
-namespace mod_video\video_sources;
-
-use lang_string;
-use mod_video\video_source;
+use core\plugininfo\base;
 
 /**
- * Vimeo video source.
+ * Video source subplugin info class.
+ *
  * @package    mod_video
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class vimeo extends video_source {
+class videosource extends base {
     /**
-     * Get source type.
-     * @return string
+     * Allow the video tab subplugin be uninstalled.
+     *
+     * @return boolean
      */
-    public function get_type(): string {
-        return 'vimeo';
-    }
-
-    /**
-     * Get source name.
-     * @return string
-     */
-    public function get_name(): string {
-        return new lang_string('pluginname', 'media_vimeo'); // Already translated.
-    }
-
-    /**
-     * Get source icon.
-     * @return string
-     */
-    public function get_icon(): string {
-        return 'vimeo';
+    public function is_uninstall_allowed() {
+        return true;
     }
 }

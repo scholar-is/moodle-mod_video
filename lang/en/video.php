@@ -90,6 +90,8 @@ $string['showcontrols'] = 'Show controls';
 $string['showcontrols_help'] = 'Select which controls to display in video player';
 $string['subplugintype_videoreport'] = 'Video report';
 $string['subplugintype_videoreport_plural'] = 'Video reports';
+$string['subplugintype_videosource'] = 'Video source';
+$string['subplugintype_videosource_plural'] = 'Video sources';
 $string['subplugintype_videotab'] = 'Video tab';
 $string['subplugintype_videotab_plural'] = 'Video tabs';
 $string['totalwatchtime'] = 'Total watch time';
@@ -101,3 +103,4 @@ $string['video:viewreports'] = 'View reports';
 $string['videodetails'] = 'Video details';
 $string['videofile'] = 'Video file';
 $string['watchpercentage'] = 'Watch percentage';
+
