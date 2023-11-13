@@ -67,7 +67,7 @@ if (empty($responsedata['access_token'])) {
     die('Invalid access token response.');
 }
 
-set_config('access_token', $responsedata['access_token'], 'videosource_vimeo');
+set_config('accesstoken', $responsedata['access_token'], 'videosource_vimeo');
 
 redirect(
     new moodle_url('/admin/settings.php?section=videosource_vimeo'),

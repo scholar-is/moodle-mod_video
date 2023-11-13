@@ -85,6 +85,7 @@ $string['report'] = 'Report';
 $string['resume'] = 'Resume playback';
 $string['resume_help'] = 'Playback will resume where user previously left off.';
 $string['search:activity'] = 'Video';
+$string['searchvideos'] = 'Search videos';
 $string['sessionnotfound'] = 'Video session not found';
 $string['showcontrols'] = 'Show controls';
 $string['showcontrols_help'] = 'Select which controls to display in video player';
@@ -102,5 +103,7 @@ $string['video:view'] = 'View video activities';
 $string['video:viewreports'] = 'View reports';
 $string['videodetails'] = 'Video details';
 $string['videofile'] = 'Video file';
+$string['videoid'] = 'Video ID';
+$string['videoid_help'] = 'Video unique ID. Not the full URL. Examples: https://vimeo.com/347119375. The ID for this Vimeo video is 347119375.';
 $string['watchpercentage'] = 'Watch percentage';
 

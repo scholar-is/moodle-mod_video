@@ -43,5 +43,14 @@ $functions = [
         'capabilities' => 'mod/video:view',
         'ajax'         => true,
     ],
+    'mod_video_query_videos' => [
+        'classname'    => 'mod_video\external\external',
+        'methodname'   => 'query_videos',
+        'classpath'    => '',
+        'description'  => 'Query videos.',
+        'type'         => 'read',
+        'capabilities' => '',
+        'ajax'         => true,
+    ],
 ];
 

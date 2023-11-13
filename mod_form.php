@@ -43,7 +43,11 @@ class mod_video_mod_form extends moodleform_mod {
      * @throws moodle_exception
      */
     public function definition(): void {
-        global $CFG;
+        global $CFG, $PAGE;
+
+        $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
+            'uniqueid' => 'modform',
+        ]);
 
         $mform = $this->_form;
 
@@ -76,9 +80,19 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addGroup($radioarray, 'radioar', 'Type', [' '], false);
         $mform->setDefault('type', 'vimeo');
 
-        $mform->addElement('text', 'videoid', 'Video ID');
-        $mform->setType('videoid', PARAM_TEXT);
-        $mform->hideIf('videoid', 'type', 'in', ['internal', 'external']);
+//        $mform->addElement('text', 'videoid', 'Video ID');
+//        $mform->setType('videoid', PARAM_TEXT);
+//        $mform->hideIf('videoid', 'type', 'in', ['internal', 'external']);
+
+        $group = [];
+        $group[] = $mform->createElement('text', 'videoid', 'Video ID');
+        $group[] = $mform->createElement('button', 'searchvideos', get_string('searchvideos', 'video'));
+        $mform->addGroup($group, 'videoidgroup', get_string('videoid', 'video'), null, false);
+        $mform->addHelpButton('videoidgroup', 'videoid', 'video');
+        $mform->setType('videoid', PARAM_INT);
+        $mform->setType('videoidgroup', PARAM_RAW);
+        $mform->hideIf('videoidgroup', 'type', 'in', ['internal', 'external']);
+
 
         $mform->addElement('url', 'externalurl', get_string('externalurl', 'url'), ['size' => '60'], ['usefilepicker' => true]);
         $mform->setType('externalurl', PARAM_RAW_TRIMMED);

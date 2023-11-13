@@ -92,4 +92,13 @@ abstract class video_source {
     public function is_configured(): bool {
         return true;
     }
+
+    /**
+     * Query videos from this video source.
+     * @param string $query
+     * @return array
+     */
+    public function query(string $query): array {
+        return [];
+    }
 }
