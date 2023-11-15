@@ -51,53 +51,37 @@
     }
 }}
 
+<p>{{#str}}connectvimeoinstructions, videosource_vimeo{{/str}}</p>
 <table class="table">
     <thead>
         <tr>
-            <th>Step</th>
-            <th>Instructions</th>
+            <th>{{#str}}step, videosource_vimeo{{/str}}</th>
+            <th>{{#str}}instructions, videosource_vimeo{{/str}}</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Create Vimeo app</td>
+            <td>{{#str}}createvimeoapp, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}createvimeoappinstructions, videosource_vimeo{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}addcallbackurl, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}addcallbackurlinstructions, videosource_vimeo, {{{callbackurl}}}{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}configuremoodle, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}configuremoodleinstructions, videosource_vimeo{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}authorizewithvimeo, videosource_vimeo{{/str}}</td>
             <td>
-                <ol>
-                    <li>Go to <a target="_blank" href="https://developer.vimeo.com/apps">https://developer.vimeo.com/apps</a></li>
-                    <li>Click "Create an app"</li>
-                    <li>Give your app a name and description</li>
-                    <li>Click create</li>
-                    <li>Click "Add URL" to "Your callback URLs", enter xyz</li>
-                </ol>
+                {{#str}}authorizewithvimeoinstructions, videosource_vimeo{{/str}}
+                {{> videosource_vimeo/authorize_button }}
             </td>
         </tr>
         <tr>
-            <td>Add callback URL to Vimeo app</td>
-            <td>
-                <ol>
-                    <li>Click "Add URL" to "Your callback URLs"</li>
-                    <li>Enter <code>{{callbackurl}}</code></li>
-                    <li>Click Add</li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>Configure Moodle</td>
-            <td>
-                <ol>
-                    <li>Copy <b>Client identifier</b> from your Vimeo app and paste it below</li>
-                    <li>Copy <b>Client secret</b> from your Vimeo app and paste it below</li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>Authorize with Vimeo account</td>
-            <td>
-                <ol>
-                    <li>Ensure you login with the desired Vimeo account</li>
-                    <li><a href="{{{authorizationurl}}}" class="btn btn-primary">Authorize</a></li>
-                </ol>
-            </td>
+            <td>{{#str}}startusingvimeo, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}startusingvimeoinstructions, videosource_vimeo{{/str}}</td>
         </tr>
     </tbody>
 </table>

@@ -23,6 +23,7 @@
  */
 
 use mod_video\video_source;
+use videosource_vimeo\videosource\vimeo;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -46,7 +47,14 @@ class mod_video_mod_form extends moodleform_mod {
         global $CFG, $PAGE;
 
         $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
-            'uniqueid' => 'modform',
+            'uniqueid' => 'modform_vimeo',
+            'videoSourceType' => 'vimeo',
+            'debug' => $this->current && $this->current->debug === "1",
+        ]);
+        $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
+            'uniqueid' => 'modform_youtube',
+            'videoSourceType' => 'youtube',
+            'debug' => $this->current && $this->current->debug === "1",
         ]);
 
         $mform = $this->_form;
@@ -80,19 +88,19 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addGroup($radioarray, 'radioar', 'Type', [' '], false);
         $mform->setDefault('type', 'vimeo');
 
-//        $mform->addElement('text', 'videoid', 'Video ID');
-//        $mform->setType('videoid', PARAM_TEXT);
-//        $mform->hideIf('videoid', 'type', 'in', ['internal', 'external']);
-
         $group = [];
         $group[] = $mform->createElement('text', 'videoid', 'Video ID');
-        $group[] = $mform->createElement('button', 'searchvideos', get_string('searchvideos', 'video'));
+        if ((new vimeo())->is_configured()) {
+            $group[] = $mform->createElement('button', 'searchvideos_vimeo', get_string('searchvideos', 'video'));
+        } else if (is_siteadmin()) {
+            $group[] = $mform->createElement('button', 'searchvideos_vimeo', get_string('searchvideos', 'video'));
+        }
+        $group[] = $mform->createElement('button', 'searchvideos_youtube', get_string('searchvideos', 'video'));
         $mform->addGroup($group, 'videoidgroup', get_string('videoid', 'video'), null, false);
         $mform->addHelpButton('videoidgroup', 'videoid', 'video');
         $mform->setType('videoid', PARAM_INT);
         $mform->setType('videoidgroup', PARAM_RAW);
         $mform->hideIf('videoidgroup', 'type', 'in', ['internal', 'external']);
-
 
         $mform->addElement('url', 'externalurl', get_string('externalurl', 'url'), ['size' => '60'], ['usefilepicker' => true]);
         $mform->setType('externalurl', PARAM_RAW_TRIMMED);

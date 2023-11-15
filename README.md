@@ -58,3 +58,5 @@ I was the original developer of VideoTime, which offers many features at a premi
 My goal with this plugin is to give back to the community by making all features free, forever. At this point I cannot recommend one plugin over the other,
 but I do plan on adding more features to this plugin over time.
 
+#### Can you add support for other video platforms (besides Vimeo and YouTube)?
+Yes, please contact me via email [joe@scholar.is](mailto:joe@scholar.is).

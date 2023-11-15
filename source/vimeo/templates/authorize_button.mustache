@@ -1,0 +1,7 @@
+{{^configured}}
+    <a href="{{{authorizationurl}}}" class="btn btn-primary">{{#str}}authorize, videosource_vimeo{{/str}}</a>
+{{/configured}}
+{{#configured}}
+    <a href="{{{authorizationurl}}}" class="btn btn-secondary">{{#str}}reauthorize, videosource_vimeo{{/str}}</a>
+    <span class="text-success">{{#str}}done, videosource_vimeo{{/str}}</span>
+{{/configured}}

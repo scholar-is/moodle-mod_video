@@ -1,11 +1,12 @@
 import Ajax from 'core/ajax';
-import {exception as displayException} from 'core/notification';
+import Notification from 'core/notification';
 import Templates from 'core/templates';
 
 export default class VideoManager {
 
-    constructor(uniqueId, options) {
+    constructor(uniqueId, videoSourceType, options) {
         this.uniqueId = uniqueId;
+        this.videoSourceType = videoSourceType;
         this.options = options;
 
         this.root = document.getElementById('video-manager-' + this.uniqueId);
@@ -46,7 +47,11 @@ export default class VideoManager {
     async query() {
         this.log("video_manager:query", this.searchInput.value);
         this.setLoading(true);
-        this.videoResults = (await this.queryVideos(this.searchInput.value)).results;
+        try {
+            this.videoResults = (await this.queryVideos(this.searchInput.value)).results;
+        } catch(e) {
+            await Notification.exception(e);
+        }
     }
 
     async refreshResults() {
@@ -57,13 +62,9 @@ export default class VideoManager {
 
         this.resultContainer.innerHTML = renderedResults.join('');
 
-        const queryString = `#video-manager-${this.uniqueId} .select-video-button`;
         const buttons = document.querySelectorAll(`#video-manager-${this.uniqueId} .select-video-button`);
 
-        console.log(queryString, buttons);
-
         buttons.forEach((button) => {
-            console.log(button);
             button.addEventListener('click', (e) => {
                 const selectedVideoResult = this.videoResults.videos.find((r) => r.videoid === e.target.dataset.videoid);
                 if (this.options.onVideoSelect) {
@@ -87,7 +88,8 @@ export default class VideoManager {
         return Ajax.call([{
             methodname: 'mod_video_query_videos',
             args: {
-                query
+                query,
+                videosourcetype: this.videoSourceType,
             }
         }])[0];
     }

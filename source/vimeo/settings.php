@@ -22,16 +22,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use videosource_vimeo\admin_setting_authorize;
 use videosource_vimeo\component\vimeo_setup_wizard;
 use videosource_vimeo\videosource\vimeo;
 
 $renderer = $PAGE->get_renderer('video');
 $settings = new admin_settingpage(
     'videosource_vimeo',
-    get_string('pluginname', 'videosource_vimeo'),
+    get_string('connectvimeo', 'videosource_vimeo'),
 );
 
-$settings->add(new admin_setting_heading('test', '', $renderer->render(new vimeo_setup_wizard(new vimeo()))));
+$settings->add(new admin_setting_heading(
+    'vimeoinstructions',
+    get_string('gettingstarted', 'videosource_vimeo'),
+    $renderer->render(new vimeo_setup_wizard(new vimeo())))
+);
+
+$settings->add(new admin_setting_heading('vimeoconfiguration', get_string('configuration', 'videosource_vimeo'), get_string('configurationinstructions', 'videosource_vimeo')));
 
 $settings->add(new admin_setting_configtext(
     'videosource_vimeo/clientid',
@@ -47,6 +54,12 @@ $settings->add(new admin_setting_configtext(
     get_string('clientsecret_desc', 'videosource_vimeo'),
     '',
     PARAM_TEXT
+));
+
+$settings->add(new admin_setting_authorize(
+    'videosource_vimeo/authorize',
+    get_string('authorize', 'videosource_vimeo'),
+    get_string('authorizewithvimeo', 'videosource_vimeo'),
 ));
 
 $ADMIN->add('modvideofolder', $settings);

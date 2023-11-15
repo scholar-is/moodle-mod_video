@@ -36,6 +36,7 @@ use invalid_parameter_exception;
 use mod_video\exception\module_not_found;
 use mod_video\exception\session_not_found;
 use mod_video\persistent\video_session;
+use mod_video\video_source;
 use moodle_exception;
 use restricted_context_exception;
 use videosource_vimeo\videosource\vimeo;
@@ -225,6 +226,7 @@ class external extends external_api {
     public static function query_videos_parameters(): external_function_parameters {
         return new external_function_parameters([
             'query' => new \external_value(PARAM_TEXT, 'Video search query.'),
+            'videosourcetype' => new \external_value(PARAM_TEXT, 'Search this video source'),
         ]);
     }
 
@@ -243,18 +245,31 @@ class external extends external_api {
      * @throws moodle_exception
      * @throws session_not_found
      */
-    public static function query_videos($query): array {
-        global $DB;
-
+    public static function query_videos($query, $videosourcetype): array {
         $params = self::validate_parameters(self::query_videos_parameters(), [
             'query' => $query,
+            'videosourcetype' => $videosourcetype,
         ]);
 
         $context = \context_system::instance();
         self::validate_context($context);
 
-        $vimeo = new vimeo();
-        return ['results' => $vimeo->query($params['query'])];
+        $videosource = null;
+        foreach (video_source::get_video_sources() as $vs) {
+            if ($vs->get_type() == $params['videosourcetype']) {
+                $videosource = $vs;
+            }
+        }
+
+        if (!$videosource) {
+            throw new moodle_exception('cannot find video source ' . $params['videosourcetype']);
+        }
+
+        if (!$videosource->has_api()) {
+            throw new moodle_exception('Video source does not support querying videos.');
+        }
+
+        return ['results' => $videosource->query($params['query'])];
     }
 
     /**
