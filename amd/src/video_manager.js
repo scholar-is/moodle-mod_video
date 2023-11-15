@@ -12,8 +12,12 @@ export default class VideoManager {
         this.resultContainer = document.querySelector(`#video-manager-${this.uniqueId} .card-columns`);
         this.searchInput = document.querySelector(`#video-manager-${this.uniqueId} input[name=search-videos-value]`);
         this.searchButton = document.querySelector(`#video-manager-${this.uniqueId} .search-videos-button`);
+        this.loadingIconContainer = document.querySelector(`#video-manager-${this.uniqueId} .loading-icon-container`);
 
-        this.videoResults = [];
+        this.videoResults = {
+            total: 0,
+            videos: [],
+        };
 
         void this.init();
     }
@@ -23,8 +27,6 @@ export default class VideoManager {
         this.log("video_manager:init:options", this.options);
 
         this.searchButton.addEventListener('click', async () => {
-            console.log("CLICK");
-
             await this.query();
             await this.refreshResults();
         });
@@ -36,14 +38,19 @@ export default class VideoManager {
                 await this.refreshResults();
             }
         });
+
+        await this.query();
+        await this.refreshResults();
     }
 
     async query() {
+        this.log("video_manager:query", this.searchInput.value);
+        this.setLoading(true);
         this.videoResults = (await this.queryVideos(this.searchInput.value)).results;
     }
 
     async refreshResults() {
-        const renderedResults = await Promise.all(this.videoResults.map(async (videoResult) => {
+        const renderedResults = await Promise.all(this.videoResults.videos.map(async (videoResult) => {
             const { html } = await Templates.renderForPromise('mod_video/video_manager_result', videoResult);
             return html;
         }));
@@ -58,12 +65,22 @@ export default class VideoManager {
         buttons.forEach((button) => {
             console.log(button);
             button.addEventListener('click', (e) => {
-                const selectedVideoResult = this.videoResults.find((r) => r.videoid === e.target.dataset.videoid);
+                const selectedVideoResult = this.videoResults.videos.find((r) => r.videoid === e.target.dataset.videoid);
                 if (this.options.onVideoSelect) {
                     this.options.onVideoSelect(selectedVideoResult);
                 }
             });
         });
+
+        this.setLoading(false);
+    }
+
+    setLoading(loading) {
+        if (loading) {
+            this.loadingIconContainer.classList.remove('hidden');
+        } else {
+            this.loadingIconContainer.classList.add('hidden');
+        }
     }
 
     queryVideos(query) {

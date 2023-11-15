@@ -23,5 +23,9 @@ export function init(uniqueId) {
                 );
             }
         });
+
+        modal.getRoot().on('click', '.close-button', () => {
+            modal.hide();
+        });
     });
 }

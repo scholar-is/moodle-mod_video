@@ -28,6 +28,7 @@ $string['allowcomments_help'] = 'If enabled, users can comment below the video.'
 $string['autoplay'] = 'Autoplay';
 $string['autoplay_help'] = 'Autoplay may be blocked by the user\'s browser.';
 $string['cannotforwardseek'] = 'You cannot skip forward for this video.';
+$string['close'] = 'Close';
 $string['completiondetail:completiononpercent'] = 'Watch video';
 $string['completiondetail:completiononplay'] = 'Play video';
 $string['completiondetail:completiononviewtime'] = 'Watch video';

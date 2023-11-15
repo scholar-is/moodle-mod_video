@@ -264,12 +264,15 @@ class external extends external_api {
      */
     public static function query_videos_returns(): external_single_structure {
         return new external_single_structure([
-            'results' => new \external_multiple_structure(new external_single_structure([
-                'videoid' => new \external_value(PARAM_TEXT),
-                'title' => new \external_value(PARAM_TEXT),
-                'thumbnail' => new \external_value(PARAM_URL),
-                'description' => new \external_value(PARAM_TEXT),
-            ])),
+            'results' => new external_single_structure([
+                'videos' => new \external_multiple_structure(new external_single_structure([
+                    'videoid' => new \external_value(PARAM_TEXT),
+                    'title' => new \external_value(PARAM_TEXT),
+                    'thumbnail' => new \external_value(PARAM_URL),
+                    'description' => new \external_value(PARAM_TEXT),
+                ])),
+                'total' => new \external_value(PARAM_INT),
+            ]),
         ]);
     }
 }

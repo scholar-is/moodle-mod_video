@@ -112,10 +112,13 @@ class vimeo extends video_source {
             'query' => $query,
         ]);
 
-        $results = [];
+        $results = [
+            'videos' => [],
+            'total' => $result['body']['total'],
+        ];
         foreach ($result['body']['data'] as $video) {
             $thumbnail = isset($video['pictures']['sizes'][2]) ? $video['pictures']['sizes'][2]['link'] : '';
-            $results[] = [
+            $results['videos'][] = [
                 'videoid' => explode('/', $video['uri'])[2],
                 'title' => $video['name'],
                 'description' => $video['description'],
