@@ -1,0 +1,11 @@
+{{< core/modal }}
+    {{$title}}{{#str}}searchvideos, mod_video{{/str}}{{/title}}
+    {{$body}}
+        <div>
+            {{> mod_video/video_manager_ui }}
+        </div>
+    {{/body}}
+    {{$footer}}
+        <button type="button" class="btn btn-secondary close-button">{{#str}}close, mod_video{{/str}}</button>
+    {{/footer}}
+{{/ core/modal }}

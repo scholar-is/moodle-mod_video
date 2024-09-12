@@ -15,18 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Strings for the video source subplugin.
  *
- * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @package    videosource_youtube
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+$string['pluginname'] = 'YouTube';
+$string['youtubeid'] = 'YouTube video ID';
+$string['youtubeid_help'] = 'Each YouTube video has a unique ID. You can find the ID in the video\'s URL. For example, given the URL https://www.youtube.com/watch?v=jNQXAC9IVRw the video ID is jNQXAC9IVRw';
 
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics).
-$plugin->version   = 2023111102;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2019111809;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs).
-$plugin->release   = '0.1';
-$plugin->maturity  = MATURITY_BETA;

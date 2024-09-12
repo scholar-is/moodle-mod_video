@@ -15,18 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Strings for the video source subplugin.
  *
- * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @package    videosource_external
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics).
-$plugin->version   = 2023111102;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2019111809;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs).
-$plugin->release   = '0.1';
-$plugin->maturity  = MATURITY_BETA;
+$string['pluginname'] = 'URL';

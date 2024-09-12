@@ -17,28 +17,29 @@
 /**
  * Video source.
  *
- * @package    mod_video
+ * @package    videosource_internal
  * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_video\video_sources;
+namespace videosource_internal\videosource;
 
 use lang_string;
 use mod_video\video_source;
 
 /**
- * External video source.
- * @package    mod_video
+ * Internal video source.
+ * @package    videosource_internal
+ * @copyright  2022 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external extends video_source {
+class internal extends video_source {
     /**
      * Get source type.
      * @return string
      */
     public function get_type(): string {
-        return 'external';
+        return 'internal';
     }
 
     /**
@@ -46,7 +47,7 @@ class external extends video_source {
      * @return string
      */
     public function get_name(): string {
-        return new lang_string('externalurl', 'video');
+        return new lang_string('videofile', 'video');
     }
 
     /**
@@ -54,6 +55,6 @@ class external extends video_source {
      * @return string
      */
     public function get_icon(): string {
-        return 'link';
+        return 'file';
     }
 }

@@ -1,0 +1,76 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_video/video
+
+    Template for displaying vimeo help table.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * configured - Is the Vimeo integration fully configured?
+    * hasclientinfo - Is the client ID and secret configured?
+    * authorizationurl - Authorize with Vimeo URL
+    * callbackurl - Vimeo app callback URL
+
+    Example context (json):
+    {
+        "configured": true,
+        "hasclientinfo": true,
+        "authorizationurl": "https://vimeo.com",
+        "callbackurl": "https://moodle.com"
+    }
+}}
+
+<p>{{#str}}connectvimeoinstructions, videosource_vimeo{{/str}}</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{#str}}step, videosource_vimeo{{/str}}</th>
+            <th>{{#str}}instructions, videosource_vimeo{{/str}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{#str}}createvimeoapp, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}createvimeoappinstructions, videosource_vimeo{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}addcallbackurl, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}addcallbackurlinstructions, videosource_vimeo, {{{callbackurl}}}{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}configuremoodle, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}configuremoodleinstructions, videosource_vimeo{{/str}}</td>
+        </tr>
+        <tr>
+            <td>{{#str}}authorizewithvimeo, videosource_vimeo{{/str}}</td>
+            <td>
+                {{#str}}authorizewithvimeoinstructions, videosource_vimeo{{/str}}
+                {{> videosource_vimeo/authorize_button }}
+            </td>
+        </tr>
+        <tr>
+            <td>{{#str}}startusingvimeo, videosource_vimeo{{/str}}</td>
+            <td>{{#str}}startusingvimeoinstructions, videosource_vimeo{{/str}}</td>
+        </tr>
+    </tbody>
+</table>

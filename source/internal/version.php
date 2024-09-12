@@ -15,45 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video source.
+ * Video source plugin version info.
  *
- * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @package    videosource_internal
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_video\video_sources;
+defined('MOODLE_INTERNAL') || die();
 
-use lang_string;
-use mod_video\video_source;
-
-/**
- * Internal video source.
- * @package    mod_video
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class internal extends video_source {
-    /**
-     * Get source type.
-     * @return string
-     */
-    public function get_type(): string {
-        return 'internal';
-    }
-
-    /**
-     * Get source name.
-     * @return string
-     */
-    public function get_name(): string {
-        return new lang_string('videofile', 'video');
-    }
-
-    /**
-     * Get source icon.
-     * @return string
-     */
-    public function get_icon(): string {
-        return 'file';
-    }
-}
+$plugin->version  = 2023101700;
+$plugin->requires = 2019111809;
+$plugin->component = 'videosource_internal';
