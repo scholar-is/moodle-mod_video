@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Vimeo setup wizard component.
+ * Vimeo's integration help table.
  *
  * @package    videosource_vimeo
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,13 +30,13 @@ use moodle_exception;
 use videosource_vimeo\videosource\vimeo;
 
 /**
- * Vimeo setup wizard component.
+ * Vimeo's integration help table.
  *
  * @package    videosource_vimeo
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class vimeo_setup_wizard extends base_component {
+class vimeo_help_table extends base_component {
 
     /**
      * Vimeo video source.
@@ -64,6 +64,8 @@ class vimeo_setup_wizard extends base_component {
             'configured' => $this->source->is_configured(),
             'callbackurl' => "$CFG->wwwroot/mod/video/source/vimeo/callback.php",
             'authorizationurl' => $this->source->get_authorization_url(),
+            'hasclientinfo' => get_config('videosource_vimeo', 'clientid') &&
+                get_config('videosource_vimeo', 'clientsecret'),
         ];
     }
 }

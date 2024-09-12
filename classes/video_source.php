@@ -24,7 +24,10 @@
 
 namespace mod_video;
 
+use mod_video_mod_form;
 use moodle_exception;
+use MoodleQuickForm;
+use stdClass;
 
 /**
  * Video source.
@@ -64,6 +67,21 @@ abstract class video_source {
     }
 
     /**
+     * Add form elements for this video source.
+     * @param mod_video_mod_form $mform
+     * @return void
+     */
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
+    }
+
+    public function data_preprocessing(&$defaultvalues): void {
+    }
+
+    public function data_postprocessing(stdClass $data): void {
+
+    }
+
+    /**
      * Get list of all video sources.
      * @return video_source[]
      */
@@ -75,6 +93,21 @@ abstract class video_source {
             }
         }
         return $sources;
+    }
+
+    /**
+     * Get video source by type.
+     * @param string $type
+     * @return video_source
+     */
+    public static function get_video_source_by_type(string $type): video_source {
+        $found = null;
+        foreach (self::get_video_sources() as $source) {
+            if ($source->get_type() === $type) {
+                $found = $source;
+            }
+        }
+        return $found;
     }
 
     /**

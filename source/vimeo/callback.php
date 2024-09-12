@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Url module admin settings and defaults
+ * Vimeo callback.
  *
- * @package    mod_video
- * @copyright  2009 Petr Skoda  {@link http://skodak.org}
+ * @package    videosource_vimeo
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,6 +28,10 @@ use core\output\notification;
 
 $code = required_param('code', PARAM_TEXT);
 $state = required_param('state', PARAM_TEXT);
+
+if (!is_siteadmin()) {
+    throw new moodle_exception('unauthorized');
+}
 
 if ($state !== get_user_preferences('vimeo_auth_state')) {
     die('Invalid state parameter.');

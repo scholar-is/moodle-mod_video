@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Url module admin settings and defaults
+ * Vimeo settings.
  *
- * @package    mod_video
- * @copyright  2009 Petr Skoda  {@link http://skodak.org}
+ * @package    videosource_vimeo
+ * @copyright  2023 Scholaris <joe@scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use videosource_vimeo\admin_setting_authorize;
-use videosource_vimeo\component\vimeo_setup_wizard;
+use videosource_vimeo\component\vimeo_help_table;
 use videosource_vimeo\videosource\vimeo;
 
 $renderer = $PAGE->get_renderer('video');
@@ -35,7 +35,7 @@ $settings = new admin_settingpage(
 $settings->add(new admin_setting_heading(
     'vimeoinstructions',
     get_string('gettingstarted', 'videosource_vimeo'),
-    $renderer->render(new vimeo_setup_wizard(new vimeo())))
+    $renderer->render(new vimeo_help_table(new vimeo())))
 );
 
 $settings->add(new admin_setting_heading('vimeoconfiguration', get_string('configuration', 'videosource_vimeo'), get_string('configurationinstructions', 'videosource_vimeo')));

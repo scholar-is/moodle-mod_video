@@ -27,8 +27,11 @@ namespace videosource_vimeo\videosource;
 use dml_exception;
 use lang_string;
 use mod_video\video_source;
+use mod_video_mod_form;
 use moodle_exception;
 use moodle_url;
+use MoodleQuickForm;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -84,16 +87,67 @@ class vimeo extends video_source {
         return true;
     }
 
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
+        global $PAGE;
+
+        $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
+            'uniqueid' => 'modform_vimeo',
+            'videoSourceType' => 'vimeo',
+            'inputId' => 'id_vimeoid',
+            'debug' => $current && $current->debug === "1",
+        ]);
+
+        $group = [];
+        $group[] = $mform->createElement('text', 'vimeoid', get_string('vimeovideoid', 'videosource_vimeo'));
+        if ((new vimeo())->is_configured()) {
+            $group[] = $mform->createElement('button', 'searchvideos_vimeo', get_string('searchvideos', 'video'));
+        } else if (is_siteadmin()) {
+            $group[] = $mform->createElement(
+                'static',
+                'connectvimeo',
+                '',
+                \html_writer::link(
+                    new moodle_url('/admin/settings.php?section=videosource_vimeo'),
+                    get_string('connectvimeo', 'videosource_vimeo')
+                )
+            );
+        }
+        $mform->addGroup($group, 'videoidgroup', get_string('vimeovideoid', 'videosource_vimeo'), null, false);
+        $mform->addHelpButton('videoidgroup', 'vimeovideoid', 'videosource_vimeo');
+        $mform->setType('vimeoid', PARAM_INT);
+        $mform->setType('videoidgroup', PARAM_RAW);
+        $mform->hideIf('videoidgroup', 'type', 'noeq', $this->get_type());
+
+        parent::add_form_elements($form, $mform, $current);
+    }
+
+    public function data_preprocessing(&$defaultvalues): void {
+        if ($defaultvalues['videoid']) {
+            $defaultvalues['vimeoid'] = $defaultvalues['videoid'];
+        }
+    }
+
+    public function data_postprocessing(stdClass $data): void {
+        if ($data->vimeoid) {
+            $data->videoid = $data->vimeoid;
+        }
+    }
+
     /**
      * @throws moodle_exception
-     * @throws dml_exception
      */
     public function get_authorization_url(): string {
         $scope = 'public private';
-        $state = random_string(15);
         $redirecturi = new moodle_url('/mod/video/source/vimeo/callback.php');
-        set_user_preference('vimeo_auth_state', $state);
-        return $this->lib->buildAuthorizationEndpoint($redirecturi->out(false), $scope, $state);
+        if (!get_user_preferences('vimeo_auth_state')) {
+            $state = random_string(15);
+            set_user_preference('vimeo_auth_state', $state);
+        }
+        return $this->lib->buildAuthorizationEndpoint(
+            $redirecturi->out(false),
+            $scope,
+            get_user_preferences('vimeo_auth_state')
+        );
     }
 
     /**

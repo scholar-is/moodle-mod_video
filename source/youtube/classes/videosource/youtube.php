@@ -26,6 +26,8 @@ namespace videosource_youtube\videosource;
 
 use lang_string;
 use mod_video\video_source;
+use mod_video_mod_form;
+use MoodleQuickForm;
 
 /**
  * Youtube video source.
@@ -56,5 +58,26 @@ class youtube extends video_source {
      */
     public function get_icon(): string {
         return 'youtube-play';
+    }
+
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
+        $mform->addElement('text', 'youtubeid', get_string('youtubeid', 'videosource_youtube'));
+        $mform->addHelpButton('youtubeid', 'youtubeid', 'videosource_youtube');
+        $mform->setType('youtubeid', PARAM_TEXT);
+        $mform->hideIf('youtubeid', 'type', 'noeq', $this->get_type());
+
+        parent::add_form_elements($form, $mform, $current);
+    }
+
+    public function data_preprocessing(&$defaultvalues): void {
+        if ($defaultvalues['videoid']) {
+            $defaultvalues['youtubeid'] = $defaultvalues['videoid'];
+        }
+    }
+
+    public function data_postprocessing(\stdClass $data): void {
+        if ($data->youtubeid) {
+            $data->videoid = $data->youtubeid;
+        }
     }
 }

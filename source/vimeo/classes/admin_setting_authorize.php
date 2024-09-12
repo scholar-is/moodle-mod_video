@@ -19,6 +19,8 @@ class admin_setting_authorize extends \admin_setting {
         $content = $OUTPUT->render_from_template('videosource_vimeo/authorize_button', [
             'configured' => $vimeo->is_configured(),
             'authorizationurl' => $vimeo->get_authorization_url(),
+            'hasclientinfo' => get_config('videosource_vimeo', 'clientid') &&
+                get_config('videosource_vimeo', 'clientsecret'),
         ]);
 
         return format_admin_setting(

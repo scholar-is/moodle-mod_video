@@ -23,3 +23,6 @@
  */
 
 $string['pluginname'] = 'YouTube';
+$string['youtubeid'] = 'YouTube video ID';
+$string['youtubeid_help'] = 'Each YouTube video has a unique ID. You can find the ID in the video\'s URL. For example, given the URL https://www.youtube.com/watch?v=jNQXAC9IVRw the video ID is jNQXAC9IVRw';
+

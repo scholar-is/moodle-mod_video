@@ -47,11 +47,6 @@ class mod_video_mod_form extends moodleform_mod {
         global $CFG, $PAGE;
 
         $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
-            'uniqueid' => 'modform_vimeo',
-            'videoSourceType' => 'vimeo',
-            'debug' => $this->current && $this->current->debug === "1",
-        ]);
-        $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
             'uniqueid' => 'modform_youtube',
             'videoSourceType' => 'youtube',
             'debug' => $this->current && $this->current->debug === "1",
@@ -60,8 +55,11 @@ class mod_video_mod_form extends moodleform_mod {
         $mform = $this->_form;
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
-        $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
 
+        $mform->addElement('hidden', 'videoid');
+        $mform->setType('videoid', PARAM_INT);
+
+        $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -88,19 +86,9 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addGroup($radioarray, 'radioar', 'Type', [' '], false);
         $mform->setDefault('type', 'vimeo');
 
-        $group = [];
-        $group[] = $mform->createElement('text', 'videoid', 'Video ID');
-        if ((new vimeo())->is_configured()) {
-            $group[] = $mform->createElement('button', 'searchvideos_vimeo', get_string('searchvideos', 'video'));
-        } else if (is_siteadmin()) {
-            $group[] = $mform->createElement('button', 'searchvideos_vimeo', get_string('searchvideos', 'video'));
+        foreach (video_source::get_video_sources() as $source) {
+            $source->add_form_elements($this, $mform, $this->current);
         }
-        $group[] = $mform->createElement('button', 'searchvideos_youtube', get_string('searchvideos', 'video'));
-        $mform->addGroup($group, 'videoidgroup', get_string('videoid', 'video'), null, false);
-        $mform->addHelpButton('videoidgroup', 'videoid', 'video');
-        $mform->setType('videoid', PARAM_INT);
-        $mform->setType('videoidgroup', PARAM_RAW);
-        $mform->hideIf('videoidgroup', 'type', 'in', ['internal', 'external']);
 
         $mform->addElement('url', 'externalurl', get_string('externalurl', 'url'), ['size' => '60'], ['usefilepicker' => true]);
         $mform->setType('externalurl', PARAM_RAW_TRIMMED);
@@ -266,6 +254,11 @@ class mod_video_mod_form extends moodleform_mod {
         $defaultvalues['completiononplay'] = !empty($defaultvalues['completiononplay']) ? 1 : 0;
         $defaultvalues['completiononpercent'] = !empty($defaultvalues['completionpercent']) ? 1 : 0;
         $defaultvalues['completiononviewtime'] = !empty($defaultvalues['completionviewtime']) ? 1 : 0;
+
+        if ($defaultvalues['type']) {
+            $source = video_source::get_video_source_by_type($defaultvalues['type']);
+            $source->data_preprocessing($defaultvalues);
+        }
     }
 
     /**
@@ -290,5 +283,8 @@ class mod_video_mod_form extends moodleform_mod {
                 $data->completiononviewtime = 0;
             }
         }
+
+        $source = video_source::get_video_source_by_type($data->type);
+        $source->data_postprocessing($data);
     }
 }

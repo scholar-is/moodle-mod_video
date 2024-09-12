@@ -4,7 +4,7 @@ import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 import $ from 'jquery';
 
-export function init(uniqueId, videoSourceType, debug) {
+export function init(uniqueId, videoSourceType, inputId, debug) {
     let videoManagerInstance = null;
 
     ModalFactory.create({
@@ -19,7 +19,7 @@ export function init(uniqueId, videoSourceType, debug) {
                     videoSourceType,
                     {
                         onVideoSelect: (selectedVideo) => {
-                            document.getElementById('id_videoid').value = selectedVideo.videoid;
+                            document.getElementById(inputId).value = selectedVideo.videoid;
                             modal.hide();
                         },
                         debug,
