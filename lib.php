@@ -17,7 +17,7 @@
 /**
  * Video lib functions.
  * @package    mod_video
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

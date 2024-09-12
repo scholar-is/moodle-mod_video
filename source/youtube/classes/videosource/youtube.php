@@ -18,7 +18,7 @@
  * Video source.
  *
  * @package    videosource_youtube
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ use MoodleQuickForm;
 /**
  * Youtube video source.
  * @package    videosource_youtube
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class youtube extends video_source {

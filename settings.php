@@ -18,7 +18,7 @@
  * Url module admin settings and defaults
  *
  * @package    mod_video
- * @copyright  2009 Petr Skoda  {@link http://skodak.org}
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

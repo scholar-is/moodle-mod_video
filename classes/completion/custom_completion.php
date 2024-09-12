@@ -28,7 +28,7 @@ use moodle_exception;
  * of the custom completion rules for a given video instance and a user.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion extends activity_custom_completion {

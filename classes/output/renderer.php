@@ -18,7 +18,7 @@
  * Video plugin renderer.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ use plugin_renderer_base;
  * Implement render methods as needed. For now, using as rendering shortcut {@see plugin_renderer_base::render()}.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends plugin_renderer_base {

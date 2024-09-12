@@ -24,7 +24,7 @@ use stdClass;
  * Override activity header component.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity_header extends base_activity_header {
