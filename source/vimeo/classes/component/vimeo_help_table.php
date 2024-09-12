@@ -18,7 +18,7 @@
  * Vimeo's integration help table.
  *
  * @package    videosource_vimeo
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,7 +33,7 @@ use videosource_vimeo\videosource\vimeo;
  * Vimeo's integration help table.
  *
  * @package    videosource_vimeo
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class vimeo_help_table extends base_component {

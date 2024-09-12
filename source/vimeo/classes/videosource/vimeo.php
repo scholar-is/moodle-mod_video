@@ -18,7 +18,7 @@
  * Video source.
  *
  * @package    videosource_vimeo
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -40,7 +40,7 @@ require_once("$CFG->dirroot/mod/video/source/vimeo/vendor/autoload.php");
 /**
  * Vimeo video source.
  * @package    videosource_vimeo
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class vimeo extends video_source {
