@@ -40,7 +40,7 @@ class mod_video_generator extends testing_module_generator {
      * @return stdClass
      * @throws coding_exception
      */
-    public function create_instance($record = null, array $options = null): stdClass {
+    public function create_instance($record = null, ?array $options = null): stdClass {
         $record = (object)(array)$record;
 
         $defaultsettings = [

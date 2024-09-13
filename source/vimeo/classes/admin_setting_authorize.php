@@ -1,18 +1,64 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Video source.
+ *
+ * @package    videosource_vimeo
+ * @copyright  2024 Scholaris <https://scholar.is>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 namespace videosource_vimeo;
 
+use dml_exception;
+use moodle_exception;
 use videosource_vimeo\videosource\vimeo;
+
+defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->libdir/adminlib.php");
 
+/**
+ * Custom setting to display an authorize button.
+ * @package    videosource_vimeo
+ * @copyright  2024 Scholaris <https://scholar.is>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class admin_setting_authorize extends \admin_setting {
 
+    /**
+     * Constructor.
+     * @param $name
+     * @param $visiblename
+     * @param $description
+     */
     public function __construct($name, $visiblename, $description) {
         parent::__construct($name, $visiblename, $description, '');
     }
 
-    public function output_html($data, $query = '') {
+    /**
+     * Render button.
+     * @param $data
+     * @param $query
+     * @return string
+     * @throws dml_exception
+     * @throws moodle_exception
+     */
+    public function output_html($data, $query = ''): string {
         global $OUTPUT;
 
         $vimeo = new vimeo();
@@ -35,9 +81,17 @@ class admin_setting_authorize extends \admin_setting {
         );
     }
 
+    /**
+     * Not required.
+     * @return void
+     */
     public function get_setting() {
     }
 
+    /**
+     * Not required.
+     * @return void
+     */
     public function write_setting($data) {
     }
 }

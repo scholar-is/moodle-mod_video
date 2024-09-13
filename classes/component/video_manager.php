@@ -59,8 +59,6 @@ class video_manager extends base_component {
      * @throws dml_exception
      */
     public function get_data(): array {
-        return [
-            'uniqueid' => 'foo'
-        ];
+        return ['uniqueid' => 'foo'];
     }
 }

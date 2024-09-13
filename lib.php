@@ -74,7 +74,7 @@ function video_reset_userdata($data): array {
  * @throws dml_exception
  * @throws coding_exception
  */
-function video_add_instance(stdClass $data, mod_video_mod_form $mform = null): int {
+function video_add_instance(stdClass $data, ?mod_video_mod_form $mform = null): int {
     global $DB;
 
     $data->controls = json_encode($data->controls);

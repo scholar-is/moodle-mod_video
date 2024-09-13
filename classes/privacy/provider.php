@@ -44,7 +44,7 @@ class provider implements
      * @param collection $collection
      * @return collection
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection {
         $collection->add_database_table('video_session', [
             'userid' => 'privacy:metadata:video_session:userid',
             'watchtime' => 'privacy:metadata:video_session:watchtime',
@@ -63,7 +63,7 @@ class provider implements
      * @param int $userid
      * @return contextlist
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
 
         $sql = "SELECT c.id
