@@ -18,7 +18,7 @@
  * Webservice functions.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,6 +41,15 @@ $functions = [
         'description'  => 'Record session updates.',
         'type'         => 'write',
         'capabilities' => 'mod/video:view',
+        'ajax'         => true,
+    ],
+    'mod_video_query_videos' => [
+        'classname'    => 'mod_video\external\external',
+        'methodname'   => 'query_videos',
+        'classpath'    => '',
+        'description'  => 'Query videos.',
+        'type'         => 'read',
+        'capabilities' => '',
         'ajax'         => true,
     ],
 ];

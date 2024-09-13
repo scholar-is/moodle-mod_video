@@ -18,7 +18,7 @@
  * Webservice functions.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,8 +36,10 @@ use invalid_parameter_exception;
 use mod_video\exception\module_not_found;
 use mod_video\exception\session_not_found;
 use mod_video\persistent\video_session;
+use mod_video\video_source;
 use moodle_exception;
 use restricted_context_exception;
+use videosource_vimeo\videosource\vimeo;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -49,7 +51,7 @@ require_once("$CFG->libdir/externallib.php");
  * Webservice functions.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class external extends external_api {
@@ -213,6 +215,79 @@ class external extends external_api {
     public static function record_session_updates_returns(): external_single_structure {
         return new external_single_structure([
             'session' => video_session::get_external_description(),
+        ]);
+    }
+
+    /**
+     * Returns description of record_session_updates() parameters.
+     *
+     * @return external_function_parameters
+     */
+    public static function query_videos_parameters(): external_function_parameters {
+        return new external_function_parameters([
+            'query' => new \external_value(PARAM_TEXT, 'Video search query.'),
+            'videosourcetype' => new \external_value(PARAM_TEXT, 'Search this video source'),
+        ]);
+    }
+
+    /**
+     * Record session updates.
+     * @param int $sessionid
+     * @param int $timeelapsed
+     * @param int $currenttime
+     * @param float $currentpercent
+     * @return array
+     * @throws \core\invalid_persistent_exception
+     * @throws \core_external\restricted_context_exception
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws moodle_exception
+     * @throws session_not_found
+     */
+    public static function query_videos($query, $videosourcetype): array {
+        $params = self::validate_parameters(self::query_videos_parameters(), [
+            'query' => $query,
+            'videosourcetype' => $videosourcetype,
+        ]);
+
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        $videosource = null;
+        foreach (video_source::get_video_sources() as $vs) {
+            if ($vs->get_type() == $params['videosourcetype']) {
+                $videosource = $vs;
+            }
+        }
+
+        if (!$videosource) {
+            throw new moodle_exception('cannot find video source ' . $params['videosourcetype']);
+        }
+
+        if (!$videosource->has_api()) {
+            throw new moodle_exception('Video source does not support querying videos.');
+        }
+
+        return ['results' => $videosource->query($params['query'])];
+    }
+
+    /**
+     * Returns description of record_session_updates() result value.
+     *
+     * @return external_single_structure
+     */
+    public static function query_videos_returns(): external_single_structure {
+        return new external_single_structure([
+            'results' => new external_single_structure([
+                'videos' => new \external_multiple_structure(new external_single_structure([
+                    'videoid' => new \external_value(PARAM_TEXT),
+                    'title' => new \external_value(PARAM_TEXT),
+                    'thumbnail' => new \external_value(PARAM_URL),
+                    'description' => new \external_value(PARAM_TEXT),
+                ])),
+                'total' => new \external_value(PARAM_INT),
+            ]),
         ]);
     }
 }

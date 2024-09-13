@@ -18,11 +18,12 @@
  * Video configuration form.
  *
  * @package    mod_video
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use mod_video\video_source;
+use videosource_vimeo\videosource\vimeo;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -43,13 +44,22 @@ class mod_video_mod_form extends moodleform_mod {
      * @throws moodle_exception
      */
     public function definition(): void {
-        global $CFG;
+        global $CFG, $PAGE;
+
+        $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
+            'uniqueid' => 'modform_youtube',
+            'videoSourceType' => 'youtube',
+            'debug' => $this->current && $this->current->debug === "1",
+        ]);
 
         $mform = $this->_form;
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
-        $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
 
+        $mform->addElement('hidden', 'videoid');
+        $mform->setType('videoid', PARAM_INT);
+
+        $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -76,9 +86,9 @@ class mod_video_mod_form extends moodleform_mod {
         $mform->addGroup($radioarray, 'radioar', 'Type', [' '], false);
         $mform->setDefault('type', 'vimeo');
 
-        $mform->addElement('text', 'videoid', 'Video ID');
-        $mform->setType('videoid', PARAM_TEXT);
-        $mform->hideIf('videoid', 'type', 'in', ['internal', 'external']);
+        foreach (video_source::get_video_sources() as $source) {
+            $source->add_form_elements($this, $mform, $this->current);
+        }
 
         $mform->addElement('url', 'externalurl', get_string('externalurl', 'url'), ['size' => '60'], ['usefilepicker' => true]);
         $mform->setType('externalurl', PARAM_RAW_TRIMMED);
@@ -244,6 +254,11 @@ class mod_video_mod_form extends moodleform_mod {
         $defaultvalues['completiononplay'] = !empty($defaultvalues['completiononplay']) ? 1 : 0;
         $defaultvalues['completiononpercent'] = !empty($defaultvalues['completionpercent']) ? 1 : 0;
         $defaultvalues['completiononviewtime'] = !empty($defaultvalues['completionviewtime']) ? 1 : 0;
+
+        if ($defaultvalues['type']) {
+            $source = video_source::get_video_source_by_type($defaultvalues['type']);
+            $source->data_preprocessing($defaultvalues);
+        }
     }
 
     /**
@@ -268,5 +283,8 @@ class mod_video_mod_form extends moodleform_mod {
                 $data->completiononviewtime = 0;
             }
         }
+
+        $source = video_source::get_video_source_by_type($data->type);
+        $source->data_postprocessing($data);
     }
 }

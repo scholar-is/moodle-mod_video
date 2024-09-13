@@ -18,13 +18,16 @@
  * Video source.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_video;
 
+use mod_video_mod_form;
 use moodle_exception;
+use MoodleQuickForm;
+use stdClass;
 
 /**
  * Video source.
@@ -64,14 +67,71 @@ abstract class video_source {
     }
 
     /**
+     * Add form elements for this video source.
+     * @param mod_video_mod_form $mform
+     * @return void
+     */
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
+    }
+
+    public function data_preprocessing(&$defaultvalues): void {
+    }
+
+    public function data_postprocessing(stdClass $data): void {
+
+    }
+
+    /**
      * Get list of all video sources.
      * @return video_source[]
      */
     public static function get_video_sources(): array {
         $sources = [];
-        foreach (array_keys(\core_component::get_component_classes_in_namespace('mod_video', 'video_sources')) as $class) {
-            $sources[] = new $class();
+        foreach (array_keys(\core_component::get_component_classes_in_namespace(null, 'videosource')) as $class) {
+            if (is_subclass_of($class, self::class)) {
+                $sources[] = new $class();
+            }
         }
         return $sources;
+    }
+
+    /**
+     * Get video source by type.
+     * @param string $type
+     * @return video_source
+     */
+    public static function get_video_source_by_type(string $type): video_source {
+        $found = null;
+        foreach (self::get_video_sources() as $source) {
+            if ($source->get_type() === $type) {
+                $found = $source;
+            }
+        }
+        return $found;
+    }
+
+    /**
+     * Does this source have an API for querying videos?
+     * @return bool
+     */
+    public function has_api(): bool {
+        return false;
+    }
+
+    /**
+     * Check if video source is fully configured.
+     * @return bool
+     */
+    public function is_configured(): bool {
+        return true;
+    }
+
+    /**
+     * Query videos from this video source.
+     * @param string $query
+     * @return array
+     */
+    public function query(string $query): array {
+        return [];
     }
 }

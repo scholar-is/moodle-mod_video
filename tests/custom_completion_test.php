@@ -18,7 +18,7 @@
  * Custom completion tests.
  *
  * @package    mod_video
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -44,7 +44,7 @@ require_once($CFG->dirroot . '/mod/forum/tests/generator_trait.php');
  * Custom completion tests.
  *
  * @package    mod_video
- * @copyright  2023 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion_test extends advanced_testcase {

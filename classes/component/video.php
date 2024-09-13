@@ -18,7 +18,7 @@
  * Video component.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -39,7 +39,7 @@ use templatable;
  * Video component.
  *
  * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class video extends base_component {
@@ -62,6 +62,7 @@ class video extends base_component {
      */
     public function __construct(cm_info $cm) {
         global $DB;
+        $this->cm = $cm;
         $this->video = $DB->get_record('video', ['id' => $cm->instance], '*', MUST_EXIST);
         $tabmanager = new tab_manager(cm_info::create($cm));
         $tabs = $tabmanager->build_tabs_component();
@@ -117,21 +118,13 @@ class video extends base_component {
     }
 
     /**
-     * Get video course module.
-     * @throws coding_exception
-     */
-    public function get_cm(): object {
-        return get_coursemodule_from_instance('video', $this->video->id, 0, false, MUST_EXIST);
-    }
-
-    /**
      * Get extra options for JS.
      * @throws coding_exception
      * @throws dml_exception
      */
     public function get_extra_options(): array {
         global $USER;
-        $aggregatevalues = video_session::get_aggregate_values($this->get_cm()->id, $USER->id);
+        $aggregatevalues = video_session::get_aggregate_values($this->cm->id, $USER->id);
         return [
             'preventForwardSeeking' => !!$this->video->preventforwardseeking,
             'sessionAggregates' => $aggregatevalues,
@@ -145,11 +138,10 @@ class video extends base_component {
      * @throws dml_exception
      */
     public function get_data(): array {
-        $cm = $this->get_cm();
         return [
             'video' => $this->video,
-            'cm' => $cm,
-            'cmjson' => json_encode($cm),
+            'cm' => $this->cm,
+            'cmjson' => json_encode($this->cm),
             'videojson' => json_encode($this->video),
             'options' => json_encode(array_merge([
                 'debug' => !!$this->video->debug,

@@ -17,28 +17,29 @@
 /**
  * Video source.
  *
- * @package    mod_video
- * @copyright  2022 Scholaris <joe@scholar.is>
+ * @package    videosource_external
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_video\video_sources;
+namespace videosource_external\videosource;
 
 use lang_string;
 use mod_video\video_source;
 
 /**
- * Vimeo video source.
- * @package    mod_video
+ * External video source.
+ * @package    videosource_external
+ * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class vimeo extends video_source {
+class external extends video_source {
     /**
      * Get source type.
      * @return string
      */
     public function get_type(): string {
-        return 'vimeo';
+        return 'external';
     }
 
     /**
@@ -46,7 +47,7 @@ class vimeo extends video_source {
      * @return string
      */
     public function get_name(): string {
-        return new lang_string('pluginname', 'media_vimeo'); // Already translated.
+        return new lang_string('externalurl', 'video');
     }
 
     /**
@@ -54,6 +55,6 @@ class vimeo extends video_source {
      * @return string
      */
     public function get_icon(): string {
-        return 'vimeo';
+        return 'link';
     }
 }
