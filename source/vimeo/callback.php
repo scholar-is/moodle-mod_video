@@ -22,16 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\notification;
+
 require_once('../../../../config.php');
 
-use core\output\notification;
+require_admin();
 
 $code = required_param('code', PARAM_TEXT);
 $state = required_param('state', PARAM_TEXT);
-
-if (!is_siteadmin()) {
-    throw new moodle_exception('unauthorized');
-}
 
 if ($state !== get_user_preferences('vimeo_auth_state')) {
     die('Invalid state parameter.');

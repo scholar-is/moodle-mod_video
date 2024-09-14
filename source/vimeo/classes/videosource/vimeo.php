@@ -24,6 +24,7 @@
 
 namespace videosource_vimeo\videosource;
 
+use coding_exception;
 use dml_exception;
 use lang_string;
 use mod_video\video_source;
@@ -45,8 +46,16 @@ require_once("$CFG->dirroot/mod/video/source/vimeo/vendor/autoload.php");
  */
 class vimeo extends video_source {
 
+    /**
+     * Vimeo PHP SDK.
+     * @var \Vimeo\Vimeo
+     */
     private $lib;
 
+    /**
+     * Constructor.
+     * @throws dml_exception
+     */
     public function __construct() {
         $this->lib = new \Vimeo\Vimeo(
             get_config('videosource_vimeo', 'clientid'),
@@ -87,6 +96,15 @@ class vimeo extends video_source {
         return true;
     }
 
+    /**
+     * Add form elements for this video source.
+     * @param mod_video_mod_form $form
+     * @param MoodleQuickForm $mform
+     * @param $current
+     * @return void
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
         global $PAGE;
 
@@ -121,12 +139,22 @@ class vimeo extends video_source {
         parent::add_form_elements($form, $mform, $current);
     }
 
+    /**
+     * Data preprocessing.
+     * @param $defaultvalues
+     * @return void
+     */
     public function data_preprocessing(&$defaultvalues): void {
         if ($defaultvalues['videoid']) {
             $defaultvalues['vimeoid'] = $defaultvalues['videoid'];
         }
     }
 
+    /**
+     * Data postprocessing.
+     * @param stdClass $data
+     * @return void
+     */
     public function data_postprocessing(stdClass $data): void {
         if ($data->vimeoid) {
             $data->videoid = $data->vimeoid;
@@ -134,6 +162,7 @@ class vimeo extends video_source {
     }
 
     /**
+     * Get authorization URL.
      * @throws moodle_exception
      */
     public function get_authorization_url(): string {
@@ -161,6 +190,11 @@ class vimeo extends video_source {
             get_config('videosource_vimeo', 'accesstoken');
     }
 
+    /**
+     * Search for videos.
+     * @param string $query
+     * @return array
+     */
     public function query(string $query): array {
         $result = $this->lib->request('/me/videos', [
             'query' => $query,

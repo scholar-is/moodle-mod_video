@@ -106,7 +106,7 @@ jobs:
 
       - name: Moodle Code Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcs --max-warnings 0
+        run: moodle-plugin-ci phpcs --max-warnings 0 --ignore=source/vimeo/vendor/
 
       - name: Moodle PHPDoc Checker
         if: ${{ !cancelled() }}
