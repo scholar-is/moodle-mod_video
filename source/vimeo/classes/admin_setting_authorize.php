@@ -26,6 +26,7 @@ namespace videosource_vimeo;
 
 use dml_exception;
 use moodle_exception;
+use stdClass;
 use videosource_vimeo\videosource\vimeo;
 
 defined('MOODLE_INTERNAL') || die;
@@ -42,9 +43,9 @@ class admin_setting_authorize extends \admin_setting {
 
     /**
      * Constructor.
-     * @param $name
-     * @param $visiblename
-     * @param $description
+     * @param string $name
+     * @param string $visiblename
+     * @param string $description
      */
     public function __construct($name, $visiblename, $description) {
         parent::__construct($name, $visiblename, $description, '');
@@ -52,8 +53,8 @@ class admin_setting_authorize extends \admin_setting {
 
     /**
      * Render button.
-     * @param $data
-     * @param $query
+     * @param string $data
+     * @param string $query
      * @return string
      * @throws dml_exception
      * @throws moodle_exception
@@ -90,8 +91,10 @@ class admin_setting_authorize extends \admin_setting {
 
     /**
      * Not required.
-     * @return void
+     * @param string $data
+     * @return string
      */
-    public function write_setting($data) {
+    public function write_setting($data): string {
+        return $data;
     }
 }
