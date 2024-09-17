@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="ModVideoRuleset">
+    <rule ref="Moodle"/>
+    <exclude-pattern>source/vimeo/vendor/*</exclude-pattern>
+</ruleset>
