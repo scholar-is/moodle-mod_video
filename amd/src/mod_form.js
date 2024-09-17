@@ -6,10 +6,10 @@ import $ from 'jquery';
 
 /**
  * Initialize functionality for module create/edit form.
- * @param uniqueId
- * @param videoSourceType
- * @param inputId
- * @param debug
+ * @param {string} uniqueId
+ * @param {string} videoSourceType
+ * @param {string} inputId
+ * @param {bool} debug
  */
 export function init(uniqueId, videoSourceType, inputId, debug) {
     let videoManagerInstance = null;
