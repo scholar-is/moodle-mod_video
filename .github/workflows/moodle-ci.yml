@@ -106,11 +106,11 @@ jobs:
 
       - name: Moodle Code Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcs --max-warnings 0 --ignore=source/vimeo/vendor/
+        run: moodle-plugin-ci phpcs --max-warnings 0 -- --ignore=source/vimeo/vendor/
 
       - name: Moodle PHPDoc Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpdoc --max-warnings 0 --ignore=source/vimeo/vendor/
+        run: moodle-plugin-ci phpdoc --max-warnings 0 -- --ignore=source/vimeo/vendor/
 
       - name: Validating
         if: ${{ !cancelled() }}
