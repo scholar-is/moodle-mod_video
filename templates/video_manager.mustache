@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_video/video
+    @template mod_video/video_manager
 
     Template for displaying a video.
 
@@ -26,28 +26,11 @@
     * none
 
     Context variables required for this template:
-    * cm
-    * cmjson
-    * video - Video module instance
-    * cmjson - Course module
-    * videojson - JSON encoded video module instance
-    * options - JSON encoded player options
-    * supportsprovider - Video supports a third party provider (e.g. youtube, vimeo)
-    * supportshtml5 - Video supports html5 embed (e.g. url/local file)
-    * url - If html5 supported, video url
+    * uniqueid
 
     Example context (json):
     {
-        "video": {
-            "id": 123,
-            "name": "Hello world"
-        },
-        "cmjson": "{}",
-        "videojson": "{}",
-        "options": "{}",
-        "supportsprovider": false,
-        "supportshtml5": true,
-        "url": "https://domain.com/path/to/video.mp4"
+        "uniqueid": 123
     }
 }}
 

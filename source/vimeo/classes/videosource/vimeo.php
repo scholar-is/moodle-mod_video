@@ -25,7 +25,10 @@
 namespace videosource_vimeo\videosource;
 
 use coding_exception;
+use DateMalformedStringException;
+use DateTime;
 use dml_exception;
+use Exception;
 use lang_string;
 use mod_video\video_source;
 use mod_video_mod_form;
@@ -89,7 +92,7 @@ class vimeo extends video_source {
     }
 
     /**
-     * Check if video source is fully configured.
+     * Does this source have an API for querying videos?
      * @return bool
      */
     public function has_api(): bool {
@@ -198,6 +201,7 @@ class vimeo extends video_source {
     public function query(string $query): array {
         $result = $this->lib->request('/me/videos', [
             'query' => $query,
+            'per_page' => 10,
         ]);
 
         $results = [
@@ -206,14 +210,58 @@ class vimeo extends video_source {
         ];
         foreach ($result['body']['data'] as $video) {
             $thumbnail = isset($video['pictures']['sizes'][2]) ? $video['pictures']['sizes'][2]['link'] : '';
+            try {
+                $datecreated = $this->time_elapsed_string($video['created_time']);
+            } catch (Exception) {
+                $datecreated = '';
+            }
+
             $results['videos'][] = [
                 'videoid' => explode('/', $video['uri'])[2],
                 'title' => $video['name'],
                 'description' => $video['description'],
                 'thumbnail' => $thumbnail,
+                'datecreated' => $datecreated,
             ];
         }
 
         return $results;
+    }
+
+    /**
+     * @throws DateMalformedStringException
+     */
+    private function time_elapsed_string($datetime, $full = false): string {
+        $now = new DateTime();
+        $giventime = new DateTime($datetime);
+        $diff = $now->diff($giventime);
+
+        // Determine if the time is in the past or future.
+        $suffix = ($giventime > $now) ? 'from now' : 'ago';
+
+        // If the time is in the future, invert the difference.
+        $diff->invert = false;
+
+        $units = [
+            'year'   => $diff->y,
+            'month'  => $diff->m,
+            'week'   => floor($diff->d / 7),
+            'day'    => $diff->d % 7,
+            'hour'   => $diff->h,
+            'minute' => $diff->i,
+            'second' => $diff->s,
+        ];
+
+        $parts = [];
+        foreach ($units as $unit => $value) {
+            if ($value > 0) {
+                $parts[] = $value . ' ' . $unit . ($value > 1 ? 's' : '');
+                if (!$full) {
+                    break; // Use only the largest unit.
+                }
+            }
+        }
+
+        return $parts ? implode(', ', $parts) . ' ' . $suffix : 'just now';
     }
 }

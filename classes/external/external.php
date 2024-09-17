@@ -27,6 +27,7 @@ namespace mod_video\external;
 use coding_exception;
 use completion_info;
 use context_module;
+use core\invalid_persistent_exception;
 use DateTime;
 use dml_exception;
 use external_api;
@@ -70,7 +71,7 @@ class external extends external_api {
      * Create new video session for user.
      * @param int $cmid
      * @return array
-     * @throws \core\invalid_persistent_exception
+     * @throws invalid_persistent_exception
      * @throws \core_external\restricted_context_exception
      * @throws coding_exception
      * @throws dml_exception
@@ -150,7 +151,7 @@ class external extends external_api {
      * @param int $currenttime
      * @param float $currentpercent
      * @return array
-     * @throws \core\invalid_persistent_exception
+     * @throws invalid_persistent_exception
      * @throws \core_external\restricted_context_exception
      * @throws coding_exception
      * @throws dml_exception
@@ -232,18 +233,13 @@ class external extends external_api {
 
     /**
      * Record session updates.
-     * @param int $sessionid
-     * @param int $timeelapsed
-     * @param int $currenttime
-     * @param float $currentpercent
+     * @param $query
+     * @param $videosourcetype
      * @return array
-     * @throws \core\invalid_persistent_exception
      * @throws \core_external\restricted_context_exception
-     * @throws coding_exception
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws moodle_exception
-     * @throws session_not_found
      */
     public static function query_videos($query, $videosourcetype): array {
         $params = self::validate_parameters(self::query_videos_parameters(), [
@@ -285,6 +281,7 @@ class external extends external_api {
                     'title' => new \external_value(PARAM_TEXT),
                     'thumbnail' => new \external_value(PARAM_URL),
                     'description' => new \external_value(PARAM_TEXT),
+                    'datecreated' => new \external_value(PARAM_TEXT),
                 ])),
                 'total' => new \external_value(PARAM_INT),
             ]),

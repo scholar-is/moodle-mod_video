@@ -10,7 +10,7 @@ export default class VideoManager {
         this.options = options;
 
         this.root = document.getElementById('video-manager-' + this.uniqueId);
-        this.resultContainer = document.querySelector(`#video-manager-${this.uniqueId} .card-columns`);
+        this.resultContainer = document.querySelector(`#video-manager-${this.uniqueId} .video-results-container`);
         this.searchInput = document.querySelector(`#video-manager-${this.uniqueId} input[name=search-videos-value]`);
         this.searchButton = document.querySelector(`#video-manager-${this.uniqueId} .search-videos-button`);
         this.loadingIconContainer = document.querySelector(`#video-manager-${this.uniqueId} .loading-icon-container`);

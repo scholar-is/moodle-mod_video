@@ -84,9 +84,10 @@ class admin_setting_authorize extends \admin_setting {
 
     /**
      * Not required.
-     * @return void
+     * @return true
      */
-    public function get_setting() {
+    public function get_setting(): bool {
+        return true;
     }
 
     /**

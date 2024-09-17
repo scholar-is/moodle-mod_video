@@ -24,17 +24,6 @@
 
 namespace mod_video\component;
 
-use cm_info;
-use coding_exception;
-use dml_exception;
-use mod_video\persistent\video_session;
-use mod_video\tab\tab_manager;
-use moodle_exception;
-use renderable;
-use renderer_base;
-use stdClass;
-use templatable;
-
 /**
  * Video manager component.
  *
@@ -46,8 +35,6 @@ class video_manager extends base_component {
 
     /**
      * Constructor.
-     * @param cm_info $cm
-     * @throws moodle_exception
      */
     public function __construct() {
     }
@@ -55,8 +42,6 @@ class video_manager extends base_component {
     /**
      * Export data for mustache.
      * @return array
-     * @throws coding_exception
-     * @throws dml_exception
      */
     public function get_data(): array {
         return ['uniqueid' => 'foo'];
