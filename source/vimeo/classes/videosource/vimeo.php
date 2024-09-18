@@ -229,6 +229,7 @@ class vimeo extends video_source {
     }
 
     /**
+     * Get human-readable "time ago" string.
      * @throws DateMalformedStringException
      */
     private function time_elapsed_string($datetime, $full = false): string {

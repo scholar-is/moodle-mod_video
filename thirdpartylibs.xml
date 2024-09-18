@@ -14,4 +14,11 @@
         <version>2.20.1</version>
         <licenseversion></licenseversion>
     </library>
+    <library>
+        <location>source/vimeo/vendor</location>
+        <name>Vimeo API</name>
+        <license>Apache-2.0</license>
+        <version>1.2</version>
+        <licenseversion></licenseversion>
+    </library>
 </libraries>
