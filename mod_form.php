@@ -255,7 +255,7 @@ class mod_video_mod_form extends moodleform_mod {
         $defaultvalues['completiononpercent'] = !empty($defaultvalues['completionpercent']) ? 1 : 0;
         $defaultvalues['completiononviewtime'] = !empty($defaultvalues['completionviewtime']) ? 1 : 0;
 
-        if ($defaultvalues['type']) {
+        if (isset($defaultvalues['type'])) {
             $source = video_source::get_video_source_by_type($defaultvalues['type']);
             $source->data_preprocessing($defaultvalues);
         }
