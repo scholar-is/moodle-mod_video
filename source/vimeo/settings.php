@@ -40,7 +40,11 @@ $settings->add(new admin_setting_heading(
     $renderer->render(new vimeo_help_table(new vimeo())))
 );
 
-$settings->add(new admin_setting_heading('vimeoconfiguration', get_string('configuration', 'videosource_vimeo'), get_string('configurationinstructions', 'videosource_vimeo')));
+$settings->add(new admin_setting_heading(
+    'vimeoconfiguration',
+    get_string('configuration', 'videosource_vimeo'),
+    get_string('configurationinstructions', 'videosource_vimeo')
+));
 
 $settings->add(new admin_setting_configtext(
     'videosource_vimeo/clientid',

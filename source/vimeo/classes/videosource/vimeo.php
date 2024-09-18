@@ -103,12 +103,12 @@ class vimeo extends video_source {
      * Add form elements for this video source.
      * @param mod_video_mod_form $form
      * @param MoodleQuickForm $mform
-     * @param $current
+     * @param stdClass $current
      * @return void
      * @throws coding_exception
      * @throws dml_exception
      */
-    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
         global $PAGE;
 
         $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
@@ -144,7 +144,7 @@ class vimeo extends video_source {
 
     /**
      * Data preprocessing.
-     * @param $defaultvalues
+     * @param array $defaultvalues
      * @return void
      */
     public function data_preprocessing(&$defaultvalues): void {
@@ -230,9 +230,12 @@ class vimeo extends video_source {
 
     /**
      * Get human-readable "time ago" string.
+     * @param string $datetime
+     * @param bool $full
+     * @return string
      * @throws DateMalformedStringException
      */
-    private function time_elapsed_string($datetime, $full = false): string {
+    private function time_elapsed_string(string $datetime, bool $full = false): string {
         $now = new DateTime();
         $giventime = new DateTime($datetime);
         $diff = $now->diff($giventime);

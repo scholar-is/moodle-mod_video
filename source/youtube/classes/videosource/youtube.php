@@ -66,11 +66,11 @@ class youtube extends video_source {
      * Add form elements for this video source.
      * @param mod_video_mod_form $form
      * @param MoodleQuickForm $mform
-     * @param $current
+     * @param stdClass $current
      * @return void
      * @throws coding_exception
      */
-    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
         $mform->addElement('text', 'youtubeid', get_string('youtubeid', 'videosource_youtube'));
         $mform->addHelpButton('youtubeid', 'youtubeid', 'videosource_youtube');
         $mform->setType('youtubeid', PARAM_TEXT);
@@ -81,7 +81,7 @@ class youtube extends video_source {
 
     /**
      * Data preprocessing.
-     * @param $defaultvalues
+     * @param array $defaultvalues
      * @return void
      */
     public function data_preprocessing(&$defaultvalues): void {

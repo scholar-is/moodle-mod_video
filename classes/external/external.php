@@ -233,8 +233,8 @@ class external extends external_api {
 
     /**
      * Record session updates.
-     * @param $query
-     * @param $videosourcetype
+     * @param string $query
+     * @param string $videosourcetype
      * @return array
      * @throws \core_external\restricted_context_exception
      * @throws dml_exception
