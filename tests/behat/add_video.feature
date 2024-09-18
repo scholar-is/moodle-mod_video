@@ -20,9 +20,9 @@ Feature: Add video activities
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Video" to section "1" and I fill the form with:
-      | Name        | Test video                     |
-      | Description | Testing out vimeo in behat     |
-      | Video ID    | 212928250                      |
+      | Name           | Test video                     |
+      | Description    | Testing out vimeo in behat     |
+      | Vimeo video ID | 212928250                      |
     And I am on the "Test video" "video activity" page logged in as student1
     Then I wait until the video player is ready
     And I wait until the Plyr play button appears
