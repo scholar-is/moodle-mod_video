@@ -212,7 +212,7 @@ class vimeo extends video_source {
             $thumbnail = isset($video['pictures']['sizes'][2]) ? $video['pictures']['sizes'][2]['link'] : '';
             try {
                 $datecreated = $this->time_elapsed_string($video['created_time']);
-            } catch (Exception) {
+            } catch (Exception $e) {
                 $datecreated = '';
             }
 
