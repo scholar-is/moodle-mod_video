@@ -115,7 +115,7 @@ class vimeo extends video_source {
             'uniqueid' => 'modform_vimeo',
             'videoSourceType' => 'vimeo',
             'inputId' => 'id_vimeoid',
-            'debug' => $current && $current->debug === "1",
+            'debug' => $current && isset($current->debug) && $current->debug === "1",
         ]);
 
         $group = [];
