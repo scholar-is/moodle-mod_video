@@ -27,12 +27,12 @@ export default class VideoManager {
         this.log("video_manager:init:uniqueid", this.uniqueId);
         this.log("video_manager:init:options", this.options);
 
-        this.searchButton.addEventListener('click', async () => {
+        this.searchButton.addEventListener('click', async() => {
             await this.query();
             await this.refreshResults();
         });
 
-        this.searchInput.addEventListener('keypress', async (e) => {
+        this.searchInput.addEventListener('keypress', async(e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 await this.query();
@@ -49,14 +49,14 @@ export default class VideoManager {
         this.setLoading(true);
         try {
             this.videoResults = (await this.queryVideos(this.searchInput.value)).results;
-        } catch(e) {
+        } catch (e) {
             await Notification.exception(e);
         }
     }
 
     async refreshResults() {
-        const renderedResults = await Promise.all(this.videoResults.videos.map(async (videoResult) => {
-            const { html } = await Templates.renderForPromise('mod_video/video_manager_result', videoResult);
+        const renderedResults = await Promise.all(this.videoResults.videos.map(async(videoResult) => {
+            const {html} = await Templates.renderForPromise('mod_video/video_manager_result', videoResult);
             return html;
         }));
 
