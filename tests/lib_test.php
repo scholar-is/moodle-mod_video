@@ -37,12 +37,12 @@ require_once($CFG->dirroot . '/mod/video/lib.php');
  * @group mod_video
  * @runTestsInSeparateProcesses
  */
-class lib_test extends \advanced_testcase {
+final class lib_test extends \advanced_testcase {
     /**
      * Test deleting a video instance.
      * @covers \video_delete_instance
      */
-    public function test_video_delete_instance() {
+    public function test_video_delete_instance(): void {
         global $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();

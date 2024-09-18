@@ -47,7 +47,7 @@ require_once($CFG->dirroot . '/mod/forum/tests/generator_trait.php');
  * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class custom_completion_test extends advanced_testcase {
+final class custom_completion_test extends advanced_testcase {
     use \mod_forum_tests_generator_trait;
 
     /**
@@ -106,7 +106,7 @@ class custom_completion_test extends advanced_testcase {
         ?string $exception,
         array $extraparams = [],
         array $sessions = []
-    ) {
+    ): void {
         if (!is_null($exception)) {
             $this->expectException($exception);
         }
@@ -143,7 +143,7 @@ class custom_completion_test extends advanced_testcase {
      * Test for get_defined_custom_rules().
      * @covers \mod_video\completion\custom_completion::get_defined_custom_rules
      */
-    public function test_get_defined_custom_rules() {
+    public function test_get_defined_custom_rules(): void {
         $rules = custom_completion::get_defined_custom_rules();
         $this->assertCount(3, $rules);
         $this->assertEquals('completiononplay', reset($rules));
@@ -153,7 +153,7 @@ class custom_completion_test extends advanced_testcase {
      * Test for get_defined_custom_rule_descriptions().
      * @covers \mod_video\completion\custom_completion::get_custom_rule_descriptions
      */
-    public function test_get_custom_rule_descriptions() {
+    public function test_get_custom_rule_descriptions(): void {
         // Get defined custom rules.
         $rules = custom_completion::get_defined_custom_rules();
 
@@ -179,7 +179,7 @@ class custom_completion_test extends advanced_testcase {
      * Test for is_defined().
      * @covers \mod_video\completion\custom_completion::is_defined
      */
-    public function test_is_defined() {
+    public function test_is_defined(): void {
         // Build a mock cm_info instance.
         $mockcminfo = $this->getMockBuilder(cm_info::class)
             ->disableOriginalConstructor()
@@ -230,7 +230,7 @@ class custom_completion_test extends advanced_testcase {
      * @param int $status
      * @param array $expected
      */
-    public function test_get_available_custom_rules(int $status, array $expected) {
+    public function test_get_available_custom_rules(int $status, array $expected): void {
         $customdataval = [
             'customcompletionrules' => [],
         ];
