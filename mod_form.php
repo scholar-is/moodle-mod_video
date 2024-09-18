@@ -49,7 +49,7 @@ class mod_video_mod_form extends moodleform_mod {
         $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
             'uniqueid' => 'modform_youtube',
             'videoSourceType' => 'youtube',
-            'debug' => $this->current && $this->current->debug === "1",
+            'debug' => $this->current && isset($this->current->debug) && $this->current->debug === "1",
         ]);
 
         $mform = $this->_form;
