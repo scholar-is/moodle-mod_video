@@ -24,7 +24,7 @@
 
 namespace mod_video\search;
 
-defined('MOODLE_INTERNAL') || die();
+use core_search\base_activity;
 
 /**
  * Search area for mod_video activities.
@@ -33,14 +33,14 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class activity extends \core_search\base_activity {
+class activity extends base_activity {
 
     /**
      * Returns true if this area uses file indexing.
      *
      * @return bool
      */
-    public function uses_file_indexing() {
+    public function uses_file_indexing(): bool {
         return true;
     }
 }
