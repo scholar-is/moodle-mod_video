@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
-    <parser>
-        <ignore>source/vimeo/vendor/*</ignore>
-    </parser>
-    <files>
-        <directory>.</directory>
-    </files>
-</phpdoc>
