@@ -27,6 +27,7 @@ require('../../../../config.php');
 $cmid = required_param('cmid', PARAM_INT);
 $userid = required_param('userid', PARAM_INT);
 
+require_login();
 require_capability('mod/video:deletesessions', context_module::instance($cmid));
 
 global $DB;
