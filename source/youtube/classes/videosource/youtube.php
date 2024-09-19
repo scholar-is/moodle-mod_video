@@ -85,7 +85,7 @@ class youtube extends video_source {
      * @return void
      */
     public function data_preprocessing(&$defaultvalues): void {
-        if ($defaultvalues['videoid']) {
+        if (isset($defaultvalues['videoid'])) {
             $defaultvalues['youtubeid'] = $defaultvalues['videoid'];
         }
     }
