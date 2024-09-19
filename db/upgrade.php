@@ -65,5 +65,27 @@ function xmldb_video_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2023110101, 'video');
     }
 
+    if ($oldversion < 2024091800) {
+
+        // Define field youtubeurl to be dropped from video.
+        $table = new xmldb_table('video');
+        $fields = [
+            new xmldb_field('youtubeurl'),
+            new xmldb_field('youtubeid'),
+            new xmldb_field('vimeoid'),
+            new xmldb_field('vimeourl'),
+        ];
+
+        foreach ($fields as $field) {
+            // Conditionally launch drop field youtubeurl.
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->drop_field($table, $field);
+            }
+        }
+
+        // Video savepoint reached.
+        upgrade_mod_savepoint(true, 2024091800, 'video');
+    }
+
     return true;
 }
