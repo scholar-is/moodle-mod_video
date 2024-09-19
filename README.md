@@ -53,10 +53,5 @@ Embedding videos is perfectly fine! This plugin is the Mercedes of video embeddi
 #### Will this plugin support older versions of Moodle? 
 This plugin will _likely_ work with 3.11 and 3.10 with some minor tweaks. The main reason I haven't tested on these versions is because it breaks the CI process. 3.11 is already years old and is no longer supported. However, if there is enough interest I will add support for older versions. I highly recommend staying up-to-date if possible.
 
-#### Should I use this plugin or mod_videotime?
-I was the original developer of VideoTime, which offers many features at a premium. I have also built other proprietary Moodle video plugins for clients over the years. 
-My goal with this plugin is to give back to the community by making all features free, forever. At this point I cannot recommend one plugin over the other,
-but I do plan on adding more features to this plugin over time.
-
 #### Can you add support for other video platforms (besides Vimeo and YouTube)?
 Yes, please contact me via email [joe@scholar.is](mailto:joe@scholar.is).
