@@ -49,7 +49,7 @@ class mod_video_mod_form extends moodleform_mod {
         $PAGE->requires->js_call_amd('mod_video/mod_form', 'init', [
             'uniqueid' => 'modform_youtube',
             'videoSourceType' => 'youtube',
-            'debug' => $this->current && $this->current->debug === "1",
+            'debug' => $this->current && isset($this->current->debug) && $this->current->debug === "1",
         ]);
 
         $mform = $this->_form;
@@ -255,7 +255,7 @@ class mod_video_mod_form extends moodleform_mod {
         $defaultvalues['completiononpercent'] = !empty($defaultvalues['completionpercent']) ? 1 : 0;
         $defaultvalues['completiononviewtime'] = !empty($defaultvalues['completionviewtime']) ? 1 : 0;
 
-        if ($defaultvalues['type']) {
+        if (isset($defaultvalues['type'])) {
             $source = video_source::get_video_source_by_type($defaultvalues['type']);
             $source->data_preprocessing($defaultvalues);
         }

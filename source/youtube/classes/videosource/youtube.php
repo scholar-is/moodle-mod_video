@@ -24,10 +24,12 @@
 
 namespace videosource_youtube\videosource;
 
+use coding_exception;
 use lang_string;
 use mod_video\video_source;
 use mod_video_mod_form;
 use MoodleQuickForm;
+use stdClass;
 
 /**
  * Youtube video source.
@@ -60,7 +62,15 @@ class youtube extends video_source {
         return 'youtube-play';
     }
 
-    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, $current): void {
+    /**
+     * Add form elements for this video source.
+     * @param mod_video_mod_form $form
+     * @param MoodleQuickForm $mform
+     * @param stdClass $current
+     * @return void
+     * @throws coding_exception
+     */
+    public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
         $mform->addElement('text', 'youtubeid', get_string('youtubeid', 'videosource_youtube'));
         $mform->addHelpButton('youtubeid', 'youtubeid', 'videosource_youtube');
         $mform->setType('youtubeid', PARAM_TEXT);
@@ -69,13 +79,23 @@ class youtube extends video_source {
         parent::add_form_elements($form, $mform, $current);
     }
 
+    /**
+     * Data preprocessing.
+     * @param array $defaultvalues
+     * @return void
+     */
     public function data_preprocessing(&$defaultvalues): void {
-        if ($defaultvalues['videoid']) {
+        if (isset($defaultvalues['videoid'])) {
             $defaultvalues['youtubeid'] = $defaultvalues['videoid'];
         }
     }
 
-    public function data_postprocessing(\stdClass $data): void {
+    /**
+     * Data postprocessing.
+     * @param stdClass $data
+     * @return void
+     */
+    public function data_postprocessing(stdClass $data): void {
         if ($data->youtubeid) {
             $data->videoid = $data->youtubeid;
         }

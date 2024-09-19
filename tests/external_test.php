@@ -39,7 +39,7 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
  * @group mod_video
  * @runTestsInSeparateProcesses
  */
-class external_test extends \externallib_advanced_testcase {
+final class external_test extends \externallib_advanced_testcase {
     /**
      * @var stdClass
      */
@@ -65,7 +65,7 @@ class external_test extends \externallib_advanced_testcase {
      * @throws \restricted_context_exception
      * @throws exception\module_not_found
      */
-    public function test_session() {
+    public function test_session(): void {
         $course = $this->getDataGenerator()->create_course();
         $this->getDataGenerator()->enrol_user($this->user->id, $course->id);
         $video = $this->getDataGenerator()->create_module('video', ['course' => $course->id]);

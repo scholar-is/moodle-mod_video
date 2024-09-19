@@ -68,15 +68,27 @@ abstract class video_source {
 
     /**
      * Add form elements for this video source.
-     * @param mod_video_mod_form $mform
+     * @param mod_video_mod_form $form
+     * @param MoodleQuickForm $mform
+     * @param stdClass $current
      * @return void
      */
     public function add_form_elements(mod_video_mod_form $form, MoodleQuickForm $mform, stdClass $current): void {
     }
 
-    public function data_preprocessing(&$defaultvalues): void {
+    /**
+     * Preprocess data.
+     * @param stdClass $defaultvalues
+     * @return void
+     */
+    public function data_preprocessing(stdClass &$defaultvalues): void {
     }
 
+    /**
+     * Postprocess data.
+     * @param stdClass $data
+     * @return void
+     */
     public function data_postprocessing(stdClass $data): void {
 
     }
