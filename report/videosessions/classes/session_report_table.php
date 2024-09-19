@@ -32,6 +32,7 @@ require_once($CFG->libdir . '/tablelib.php');
 
 use cm_info;
 use coding_exception;
+use context_module;
 use core_user\fields;
 use dml_exception;
 use moodle_exception;
@@ -184,9 +185,17 @@ class session_report_table extends table_sql {
     /**
      * Render actions (eventually).
      * @param stdClass $values
-     * @return void
+     * @return bool|string
+     * @throws moodle_exception
      */
     public function col_actions($values) {
-
+        global $OUTPUT;
+        if (!has_capability('mod/video:deletesessions', context_module::instance($this->cm->id))) {
+            return '';
+        }
+        return $OUTPUT->render_from_template('videoreport_videosessions/delete_button', [
+            'confirmurl' => new moodle_url('/mod/video/report/videosessions/deletesession.php',
+                ['cmid' => $this->cm->id, 'userid' => $values->userid]),
+        ]);
     }
 }
