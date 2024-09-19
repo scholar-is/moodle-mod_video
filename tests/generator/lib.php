@@ -46,10 +46,6 @@ class mod_video_generator extends testing_module_generator {
         $defaultsettings = [
             'name' => 'Testing video',
             'type' => 'external',
-            'youtubeurl' => '',
-            'youtubeid' => '',
-            'vimeourl' => '',
-            'vimeoid' => '',
             'externalurl' => '',
             'intro' => '',
             'introformat' => FORMAT_PLAIN,

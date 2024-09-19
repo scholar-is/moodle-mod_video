@@ -141,7 +141,7 @@ class video extends base_component {
         return [
             'video' => $this->video,
             'cm' => $this->cm,
-            'cmjson' => json_encode($this->cm),
+            'cmjson' => json_encode($this->cm->get_course_module_record()),
             'videojson' => json_encode($this->video),
             'options' => json_encode(array_merge([
                 'debug' => !!$this->video->debug,
