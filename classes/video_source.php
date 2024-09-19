@@ -78,10 +78,10 @@ abstract class video_source {
 
     /**
      * Preprocess data.
-     * @param stdClass $defaultvalues
+     * @param array $defaultvalues
      * @return void
      */
-    public function data_preprocessing(stdClass &$defaultvalues): void {
+    public function data_preprocessing(array &$defaultvalues): void {
     }
 
     /**
