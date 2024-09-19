@@ -28,6 +28,6 @@ $plugin->component = 'mod_video'; // Full name of the plugin (used for diagnosti
 $plugin->version   = 2024091900;  // The current module version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022030300;  // Requires this Moodle version.
 $plugin->cron      = 0;           // Period for cron to check this module (secs).
-$plugin->release   = '0.1';
+$plugin->release   = '0.1.1';
 $plugin->maturity  = MATURITY_BETA;
 $plugin->supported = [400, 404];
