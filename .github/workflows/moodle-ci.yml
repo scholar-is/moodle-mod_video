@@ -136,7 +136,7 @@ jobs:
         run: moodle-plugin-ci phpunit --fail-on-warning
 
       - name: Behat features
-        if: ${{ !cancelled() }}
+        if: ${{ matrix.moodle-branch != 'MOODLE_400_STABLE' && !cancelled() }} # Skip Moodle 4.0, it's incompatible rn
         run: moodle-plugin-ci behat --profile chrome
 
       - name: Mark cancelled jobs as failed.
