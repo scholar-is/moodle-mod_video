@@ -15,18 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Video plugin version info.
+ * Delete video sessions.
  *
- * @package    mod_video
+ * @package    videoreport_videosessions
  * @copyright  2024 Scholaris <https://scholar.is>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+require('../../../../config.php');
 
-$plugin->component = 'mod_video'; // Full name of the plugin (used for diagnostics).
-$plugin->version   = 2024091801;  // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2019111809;  // Requires this Moodle version.
-$plugin->cron      = 0;           // Period for cron to check this module (secs).
-$plugin->release   = '0.1';
-$plugin->maturity  = MATURITY_BETA;
+$cmid = required_param('cmid', PARAM_INT);
+$userid = required_param('userid', PARAM_INT);
+
+require_capability('mod/video:deletesessions', context_module::instance($cmid));
+
+global $DB;
+
+$DB->delete_records('video_session', ['cmid' => $cmid, 'userid' => $userid]);
+
+redirect(new moodle_url('/mod/video/report/videosessions/index.php', ['cmid' => $cmid]),
+    get_string('deletesessionssuccess', 'video'));

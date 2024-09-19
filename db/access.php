@@ -66,4 +66,13 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+    'mod/video:deletesessions' => [
+        'riskbitmask' => RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
+    ],
 ];
